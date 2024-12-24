@@ -1,0 +1,45 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #A03037;
+    padding: 0.625em 5%;
+    color: white;
+    gap: 15%;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1em; 
+    
+      .logo-image {
+        width: 2.5em; 
+        height: auto;
+      }
+    }
+
+    .search-bar {
+      flex: 1;
+      margin: 0 1.25em;
+      padding: 0.5em;
+      border: none;
+      border-radius: 0.25em;
+      width: 30em;
+    }
+
+    .user-actions {
+      display: flex;
+      gap: 1.5em;
+
+      .icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        cursor: pointer;
+
+        .label {
+          font-size: 0.875em;
+        }
+      }
+    }
+  }
