@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.profile-className-container {
+  width: 100%;
+  max-width:40vw ;
+  font-family: 'Roboto', Arial, sans-serif;
+  padding: 4em ;
+  box-sizing: border-box;
+}
+.profile-className-section {
+  margin-bottom: 2em;
+}
+.profile-className-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+.profile-className-title {
+  font-size: 1.5em;
+  color: #A03037;
+  margin: 0;
+}
+
+.profile-className-edit-btn,
+.profile-className-add-btn {
+  background: none;
+  border: none;
+  color: #A03037;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.profile-className-add-btn {
+  border: 0.1em solid #A03037;
+  padding: 0.3em 0.8em;
+}
+
+.profile-className-fields {
+  display: flex;
+  gap: 2%;
+  margin-bottom: 0.6em;
+}
+
+.profile-className-field {
+  flex: 1;
+  margin-bottom: 0.6em;
+
+}
+
+.profile-className-field label {
+  display: block;
+  font-size: 0.9em;
+  margin-bottom: 0.2em;
+}
+
+.profile-className-field input,
+.profile-className-field textarea {
+  width: 100%;
+  padding: 0.6em;
+  border: 0.1em solid #ccc;
+  border-radius: 0.2em;
+  font-size: 0.9em;
+  box-sizing: border-box;
+}
+
+.profile-className-field textarea {
+  resize: vertical;
+  height: 4em;
+}
+
+.profile-className-field input {
+  height: 3em;
+}
+
+.profile-className-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.profile-className-profile-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5em;
+}
+
+.profile-className-profile-image {
+  position: relative;
+  width: 8em;
+  height: 8em;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 0.2em solid #ccc;
+}
+
+.profile-className-profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-className-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(42, 40, 40, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-className-modal {
+  background: white;
+  padding: 2em;
+  border-radius: 0.5em;
+  width: 80%;
+  text-align: center;
+  position: relative;
+}
+
+.profile-className-modal-close {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.profile-className-upload-label {
+  display: inline-block;
+  cursor: pointer;
+  color: #A03037;
+}
+
+.profile-className-cloud-icon {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+}
+
+.profile-className-file-input {
+  display: none;
+}
+.profile-className-radio-buttons {
+  display: flex;
+  gap: 2vw;
+}
+
+.profile-className-radio-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+.profile-className-radio-button input {
+  accent-color: #A03037; 
+}
+
+.profile-className-radio-button.selected input {
+  background-color: #A03037;
+  color: white;
+}
