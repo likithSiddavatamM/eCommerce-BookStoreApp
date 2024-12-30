@@ -1,0 +1,67 @@
+.cardContainer {
+    max-width: 290px;
+    margin: 10% 0%;
+    min-width: 270px;
+  }
+  
+  .cardContent {
+    padding: 7% 0%;
+    display: flex;
+    justify-content: center;
+    background-color: #f5f5f5;
+  }
+  
+  .css-1kuwa16-MuiCardMedia-root {
+    width: 50% !important;
+    height: 12em;
+  }
+  
+  .bookName {
+    margin: 3% 0%;
+    opacity: 1;
+    font-size: 140%;
+    font-weight: 500;
+  }
+  
+  .author {
+    margin: 3% 0%;
+    color: #878787;
+  }
+  
+  .rating {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 2%;
+  }
+  
+  .ratingTag {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: white;
+    background-color: #388e3c;
+    padding: 0.5em;
+    border-radius: 0.1em;
+    min-width: 15%;
+    max-width: 15%;
+    height: 0.8em;
+  }
+  
+  .ratingCount {
+    color: #878787;
+  }
+  
+  .price {
+    font-weight: 700;
+    margin-top: 3%;
+    display: inline-block;
+    font-size: 135%;
+  }
+  
+  .discount {
+    text-decoration: line-through;
+    color: #878787;
+    margin-left: 3%;
+  }
+  

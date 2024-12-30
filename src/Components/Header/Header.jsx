@@ -7,12 +7,12 @@ export default () => {
 
   return (
     <header className="header">
-      <div style={{display:"flex", gap:"1em"}}>
-      <div className="logo">
-          <img src={a} alt="Logo" className="logo-image" />
-          Bookstore
-      </div>
-      <input type="text" placeholder="Search" className="search-bar" />
+      <div style={{display:"flex", gap:"1em", width:"100%"}}>
+        <div className="logo">
+            <img src={a} alt="Logo" className="logo-image" />
+            Bookstore
+        </div>
+        <input type="text" placeholder="Search" className="search-bar" />
       </div>
       
 

@@ -1,14 +1,12 @@
 import React from "react";
-import Header from "../Header/Header";
 import { Outlet } from "react-router-dom";
 
-export default () =>{
+export default () => {
 
     return (
-        <>
-        <Header/>
-        <Outlet/>
-        </>
+        <div style={{}}>
+            <Outlet/>
+        </div>
     )
 
 }
