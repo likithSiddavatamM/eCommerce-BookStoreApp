@@ -1,0 +1,128 @@
+.order-history {
+    font: normal Roboto;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+  
+    .breadcrumb {
+      padding: 0.625em 5%;
+      background-color: #f5f5f5;
+      font-size: 0.875em;
+    }
+  
+    .orders {
+      flex: 1; 
+      padding: 1.25em 5%;
+  
+      .order-card {
+        display: flex;
+        align-items: center;
+        gap: 1.25em;
+        padding: 1em;
+        border: 0.0625em solid #ddd;
+        border-radius: 0.5em;
+        margin-bottom: 1.25em;
+  
+        .order-image {
+          width: 15%;
+          height: auto;
+          max-width: 7em;
+          object-fit: cover;
+          border-radius: 0.25em;
+        }
+  
+        .order-details {
+          flex: 1;
+  
+          h3 {
+            margin: 0;
+            font-size: 1.125em;
+          }
+  
+          p {
+            margin: 0.3125em 0;
+  
+            &.price {
+              font-weight: bold;
+              color: #A03037;
+  
+              .original-price {
+                text-decoration: line-through;
+                color: #888;
+                font-size: 0.875em;
+                margin-left: 0.5em;
+              }
+            }
+          }
+        }
+  
+        .order-date {
+          font-size: 0.875em;
+          color: #4caf50;
+        }
+        .order-status-icon {
+            font-size: 16px;
+            color: #4CAF50; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+          
+          .icon-placed::before {
+            content: "\2022"; 
+            font-size: 18px;
+            color: #4CAF50; 
+          }
+          
+      }
+    }
+  
+   
+
+    @media (max-width: 768px) {
+      .orders {
+        padding: 1em;
+  
+        .order-card {
+          flex-direction: column;
+          align-items: flex-start;
+  
+          .order-image {
+            width: 100%;
+            max-width: none;
+          }
+  
+          .order-details {
+            h3 {
+              font-size: 1em;
+            }
+  
+            p {
+              font-size: 0.875em; 
+            }
+          }
+        }
+      }
+    }
+  
+    @media (max-width: 480px) {
+     
+      .orders {
+        .order-card {
+          gap: 0.75em;
+  
+          .order-details {
+            h3 {
+              font-size: 0.875em; 
+            }
+  
+            p {
+              font-size: 0.75em;
+            }
+          }
+        }
+      }
+    }
+  }
+  
