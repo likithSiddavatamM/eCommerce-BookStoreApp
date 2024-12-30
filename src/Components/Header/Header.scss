@@ -6,7 +6,10 @@
     padding: 0.625em 9%;
     color: white;
     gap: 15%;
-    min-width: 603px;
+    min-width: 30em;
+    position: fixed;
+    z-index: 1;
+    width: 82%;
 
     .logo {
       display: flex;

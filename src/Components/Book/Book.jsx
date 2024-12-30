@@ -19,7 +19,7 @@ export default ({ book }) => {
                 alt="BookImage"
               />
             </CardContent>
-            <CardContent>
+            <CardContent className="cardContentDown">
               <p className="bookName">{book.bookName}</p>
               <p className="author">{book.author}</p>
               <span className="rating">
