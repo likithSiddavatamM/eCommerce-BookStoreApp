@@ -1,17 +1,21 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashBoard from "./Components/DashBoard/DashBoard";
-import OrderHistory from "./Components/OrderHistory/OrderHistory";
+import BookContainer from "./Components/BookContainer/BookContainer";
+import Header from "./Components/Header/Header";
 
 function Routing(){
     const route = createBrowserRouter([
+
         {
             path: '',
-            element: <DashBoard/> ,
-            children: [
-                {
-                  path: "orders",
-                  element: <OrderHistory />,
-                },]
+            element:<>
+                        <Header/>
+                        <DashBoard/>
+                    </>,
+            children:[{
+                path: '/',
+                element: <BookContainer/>
+            },]
         }
         
     ])

@@ -1,0 +1,14 @@
+.BookContainer {
+    padding: 0% 5%;
+    display: flex;
+    justify-content: center;
+    gap: 3%;
+    flex-wrap: wrap;
+}
+
+.Footer {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    margin-bottom: 1%;
+}
