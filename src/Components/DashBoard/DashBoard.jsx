@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 export default () => {
 
     return (
-        <div style={{}}>
+        <div style={{height:"100%"}}>
             <Outlet/>
         </div>
     )

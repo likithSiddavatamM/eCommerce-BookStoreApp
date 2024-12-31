@@ -13,11 +13,11 @@ export const allBooks = async(page) => {
 
 }
 
-export const loginApiCall = async(payload,END_POINT) => {
+export const loginApiCall = async(payload,END_POINT=`users/login`) => {
     return await axios.post(`${BASE_URL}${END_POINT}`, payload)
 }
 
-export const signupApiCall = async(payload,END_POINT)=>{
+export const signupApiCall = async(payload,END_POINT=`users`)=>{
     return await axios.post(`${BASE_URL}${END_POINT}`,payload)
 }
 
@@ -37,8 +37,13 @@ export const updateUserDataApiCall = async(END_POINT="/users",payload) => {
          Authorization:getAuth()
      }
     })
-}
-  
+  }
+ 
+export const getBookById = async (id) => {
+    const response = await axios.get(`http://localhost:7000/api/v1/books/book/${id}`);
+    return response?.data?.data;
+};
+
 export const fetchUserAddressApiCall = async(END_POINT="/customer")=>{
     return await axios.get(`${BASE_URL}${END_POINT}`,
         { headers:{

@@ -55,7 +55,7 @@ const LoginSignup = ({ onClose }) => {
       return;
     }
 
-    loginApiCall({email,password},`users/login`)
+    loginApiCall({email,password})
      
     .then((result)=>{
 
@@ -97,7 +97,6 @@ const LoginSignup = ({ onClose }) => {
         });
     })
     setError("");
-    alert("Login Successful!");
   };
 
   const handleSignup = (e) => {
@@ -119,7 +118,7 @@ const LoginSignup = ({ onClose }) => {
       return;
     }
     
-    signupApiCall({firstName,lastName,email,password},`users`)
+    signupApiCall({firstName,lastName,email,password})
     .then((result)=>{ 
     const {data}=result
         if(data.message==="User registered successfully"){
@@ -135,23 +134,11 @@ const LoginSignup = ({ onClose }) => {
                 transition: Bounce,
               });
         }
-        else{
-            toast.error("User Not Created!", {
-                position: "bottom-center",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              });
-        }
     })
     .catch((error)=>{
     console.log(error)
-    toast.error("Server Error!!", {
+    if(error.message==="Request failed with status code 400"){}
+    toast.error("User already existed", {
         position: "bottom-center",
         autoClose: 4000,
         hideProgressBar: false,
@@ -165,7 +152,6 @@ const LoginSignup = ({ onClose }) => {
     })
 
     setError("");
-    alert("Signup Successful!");
   };
 
   return (
