@@ -8,7 +8,7 @@ const getAuth =()=>{
 
 export const allBooks = async(page) => {
 
-    const books = await axios.get(`http://localhost:7000/api/v1/books/${page}`)
+    const books = await axios.get(`${BASE_URL}books/${page}`)
     return books?.data?.data;
 
 }
@@ -40,7 +40,7 @@ export const updateUserDataApiCall = async(END_POINT="/users",payload) => {
   }
  
 export const getBookById = async (id) => {
-    const response = await axios.get(`http://localhost:7000/api/v1/books/book/${id}`);
+    const response = await axios.get(`${BASE_URL}books/book/${id}`);
     return response?.data?.data;
 };
 
