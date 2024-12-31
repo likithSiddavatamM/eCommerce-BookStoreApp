@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../App/AuthSlice";
+import { fetchSearchResults, selectSearchResults } from "../../App/SearchSlice";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined"; 
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined"; 
@@ -11,9 +12,19 @@ import a from "../../Assets/education.svg";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [searchQuery, setSearchQuery] = useState([]);
+  const searchResults = useSelector(selectSearchResults);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query) {
+      dispatch(fetchSearchResults({ query, page: 1 }));
+    }
+  };
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,7 +46,23 @@ const Header = () => {
           <img src={a} alt="Logo" className="logo-image" />
           Bookstore
         </div>
-        <input type="text" placeholder="Search" className="search-bar" />
+        <input type="text" 
+        placeholder="Search" 
+        className="search-bar" 
+        value={searchQuery}
+        onChange={handleSearch}
+        />
+         {searchQuery && (
+          <div className="search-results">
+            {searchResults && Array.isArray(searchResults) ? (
+        searchResults.map((book) => (
+          <div key={book._id}>{book.bookName}</div>
+        ))
+      ) : (
+        <p>No search results found.</p>
+      )}
+          </div>
+        )}
       </div>
       <div className="user-actions">
         <div className="icon">
