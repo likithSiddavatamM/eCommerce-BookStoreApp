@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashBoard from "./Components/DashBoard/DashBoard";
 import BookContainer from "./Components/BookContainer/BookContainer";
 import Header from "./Components/Header/Header";
+import BookDetails from "./Components/BookDetails/BookDetails";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -15,7 +16,11 @@ function Routing(){
             children:[{
                 path: '/',
                 element: <BookContainer/>
-            },]
+            },
+            {
+                path: '/book/:id',
+                element: <BookDetails />
+            }]
         }
         
     ])
