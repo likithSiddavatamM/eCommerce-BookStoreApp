@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../App/AuthSlice";
-import { fetchSearchResults, selectSearchResults } from "../../App/SearchSlice";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined"; 
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined"; 
@@ -9,22 +8,20 @@ import { Box, Avatar, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./Header.scss";
 import a from "../../Assets/education.svg";
+import LoginSignup from "../LoginSignup/LoginSignup";
+import { fetchUserDataApiCall } from "../../Api";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [searchQuery, setSearchQuery] = useState([]);
-  const searchResults = useSelector(selectSearchResults);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+      setShowModal(!showModal);
+      
+  };
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleSearch = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (query) {
-      dispatch(fetchSearchResults({ query, page: 1 }));
-    }
-  };
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,9 +32,19 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     dispatch(logout());
   };
+
+  const handleUserData = async () => {
+    try {
+      const userData = await fetchUserDataApiCall();
+      console.log("User Data:", userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+ 
 
   return (
     <header className="header">
@@ -83,7 +90,7 @@ const Header = () => {
             >
               {isAuthenticated ? (
                 <>
-                  <MenuItem onClick={() => navigate("/profile")}>
+                  <MenuItem onClick={handleUserData}>
                     Profile
                   </MenuItem>
                   <MenuItem
@@ -132,10 +139,17 @@ const Header = () => {
                     </span>
                     <button
                       className="header-login-btn"
-                      onClick={() => navigate("/login")}
+                      onClick={toggleModal}
                     >
                       Login/Signup
                     </button>
+                      {showModal && (
+                          <div className="modal-overlay">
+                              <div className="modal-content">
+                                  <LoginSignup onClose={toggleModal} />
+                              </div>
+                          </div>
+                      )}
                   </MenuItem>
                   <MenuItem
                     onClick={() => navigate("/orders")}
@@ -175,4 +189,8 @@ const Header = () => {
   );
 };
 
+
 export default Header;
+
+
+

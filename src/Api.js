@@ -1,9 +1,10 @@
-import axios from "axios";
+import axios from "axios"
 
-axios.defaults.baseURL = 'http://localhost:3000/api/v1';
+const BASE_URL=`http://localhost:7000/api/v1/`;
 
-let debounceTimer;
-const DEBOUNCE_DELAY = 300;
+const getAuth =()=>{
+    return `Bearer ${localStorage.getItem('accessToken')}`
+}
 
 export const allBooks = async(page) => {
 
@@ -11,39 +12,29 @@ export const allBooks = async(page) => {
   return books?.data?.data;
 
 }
-// Search books
-export const searchBooks = (query, page = 1) => {
-  if (!query) {
-    return Promise.reject(new Error("Search query is required."));
+export const loginApiCall = async(payload,END_POINT) => {
+    return await axios.post(`${BASE_URL}${END_POINT}`, payload)
+}
+export const signupApiCall = async(payload,END_POINT)=>{
+    return await axios.post(`${BASE_URL}${END_POINT}`,payload)
+}
+export const fetchUserDataApiCall = async(END_POINT="/users/")=>{
+    return await axios.get(`${BASE_URL}${END_POINT}`,
+        { headers:{
+            Authorization:getAuth()
+         }
+         }
+    )
+}
+export const updateUserDataApiCall = async(END_POINT="/users",payload) => {
+    return await axios.put(`${BASE_URL}${END_POINT}`,payload,{
+     headers:{
+         Authorization:getAuth()
+     }
+    })
   }
-
-  return new Promise((resolve, reject) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      axios
-        .get(`/books/search/${page}`, { params: { searchQuery: query } }) 
-        .then((response) => {
-            const books = response.data.data || [];
-            console.log('Book:',books)
-            resolve(books);
-          })
-        .catch((error) => {
-          console.error("Error fetching search results:", error);
-          reject(error);
-        });
-    }, DEBOUNCE_DELAY);
-  });
-};
 export const getBookById = async (id) => {
-    const response = await axios.get(`http://localhost:3000/api/v1/books/book/${id}`);
+    const response = await axios.get(`http://localhost:7000/api/v1/books/book/${id}`);
     return response?.data?.data;
 };
-export const fetchUserOrders = async () => {
-  try {
-    const response = await axios.get('http://localhost:3000/api/v1/orders'); 
-    return response.data.data;
-  } catch (error) {
-    console.error("Error fetching user orders:", error);
-    throw error;
-  }
-};
+

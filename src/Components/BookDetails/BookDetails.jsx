@@ -104,6 +104,26 @@ const BookDetails = () => {
             <h2 className="book-details__section-title">Book Detail</h2>
             <p className="book-details__description-text">{currentBook.description || 'No description available.'}</p>
           </div>
+
+          {/* Review Section */}
+          <div className="book-details__feedback">
+            <h3 className="book-details__feedback-title">Customer Feedback</h3>
+            <div className="book-details__rating-input">
+              <p className="book-details__rating-label">Overall rating</p>
+              <div className="book-details__stars">
+                {[1, 2, 3, 4, 5].map((rating) => (
+                  <button key={rating} className="book-details__star-button">
+                    <FaRegStar className="book-details__star-empty" />
+                  </button>
+                ))}
+              </div>
+              <textarea
+                placeholder="Write your review"
+                className="book-details__review-input"
+                readOnly
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
