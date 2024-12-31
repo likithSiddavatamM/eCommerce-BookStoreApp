@@ -5,17 +5,12 @@ axios.defaults.baseURL = 'http://localhost:3000/api/v1';
 let debounceTimer;
 const DEBOUNCE_DELAY = 300;
 
-// Fetch books
-export const allBooks = async (page) => {
-  try {
-    const response = await axios.get(`/books/${page}`);
-    return response?.data?.data;
-  } catch (error) {
-    console.error("Error fetching books:", error);
-    throw error;
-  }
-};
+export const allBooks = async(page) => {
 
+  const books = await axios.get(`/books/${page}`)
+  return books?.data?.data;
+
+}
 // Search books
 export const searchBooks = (query, page = 1) => {
   if (!query) {
@@ -39,17 +34,16 @@ export const searchBooks = (query, page = 1) => {
     }, DEBOUNCE_DELAY);
   });
 };
-
-import axios from "axios"
-
-export const allBooks = async(page) => {
-
-    const books = await axios.get(`http://localhost:7000/api/v1/books/${page}`)
-    return books?.data?.data;
-
-}
-
 export const getBookById = async (id) => {
-    const response = await axios.get(`http://localhost:7000/api/v1/books/book/${id}`);
+    const response = await axios.get(`http://localhost:3000/api/v1/books/book/${id}`);
     return response?.data?.data;
+};
+export const fetchUserOrders = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/api/v1/orders'); 
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    throw error;
+  }
 };
