@@ -3,6 +3,8 @@ import DashBoard from "./Components/DashBoard/DashBoard";
 import BookContainer from "./Components/BookContainer/BookContainer";
 import Header from "./Components/Header/Header";
 import UserProfile from "./Components/UserProfile/UserProfile";
+import BookDetails from "./Components/BookDetails/BookDetails";
+
 
 function Routing(){
     const route = createBrowserRouter([
@@ -16,6 +18,10 @@ function Routing(){
             children:[{
                     path: '/',
                     element: <BookContainer/>,
+                },
+                {
+                path: '/book/:id',
+                element: <BookDetails />
                 },
                 {
                     path:'/userprofile',

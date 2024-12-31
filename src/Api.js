@@ -38,4 +38,9 @@ export const updateUserDataApiCall = async(END_POINT="/users",payload) => {
      }
     })
   }
-  
+ 
+export const getBookById = async (id) => {
+    const response = await axios.get(`http://localhost:7000/api/v1/books/book/${id}`);
+    return response?.data?.data;
+};
+
