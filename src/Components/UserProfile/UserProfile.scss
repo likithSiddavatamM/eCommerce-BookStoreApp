@@ -2,24 +2,23 @@
 
 .profile-className-container {
   width: 100%;
-  max-width:40vw ;
+  max-width:38vw ;
   font-family: 'Roboto', Arial, sans-serif;
-  padding: 4em ;
+  padding: 1em ;
   box-sizing: border-box;
+  margin-left: 12%;
 }
 .profile-className-section {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 .profile-className-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1em;
 }
 .profile-className-title {
   font-size: 1.5em;
-  color: #A03037;
-  margin: 0;
+  color: #000000;
 }
 
 .profile-className-edit-btn,
@@ -33,18 +32,18 @@
 
 .profile-className-add-btn {
   border: 0.1em solid #A03037;
-  padding: 0.3em 0.8em;
+  padding: 0.2em 0.6em;
 }
 
 .profile-className-fields {
   display: flex;
   gap: 2%;
-  margin-bottom: 0.6em;
+  margin-bottom: 0.4em;
 }
 
 .profile-className-field {
   flex: 1;
-  margin-bottom: 0.6em;
+  margin-bottom: 0.4em;
 
 }
 
@@ -58,7 +57,7 @@
 .profile-className-field textarea {
   width: 100%;
   padding: 0.6em;
-  border: 0.1em solid #ccc;
+  border: 0.1em solid #d3d3d35d;
   border-radius: 0.2em;
   font-size: 0.9em;
   box-sizing: border-box;
@@ -67,10 +66,12 @@
 .profile-className-field textarea {
   resize: vertical;
   height: 4em;
+  background-color: #F5F5F5;
 }
 
 .profile-className-field input {
   height: 3em;
+  background-color: #F5F5F5;
 }
 
 .profile-className-container {
@@ -83,7 +84,7 @@
 .profile-className-profile-image-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
 }
 
 .profile-className-profile-image {
