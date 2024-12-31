@@ -2,6 +2,8 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    top:3em;
   
     &__container {
       margin: 0em 10em;
@@ -69,11 +71,11 @@
   
       .wishlist-icon {
         font-size: 1.2rem;
-        transition: color 0.2s; // Smooth color transition
+        transition: color 0.2s; 
       }
   
       .wishlist-icon--active {
-        color: red; // Active (filled heart) color
+        color: red; 
       }
     }
   
@@ -85,18 +87,20 @@
     &__title {
       font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0rem;
     }
   
     &__author {
       color: #666;
       font-size: 1.1rem;
+      margin: 0.1em 0em;
     }
   
     &__rating {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      margin: 0.1em 0em
     }
   
     &__rating-badge {
@@ -115,6 +119,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      padding-top: 1em;
     }
   
     &__current-price {
@@ -129,17 +134,28 @@
   
     &__section-title {
       font-size: 1.25rem;
-      font-weight: 600;
+      font-weight: 400;
       margin-bottom: 1rem;
+      color: grey;
     }
   
     &__description-text {
       color: #666;
-      line-height: 1.6;
+      line-height: 1.3;
+      text-align: justify;
+      font-weight: 400;
+      font-size: small;
+    }
+
+    &__description {
+      border-bottom: 1px solid grey;
+      border-top: 1px solid grey;
+      margin-top: 1em;
     }
   
-    &__feedback {
-      margin-top: 2rem;
+    &__feedback-title{
+      margin:auto ;
+      margin-top: 1em;
     }
   
     &__rating-input {
