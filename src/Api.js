@@ -37,5 +37,13 @@ export const updateUserDataApiCall = async(END_POINT="/users",payload) => {
          Authorization:getAuth()
      }
     })
-  }
+}
   
+export const fetchUserAddressApiCall = async(END_POINT="/customer")=>{
+    return await axios.get(`${BASE_URL}${END_POINT}`,
+        { headers:{
+            Authorization:getAuth()
+         }
+         }
+    )
+}

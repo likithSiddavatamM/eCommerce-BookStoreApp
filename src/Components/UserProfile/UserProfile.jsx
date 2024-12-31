@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { fetchUserDataApiCall } from "../../Api";
-import { useSelector } from "react-redux";
+
 
 
 const UserProfile = () => {
@@ -27,8 +27,8 @@ const UserProfile = () => {
       try {
         console.log("Fetching user data...");
         const data = await fetchUserDataApiCall();
-        console.log("Fetched user data:", data);
-        setUserData(data);
+        console.log("Fetched user data:", data.data.data);
+        setUserData(data.data.data);
         if (data.profilePicture) {
           setSelectedImage(data.profilePicture);
         }
@@ -92,11 +92,11 @@ const UserProfile = () => {
         <div className="profile-className-fields">
           <div className="profile-className-field">
             <label>First Name</label>
-            <input type="text" value={userData.firstName}  onChange={(e) => setUserData(prev => ({ ...prev, firstName: e.target.value }))}/>
+            <input type="text" value={userData.firstName} readOnly onChange={(e) => setUserData(prev => ({ ...prev, firstName: e.target.value }))}/>
           </div>
           <div className="profile-className-field">
             <label>Last Name</label>
-            <input type="text"  value={userData.lastName} onChange={(e) => setUserData(prev => ({ ...prev, lastName: e.target.value }))}/>
+            <input type="text"  value={userData.lastName} readOnly onChange={(e) => setUserData(prev => ({ ...prev, lastName: e.target.value }))}/>
           </div>
         </div>
         <div className="profile-className-field">
