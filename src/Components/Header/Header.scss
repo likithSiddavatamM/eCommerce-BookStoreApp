@@ -1,49 +1,79 @@
 .header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #A03037;
-    padding: 0.625em 9%;
-    color: white;
-    gap: 15%;
-    min-width: 30em;
-    position: fixed;
-    z-index: 1;
-    width: 82%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #A03037;
+  padding: 0.625em 9%;
+  color: white;
+  gap: 15%;
+  min-width: 603px;
 
-    .logo {
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1em; 
+    
+    .logo-image {
+      width: 2.5em; 
+      height: auto;
+    }
+  }
+  .search-bar {
+    flex: 1;
+    margin: 0 1.25em;
+    padding: 0.5em;
+    border: none;
+    border-radius: 0.25em;
+    max-width: 50%;
+  }
+  .user-actions {
+    display: flex;
+    gap: 1.5em;
+    .icon {
       display: flex;
       align-items: center;
-      gap: 1em; 
-    
-      .logo-image {
-        width: 2.5em; 
-        height: auto;
-      }
-    }
-
-    .search-bar {
-      flex: 1;
-      margin: 0 1.25em;
-      padding: 0.5em;
-      border: none;
-      border-radius: 0.25em;
-      max-width: 50%;
-    }
-
-    .user-actions {
-      display: flex;
-      gap: 1.5em;
-
-      .icon {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        cursor: pointer;
-
-        .label {
-          font-size: 0.875em;
-        }
+      gap: 0.5em;
+      cursor: pointer;
+      .label {
+        font-size: 0.875em;
+        font-family: 'Roboto', sans-serif;
       }
     }
   }
+}
+.header-msg-wlc{
+  text-align: left;
+  font-family: 'Roboto', sans-serif;
+  color: #0A0102;
+}
+.header-msg{
+  text-align: left;
+  font-family: 'Roboto', sans-serif;
+  color: #878787;
+}
+.header-login-btn{
+  border: 1px solid #A03037;
+  border-radius: 2px;
+  padding: 0.5em 1em;
+  background-color: transparent;
+  color: #A03037;
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: #A03037;
+    color: white;
+  }
+}
+.css-i3w3h8-MuiButtonBase-root-MuiMenuItem-root {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 8px 12px;
+  margin: 0; 
+  gap: 4px; 
+  min-height: unset; 
+  box-sizing: border-box;
+}
