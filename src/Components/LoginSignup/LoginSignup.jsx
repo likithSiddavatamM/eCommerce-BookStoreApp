@@ -5,6 +5,8 @@ import logo from "../../Assets/2766594.png";
 import "./LoginSignup.scss";
 import { loginApiCall } from '../../Api';
 import { signupApiCall } from '../../Api';
+import { useDispatch } from "react-redux";
+import { login } from "../../App/AuthSlice";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,7 +31,7 @@ const LoginSignup = ({ onClose }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
-
+  const dispatch = useDispatch();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -44,7 +46,7 @@ const LoginSignup = ({ onClose }) => {
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
@@ -54,50 +56,47 @@ const LoginSignup = ({ onClose }) => {
       setError("Password cannot be empty.");
       return;
     }
-
-    loginApiCall({email,password},`users/login`)
-     
-    .then((result)=>{
-
-     const {data}=result
-     console.log(result);
-     localStorage.setItem('accessToken',data.data.accessToken)
-     console.log(data.data.accessToken);
-     toast.success("Login Successfully !!", {
-      position: "bottom-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-    setTimeout(() => {
-      onClose()
-  }, 2000); 
-
-  console.log(data.message)
-  console.log(data.user)
-   
-    })
-    .catch((error)=>{
-        console.log(error)
-        toast.error(error.message, {
-          position: "bottom-center",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-        });
-    })
+  
+    try {
+      const result = await loginApiCall({ email, password }, "users/login");
+      const { data } = result;
+      console.log("Login Result:", result);
+  
+      localStorage.setItem("accessToken", data.data.accessToken);
+      console.log("Access Token:", data.data.accessToken);
+      dispatch(login());
+      toast.success("Login Successfully!", {
+        position: "bottom-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setTimeout(() => {
+        onClose();
+      }, 2000);
+      console.log("User Data:", data.user);
+      console.log("Message:", data.message);
+      
+    } catch (error) {
+      console.error("Login Error:", error);
+      toast.error(error.message || "An error occurred during login", {
+        position: "bottom-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
     setError("");
-    alert("Login Successful!");
   };
 
   const handleSignup = (e) => {
