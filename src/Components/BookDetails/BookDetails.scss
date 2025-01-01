@@ -38,7 +38,7 @@
   
     &__add-button {
             padding: 0.75rem;
-            background-color: #4a90e2;
+            background-color: #a81111;
             color: white;
             border: none;
             border-radius: 4px;
@@ -47,7 +47,7 @@
             transition: background-color 0.2s;
         
             &:hover {
-              background-color: darken(#4a90e2, 10%);
+              background-color: darken(#ab1b1b, 10%);
             }
           }
   

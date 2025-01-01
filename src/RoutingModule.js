@@ -4,7 +4,7 @@ import BookContainer from "./Components/BookContainer/BookContainer";
 import Header from "./Components/Header/Header";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import BookDetails from "./Components/BookDetails/BookDetails";
-
+import Cart from "./Components/Cart/Cart";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -26,7 +26,11 @@ function Routing(){
                 {
                     path:'/userprofile',
                     element: <UserProfile/>
-                }
+                },
+                {
+                  path: '/cart', 
+                  element: <Cart/>,
+                },
             ]
         }
     ])
