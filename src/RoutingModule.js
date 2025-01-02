@@ -4,6 +4,7 @@ import BookContainer from "./Components/BookContainer/BookContainer";
 import Header from "./Components/Header/Header";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import BookDetails from "./Components/BookDetails/BookDetails";
+import Wishlist from "./Components/Wishlist/Wishlist";
 
 
 function Routing(){
@@ -26,6 +27,10 @@ function Routing(){
                 {
                     path:'/userprofile',
                     element: <UserProfile/>
+                },
+                {
+                  path: '/wishlist',
+                  element: <Wishlist/>  
                 }
             ]
         }
