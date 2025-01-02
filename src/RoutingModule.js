@@ -5,7 +5,7 @@ import Header from "./Components/Header/Header";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import BookDetails from "./Components/BookDetails/BookDetails";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
-
+import Cart from "./Components/Cart/Cart";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -31,7 +31,11 @@ function Routing(){
                 {
                     path:'/orders',
                     element: <OrderHistory/>
-                }
+                },
+                 {
+                  path: '/cart', 
+                  element: <Cart/>,
+                },
             ]
         }
     ])
