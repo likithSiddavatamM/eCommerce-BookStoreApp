@@ -10,13 +10,15 @@ import { Box, Avatar, Menu, MenuItem } from "@mui/material";
 import "./Header.scss";
 import a from "../../Assets/education.svg";
 import LoginSignup from "../LoginSignup/LoginSignup";
-import {fetchUserDataApiCall} from "../../Api";
+import { fetchUserDataApiCall } from "../../Api";
+import { setValue, setPage } from "../../App/BookContainerSlice";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let search;
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userDetails = useSelector((state) => state.user.userDetails);
@@ -65,7 +67,11 @@ const Header = () => {
             <img src={a} alt="Logo" className="logo-image" />
             Bookstore
           </div>
-          <input type="text" placeholder="Search" className="search-bar" />
+          <input type="text" placeholder="Search" className="search-bar" onChange={(e) => {
+            const value = e.currentTarget.value
+            clearTimeout(search);
+            search = setTimeout(() => {dispatch(setValue(/^[a-zA-Z0-9]+$/.test(value) ? value : "")); dispatch(setPage(1))}, 750);
+            }}/>
         </div>
       <div className="user-actions">
         <div className="icon">

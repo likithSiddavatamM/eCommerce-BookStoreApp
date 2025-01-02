@@ -6,6 +6,7 @@ import UserProfile from "./Components/UserProfile/UserProfile";
 import BookDetails from "./Components/BookDetails/BookDetails";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import Cart from "./Components/Cart/Cart";
+import Footer from "./Components/Footer/Footer";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -15,6 +16,8 @@ function Routing(){
             element:<>
                         <Header/>
                         <DashBoard/>
+                        <Footer/>
+
                     </>,
             children:[{
                     path: '/',
