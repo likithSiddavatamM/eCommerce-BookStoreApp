@@ -1,7 +1,7 @@
 import React from 'react';
 import './QuantitySelector.scss';
 
-const QuantitySelector = ({ quantity, setQuantity }) => {
+const QuantitySelector = ({ quantity, setQuantity, small = false }) => {
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
@@ -13,11 +13,11 @@ const QuantitySelector = ({ quantity, setQuantity }) => {
   };
 
   return (
-    <div className="quantity-selector">
+    <div className={`quantity-selector ${small ? 'small' : ''}`}>
       <button
         className={`btn ${quantity === 1 ? 'disabled' : ''}`}
         onClick={handleDecrease}
-        disabled={quantity === 1} 
+        disabled={quantity === 1}
       >
         -
       </button>

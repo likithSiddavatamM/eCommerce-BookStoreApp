@@ -6,6 +6,9 @@ import UserProfile from "./Components/UserProfile/UserProfile";
 import BookDetails from "./Components/BookDetails/BookDetails";
 import Address from "./Components/Address/Address";
 import Admin from "./Components/Admin/Admin";
+import OrderHistory from "./Components/OrderHistory/OrderHistory";
+import Cart from "./Components/Cart/Cart";
+import Footer from "./Components/Footer/Footer";
 
 
 function Routing(){
@@ -16,6 +19,8 @@ function Routing(){
             element:<>
                         <Header/>
                         <DashBoard/>
+                        <Footer/>
+
                     </>,
             children:[{
                     path: '/',
@@ -36,7 +41,15 @@ function Routing(){
                 { 
                     path:'/admin',
                     element: <Admin/>
-                }
+                },
+                {
+                    path:'/orders',
+                    element: <OrderHistory/>
+                },
+                 {
+                  path: '/cart', 
+                  element: <Cart/>,
+                },
             ]
         }
     ])
