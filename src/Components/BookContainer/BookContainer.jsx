@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Book from "../Book/Book";
 import './BookContainer.scss';
-import { searchedBooks } from "../../Api";
+import { allBooks, searchedBooks } from "../../Api";
 import { Pagination } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { setBooks, setPage } from "../../App/BookContainerSlice";
@@ -19,13 +19,24 @@ export default () => {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if(prevPage.current!=page || books.length==0 || prevValue.current!=value)
-            (async()=>{
-                const data = await searchedBooks(page, value);
-                dispatch(setBooks({data: data[0], count: Math.ceil(data[1] / 20)}))
-                prevPage.current=page;
-                prevValue.current = value;
-            })()
+        if(value=='')
+            if(prevPage.current!=page || books.length==0 || prevValue.current!=value)
+                (async()=>{
+                    const data = await allBooks(page);
+                    dispatch(setBooks({data: data[0], count: Math.ceil(data[1] / 20)}))
+                    prevPage.current=page;
+                })()
+    }, [page, value])
+
+    useEffect(()=>{
+        if(value!='')
+            if(prevPage.current!=page || books.length==0 || prevValue.current!=value)
+                (async()=>{
+                    const data = await searchedBooks(page, value);
+                    dispatch(setBooks({data: data[0], count: Math.ceil(data[1] / 20)}))
+                    prevPage.current=page;
+                    prevValue.current = value;
+                })()
     }, [page, value])
 
     return(
