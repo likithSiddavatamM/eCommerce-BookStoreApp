@@ -1,12 +1,13 @@
 import axios from "axios";
 
-const BASE_URL = `http://localhost:7000/api/v1/`;
 
+const BASE_URL = `http://localhost:7000/api/v1/`;
 
 // Helper function to get the Authorization header
 const getAuth = () => {
   return `Bearer ${localStorage.getItem('accessToken')}`;
 };
+
 
 // Books API
 export const allBooks = async (page) => {
@@ -85,6 +86,7 @@ export const createUserAddressApiCall =  async(payload) => {
          Authorization:getAuth()
      }
     })
+
 }
 
 // export const updateUserAddressApiCall =  async(END_POINT="/customer/67739748b3835b4838e375ef",payload) => {
@@ -125,6 +127,7 @@ export const addToCartApi = async (bookId) => {
         console.error("Error adding to cart:", error);
         throw error;
     }
+
 };
 
 export const removeFromCartApi = async (bookId) => {
