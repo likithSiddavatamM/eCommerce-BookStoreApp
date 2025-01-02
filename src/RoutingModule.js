@@ -4,6 +4,8 @@ import BookContainer from "./Components/BookContainer/BookContainer";
 import Header from "./Components/Header/Header";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import BookDetails from "./Components/BookDetails/BookDetails";
+import Address from "./Components/Address/Address";
+import Admin from "./Components/Admin/Admin";
 
 
 function Routing(){
@@ -26,6 +28,14 @@ function Routing(){
                 {
                     path:'/userprofile',
                     element: <UserProfile/>
+                },
+                { 
+                    path:'/address',
+                    element: <Address/>
+                },
+                { 
+                    path:'/admin',
+                    element: <Admin/>
                 }
             ]
         }
