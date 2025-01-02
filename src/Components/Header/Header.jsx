@@ -51,7 +51,7 @@ const Header = () => {
 
 
   const handleUserProfile = async () => {
-      navigate("/userprofile")
+      navigate("/userprofile")}
   const handleUserData = async () => {
     try {
       const userData = await fetchUserDataApiCall();
@@ -200,7 +200,6 @@ const Header = () => {
         </div>
       </header>
     </>
-  );
-};
-
+   );
+}
 export default Header;
