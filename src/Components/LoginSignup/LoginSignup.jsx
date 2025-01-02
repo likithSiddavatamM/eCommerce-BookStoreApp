@@ -3,9 +3,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import logo from "../../Assets/2766594.png";
 import "./LoginSignup.scss";
-import { loginApiCall } from '../../Api';
-import { signupApiCall } from '../../Api';
-import { useDispatch } from "react-redux";
+import { loginUser, registerUser } from "../../App/UserSlice";
+import { useDispatch , useSelector} from "react-redux";
 import { login } from "../../App/AuthSlice";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,10 +29,11 @@ const LoginSignup = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const { error } = useSelector((state) => state.user);
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
@@ -41,7 +41,6 @@ const LoginSignup = ({ onClose }) => {
     setPassword("");
     setFirstName("");
     setLastName("");
-    setError("");
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -49,123 +48,56 @@ const LoginSignup = ({ onClose }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      toast.error("Please enter a valid email address.", { theme: "colored" });
       return;
     }
     if (password.trim() === "") {
-      setError("Password cannot be empty.");
+      toast.error("Password cannot be empty.", { theme: "colored" });
       return;
     }
-  
-    try {
-      const result = await loginApiCall({ email, password }, "users/login");
-      const { data } = result;
-      console.log("Login Result:", result);
-  
-      localStorage.setItem("accessToken", data.data.accessToken);
-      console.log("Access Token:", data.data.accessToken);
-      dispatch(login());
-      toast.success("Login Successfully!", {
-        position: "bottom-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-      setTimeout(() => {
-        onClose();
-      }, 2000);
-      console.log("User Data:", data.user);
-      console.log("Message:", data.message);
-      
-    } catch (error) {
-      console.error("Login Error:", error);
-      toast.error(error.message || "An error occurred during login", {
-        position: "bottom-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-    }
-    setError("");
-  };
+
+    dispatch(loginUser({ email, password }))
+    .unwrap()
+    .then(() => {
+      dispatch(login())
+      toast.success("Login Successful!", { theme: "colored" });
+      onClose();
+    })
+    .catch((err) => {
+      toast.error(err || "Login failed.", { theme: "colored" });
+    });
+};
+ 
 
   const handleSignup = (e) => {
     e.preventDefault();
     if (firstName.trim() === "") {
-      setError("First Name cannot be empty.");
+      toast.error("Firstname fields cannot be empty.", { theme: "colored" });
       return;
     }
     if (lastName.trim() === "") {
-      setError("Last Name cannot be empty.");
+      toast.error("Lastname fields cannot be empty.", { theme: "colored" });
       return;
     }
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      toast.error("Please enter a valid email address.", { theme: "colored" });
       return;
     }
     if (password.trim() === "") {
-      setError("Password cannot be empty.");
+      toast.error("Password cannot be empty.", { theme: "colored" });
       return;
     }
     
-    signupApiCall({firstName,lastName,email,password},`users`)
-    .then((result)=>{ 
-    const {data}=result
-        if(data.message==="User registered successfully"){
-            toast.success("User Successfully Created!!", {
-                position: "bottom-center",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              });
-        }
-        else{
-            toast.error("User Not Created!", {
-                position: "bottom-center",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              });
-        }
+    dispatch(registerUser({ firstName, lastName, email, password }))
+    .unwrap()
+    .then(() => {
+      toast.success("User registered successfully!", { theme: "colored" });
+      handleToggle(); 
     })
-    .catch((error)=>{
-    console.log(error)
-    toast.error("Server Error!!", {
-        position: "bottom-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-    })
-
-    setError("");
-    alert("Signup Successful!");
-  };
+    .catch((err) => {
+      toast.error(err || "Signup failed.", { theme: "colored" });
+    });
+};
 
   return (
     <div>
