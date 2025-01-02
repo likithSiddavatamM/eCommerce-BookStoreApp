@@ -9,6 +9,7 @@ import Admin from "./Components/Admin/Admin";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import Cart from "./Components/Cart/Cart";
 import Footer from "./Components/Footer/Footer";
+import Path_Sort from "./Components/Path_Sort/Path_Sort";
 
 
 function Routing(){
@@ -18,6 +19,7 @@ function Routing(){
             path: '',
             element:<>
                         <Header/>
+                        <Path_Sort/>
                         <DashBoard/>
                         <Footer/>
 
@@ -27,8 +29,8 @@ function Routing(){
                     element: <BookContainer/>,
                 },
                 {
-                path: '/book/:id',
-                element: <BookDetails />
+                    path: '/book/:id',
+                    element: <BookDetails />
                 },
                 {
                     path:'/userprofile',
