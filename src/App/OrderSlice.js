@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUserOrders as apiFetchUserOrders } from "../Api";
+import { getOrdersApiCall as apiFetchUserOrders } from "../Api";
 
 export const fetchUserOrders = createAsyncThunk(
-  "orders/fetchUserOrders",
+  "orders/getOrdersApiCall",
   async (_, thunkAPI) => {
     try {
       return await apiFetchUserOrders();

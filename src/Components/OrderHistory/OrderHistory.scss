@@ -77,6 +77,21 @@
           
       }
     }
+    .order-login-btn{
+      border: 1px solid #A03037;
+      border-radius: 2px;
+      padding: 0.5em 1em;
+      background-color: transparent;
+      color: #A03037;
+      font-family: 'Roboto', sans-serif;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    
+      &:hover {
+        background-color: #A03037;
+        color: white;
+      }
+    }
   
     @media (max-width: 768px) {
       .orders {

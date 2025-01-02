@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../App/AuthSlice";
+import { fetchUserDetails, fetchCustomerDetails } from "../../App/UserSlice";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined"; 
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined"; 
@@ -9,19 +10,30 @@ import { useNavigate } from "react-router-dom";
 import "./Header.scss";
 import a from "../../Assets/education.svg";
 import LoginSignup from "../LoginSignup/LoginSignup";
-import { fetchUserDataApiCall } from "../../Api";
+import {fetchUserDataApiCall} from "../../Api";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userDetails = useSelector((state) => state.user.userDetails);
+  const customerDetails = useSelector((state) => state.user.customerDetails); 
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchUserDetails());
+      dispatch(fetchCustomerDetails());
+    }
+  }, [isAuthenticated, dispatch]);
 
   const toggleModal = () => {
       setShowModal(!showModal);
       
   };
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,7 +47,6 @@ const Header = () => {
     localStorage.removeItem("accessToken");
     dispatch(logout());
   };
-
   const handleUserData = async () => {
     try {
       const userData = await fetchUserDataApiCall();
@@ -44,8 +55,6 @@ const Header = () => {
       console.error("Error fetching user data:", error);
     }
   };
- 
-
   return (
     <header className="header">
       <div style={{ display: "flex", gap: "1em", width: "100%" }}>
@@ -53,30 +62,14 @@ const Header = () => {
           <img src={a} alt="Logo" className="logo-image" />
           Bookstore
         </div>
-        <input type="text" 
-        placeholder="Search" 
-        className="search-bar" 
-        value={searchQuery}
-        onChange={handleSearch}
-        />
-         {searchQuery && (
-          <div className="search-results">
-            {searchResults && Array.isArray(searchResults) ? (
-        searchResults.map((book) => (
-          <div key={book._id}>{book.bookName}</div>
-        ))
-      ) : (
-        <p>No search results found.</p>
-      )}
-          </div>
-        )}
+        <input type="text" placeholder="Search" className="search-bar" />
       </div>
       <div className="user-actions">
         <div className="icon">
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Avatar
-              alt="User Profile"
-              src=""
+              alt={userDetails?.name || "User Profile"}
+              src={userDetails?.avatar || ""}
               sx={{ width: 30, height: 30, cursor: "pointer" }}
               onClick={handleMenuOpen}
             />
@@ -191,6 +184,5 @@ const Header = () => {
 
 
 export default Header;
-
 
 
