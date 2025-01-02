@@ -48,6 +48,10 @@ const Header = () => {
     localStorage.removeItem("accessToken");
     dispatch(logout());
   };
+
+
+  const handleUserProfile = async () => {
+      navigate("/userprofile")
   const handleUserData = async () => {
     try {
       const userData = await fetchUserDataApiCall();
@@ -92,7 +96,7 @@ const Header = () => {
             >
               {isAuthenticated ? (
                 <>
-                  <MenuItem onClick={handleUserData}>
+                  <MenuItem onClick={handleUserProfile}>
                     Profile
                   </MenuItem>
                   <MenuItem

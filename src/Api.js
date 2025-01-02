@@ -70,6 +70,39 @@ export const getOrdersApiCall = async () => {
   }
 };
 
+export const fetchUserAddressApiCall = async(END_POINT="/customer")=>{
+    return await axios.get(`${BASE_URL}${END_POINT}`,
+        { headers:{
+            Authorization:getAuth()
+         }
+         }
+    )
+}
+
+export const createUserAddressApiCall =  async(payload) => {
+    return await axios.post(`http://localhost:7000/api/v1/customer/`,payload,{
+     headers:{
+         Authorization:getAuth()
+     }
+    })
+}
+
+// export const updateUserAddressApiCall =  async(END_POINT="/customer/67739748b3835b4838e375ef",payload) => {
+//     return await axios.put(`${BASE_URL}${END_POINT}`,payload,{
+//      headers:{
+//          Authorization:getAuth()
+//      }
+//     })
+//   }
+
+export const updateUserAddressApiCall =  async(payload) => {
+    return await axios.put(`http://localhost:7000/api/v1/customer/67739748b3835b4838e375ef`,payload,{
+     headers:{
+         Authorization:getAuth()
+     }
+    })
+}
+
 // Example: Create a new customer (optional if needed)
 export const createCustomerApiCall = async (payload) => {
   return await axios.post(`${BASE_URL}customers`, payload, {
@@ -143,3 +176,4 @@ export const searchedBooks = async(page, text) => {
     return books?.data?.data;
 
 }
+

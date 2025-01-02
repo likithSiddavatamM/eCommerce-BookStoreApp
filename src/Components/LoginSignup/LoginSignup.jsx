@@ -56,46 +56,48 @@ const LoginSignup = ({ onClose }) => {
       setError("Password cannot be empty.");
       return;
     }
-  
-    try {
-      const result = await loginApiCall({ email, password }, "users/login");
-      const { data } = result;
-      console.log("Login Result:", result);
-  
-      localStorage.setItem("accessToken", data.data.accessToken);
-      console.log("Access Token:", data.data.accessToken);
-      dispatch(login());
-      toast.success("Login Successfully!", {
-        position: "bottom-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-      setTimeout(() => {
-        onClose();
-      }, 2000);
-      console.log("User Data:", data.user);
-      console.log("Message:", data.message);
-      
-    } catch (error) {
-      console.error("Login Error:", error);
-      toast.error(error.message || "An error occurred during login", {
-        position: "bottom-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-    }
+
+    loginApiCall({email,password})
+     
+    .then((result)=>{
+
+     const {data}=result
+     console.log(result);
+     localStorage.setItem('accessToken',data.data.accessToken)
+     console.log(data.data.accessToken);
+     toast.success("Login Successfully !!", {
+      position: "bottom-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+    setTimeout(() => {
+      onClose()
+  }, 2000); 
+
+  console.log(data.message)
+  console.log(data.user)
+   
+    })
+    .catch((error)=>{
+        console.log(error)
+        toast.error(error.message, {
+          position: "bottom-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+    })
     setError("");
   };
 
@@ -118,7 +120,7 @@ const LoginSignup = ({ onClose }) => {
       return;
     }
     
-    signupApiCall({firstName,lastName,email,password},`users`)
+    signupApiCall({firstName,lastName,email,password})
     .then((result)=>{ 
     const {data}=result
         if(data.message==="User registered successfully"){
@@ -134,23 +136,11 @@ const LoginSignup = ({ onClose }) => {
                 transition: Bounce,
               });
         }
-        else{
-            toast.error("User Not Created!", {
-                position: "bottom-center",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              });
-        }
     })
     .catch((error)=>{
     console.log(error)
-    toast.error("Server Error!!", {
+    if(error.message==="Request failed with status code 400"){}
+    toast.error("User already existed", {
         position: "bottom-center",
         autoClose: 4000,
         hideProgressBar: false,
@@ -164,7 +154,6 @@ const LoginSignup = ({ onClose }) => {
     })
 
     setError("");
-    alert("Signup Successful!");
   };
 
   return (
