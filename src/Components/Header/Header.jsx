@@ -54,7 +54,6 @@ const Header = () => {
       console.error("Error fetching user data:", error);
     }
   };
-
   const handleCartClick = () => {
     navigate("/cart");
   };
@@ -117,45 +116,6 @@ const Header = () => {
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </>
               ) : (
-                <>
-                  <MenuItem
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "8px 12px",
-                      margin: 0,
-                      gap: "4px",
-                      minHeight: "unset",
-                    }}
-                  >
-                    <p className="header-msg-wlc">Welcome!</p>
-                    <span className="header-msg">
-                      To access account and manage orders
-                    </span>
-                    <button
-                      className="header-login-btn"
-                      onClick={toggleModal}
-                    >
-                      <ListAltOutlinedIcon />
-                      My Orders
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => navigate("/wishlist")}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        fontFamily: "Roboto",
-                      }}
-                    >
-                      <FavoriteBorderOutlinedIcon />
-                      My Wishlist
-                    </MenuItem>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </>
-                ) : (
                   <>
                     <MenuItem
                       sx={{
@@ -234,4 +194,3 @@ const Header = () => {
 };
 
 export default Header;
-
