@@ -18,11 +18,12 @@ const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let nav = useNavigate();
   let search;
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userDetails = useSelector((state) => state.user.userDetails);
-  const customerDetails = useSelector((state) => state.user.customerDetails); 
+  const customerDetails = useSelector((state) => state.user.customerDetails);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -71,6 +72,7 @@ const Header = () => {
             const value = e.currentTarget.value
             clearTimeout(search);
             search = setTimeout(() => {dispatch(setValue(/^[a-zA-Z0-9]+$/.test(value) ? value : "")); dispatch(setPage(1))}, 750);
+            nav("/");
             }}/>
         </div>
       <div className="user-actions">
