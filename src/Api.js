@@ -36,8 +36,8 @@ export const fetchUserDataApiCall = async (END_POINT = "users") => {
   });
 };
 
-export const updateUserDataApiCall = async (END_POINT = "users", payload) => {
-  return await axios.put(`${BASE_URL}${END_POINT}`, payload, {
+export const updateUserDataApiCall = async (payload) => {
+  return await axios.put(`http://localhost:7000/api/v1/users`, payload, {
     headers: {
       Authorization: getAuth(),
     },

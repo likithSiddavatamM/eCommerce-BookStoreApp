@@ -64,6 +64,7 @@ const LoginSignup = ({ onClose }) => {
      const {data}=result
      console.log(result);
      localStorage.setItem('accessToken',data.data.accessToken)
+     dispatch(login())
      console.log(data.data.accessToken);
      toast.success("Login Successfully !!", {
       position: "bottom-center",

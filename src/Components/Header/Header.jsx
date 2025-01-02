@@ -10,7 +10,6 @@ import { Box, Avatar, Menu, MenuItem } from "@mui/material";
 import "./Header.scss";
 import a from "../../Assets/education.svg";
 import LoginSignup from "../LoginSignup/LoginSignup";
-import { fetchUserDataApiCall } from "../../Api";
 import { setValue, setPage } from "../../App/BookContainerSlice";
 
 const Header = () => {
@@ -52,15 +51,9 @@ const Header = () => {
 
 
   const handleUserProfile = async () => {
-      navigate("/userprofile")}
-  const handleUserData = async () => {
-    try {
-      const userData = await fetchUserDataApiCall();
-      console.log("User Data:", userData);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
+      navigate("/userprofile")
+  }
+
   const handleCartClick = () => {
     navigate("/cart");
   };
