@@ -10,7 +10,6 @@ import { Box, Avatar, Menu, MenuItem } from "@mui/material";
 import "./Header.scss";
 import a from "../../Assets/education.svg";
 import LoginSignup from "../LoginSignup/LoginSignup";
-import { fetchUserDataApiCall } from "../../Api";
 import { setValue, setPage } from "../../App/BookContainerSlice";
 
 const Header = () => {
@@ -18,11 +17,12 @@ const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let nav = useNavigate();
   let search;
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userDetails = useSelector((state) => state.user.userDetails);
-  const customerDetails = useSelector((state) => state.user.customerDetails); 
+  const customerDetails = useSelector((state) => state.user.customerDetails);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -50,18 +50,11 @@ const Header = () => {
     dispatch(logout());
     handleMenuClose();
   };
-  const handleUserData = async () => {
-    try {
-      const userData = await fetchUserDataApiCall('users');
-      console.log("User Data:", userData);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-  const handleMenuItemClick = (action) => {
-    action(); 
-    handleMenuClose(); 
-  };
+
+
+  const handleUserProfile = async () => {
+      navigate("/userprofile")
+  }
 
   const handleCartClick = () => {
     navigate("/cart");
@@ -78,6 +71,7 @@ const Header = () => {
             const value = e.currentTarget.value
             clearTimeout(search);
             search = setTimeout(() => {dispatch(setValue(/^[a-zA-Z0-9]+$/.test(value) ? value : "")); dispatch(setPage(1))}, 750);
+            nav("/");
             }}/>
         </div>
       <div className="user-actions">
@@ -99,7 +93,7 @@ const Header = () => {
             >
               {isAuthenticated ? (
                 <>
-                  <MenuItem onClick={handleUserData}>
+                  <MenuItem onClick={handleUserProfile}>
                     Profile
                   </MenuItem>
                   <MenuItem
@@ -203,7 +197,6 @@ const Header = () => {
         </div>
       </header>
     </>
-  );
-};
-
+   );
+}
 export default Header;
