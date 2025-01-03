@@ -28,6 +28,7 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await loginApiCall(credentials);
+      console.log(response.data.data)
       return response.data.data; 
     } catch (error) {
       if (error.response?.status === 401) {

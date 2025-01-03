@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {ShoppingBag } from 'lucide-react';
+import LoginSignup from "../LoginSignup/LoginSignup";
 import "./OrderHistory.scss";
 
 const OrderHistory = () => {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
   
@@ -24,14 +27,27 @@ const OrderHistory = () => {
     }
   }, [status, error]);
 
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   if (!isAuthenticated) {
     return (
-      <div className="order-history">
-        <p>Please log in to view your orders.</p>
-        <button onClick={() => navigate("/login")} className="login-button">
-          Login
-        </button>
-      </div>
+      <div className="order-empty">
+      <ShoppingBag size={64} className="order-empty-icon" />
+      <h2>Please login</h2>
+      <p>Login to view ordered items.</p>
+      <button className="login-books-btn" onClick={toggleModal}>
+        Login
+      </button>
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <LoginSignup onClose={toggleModal} />
+          </div>
+        </div>
+      )}
+    </div>
     );
   }
 
@@ -50,7 +66,6 @@ const OrderHistory = () => {
   return (
     <div className="order-history">
       <main>
-        <div className="breadcrumb">Home / My Orders</div>
         <div className="orders">
           {orders.map((order) => (
             <div key={order._id} className="order-card">

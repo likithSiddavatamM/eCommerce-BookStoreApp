@@ -1,21 +1,55 @@
+.order-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  min-height: 400px;
+  background: #fff;
+  margin: 20px auto;
+  max-width: 800px;
+
+  .order-empty-icon {
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 0 0 12px 0;
+  }
+
+  p {
+    color: #666;
+    margin: 0 0 24px 0;
+  }
+
+  .login-books-btn {
+    background: #3371B5;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #285f9f;
+    }
+  }
+}
 .order-history {
   font-family: 'Roboto', sans-serif;
   color: #333;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-
-  .breadcrumb {
-    padding: 1em 5%; /* Added padding for visibility */
-    background-color: #f5f5f5;
-    font-size: 0.75em;
-    margin-bottom: 1em; /* Added margin to separate from order cards */
-    color: #333; /* Ensuring breadcrumb is visible */
-  }
-
   .orders {
     flex: 1;
-    padding: 1em 5%;
+    padding: 2em 5%;
 
     .order-card {
       display: flex;
@@ -24,8 +58,7 @@
       padding: 0.75em;
       border: 0.0625em solid #ddd;
       border-radius: 0.5em;
-      margin-bottom: 1.5em; /* Increased margin between order cards */
-
+      margin-bottom: 1.5em; 
       .order-item {
         display: flex;
         justify-content: space-between;
@@ -146,7 +179,7 @@
       }
     }
   }
-
+  
   @media (max-width: 480px) {
     .orders {
       .order-card {

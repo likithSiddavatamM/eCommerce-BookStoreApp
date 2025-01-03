@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../App/AuthSlice";
-import { fetchUserDetails, fetchCustomerDetails,fetchOrders } from "../../App/UserSlice";
+import { fetchUserDetails, fetchCustomerDetails,fetchOrders ,logout } from "../../App/UserSlice";
 import { ShoppingCart } from "lucide-react";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -46,7 +45,6 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
     dispatch(logout());
     handleMenuClose();
   };
@@ -54,7 +52,13 @@ const Header = () => {
 
   const handleUserProfile = async () => {
       navigate("/userprofile")
+      handleMenuClose();
   }
+
+  const handleMenuItemClick = (action) => {
+    action(); 
+    handleMenuClose(); 
+  };
 
   const handleCartClick = () => {
     navigate("/cart");
@@ -97,7 +101,7 @@ const Header = () => {
                     Profile
                   </MenuItem>
                   <MenuItem
-                    onClick={() => navigate("/orders")}
+                    onClick={() => handleMenuItemClick(() => navigate("/orders"))}
                     sx={{
                       display: "flex",
                       alignItems: "center",
@@ -109,7 +113,7 @@ const Header = () => {
                     My Orders
                   </MenuItem>
                   <MenuItem
-                    onClick={() => navigate("/wishlist")}
+                    onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
                     sx={{
                       display: "flex",
                       alignItems: "center",
@@ -146,8 +150,6 @@ const Header = () => {
                       >
                         Login/Signup
                       </button>
-                    
-
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -157,7 +159,7 @@ const Header = () => {
       )}
       </MenuItem>
                     <MenuItem
-                      onClick={() => navigate("/orders")}
+                       onClick={() => handleMenuItemClick(() => navigate("/orders"))}
                       sx={{
                         display: "flex",
                         alignItems: "center",
@@ -169,7 +171,7 @@ const Header = () => {
                       My Orders
                     </MenuItem>
                     <MenuItem
-                      onClick={() => navigate("/wishlist")}
+                       onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
                       sx={{
                         display: "flex",
                         alignItems: "center",
