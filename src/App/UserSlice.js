@@ -82,6 +82,7 @@ const userSlice = createSlice({
     customerDetails: [],
     orders: [],
     status: 'idle',
+    isAuthenticated: false,
     error: null,
   },
   reducers: {
@@ -89,6 +90,7 @@ const userSlice = createSlice({
       state.userDetails = null;
       state.accessToken = null;
       state.customerDetails = [];
+      state.isAuthenticated = false; 
       localStorage.removeItem('accessToken');
     },
   },
@@ -96,7 +98,8 @@ const userSlice = createSlice({
     builder
       // Register User
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.userDetails = action.payload.user; 
+        state.userDetails = action.payload.user;
+        state.isAuthenticated = true; 
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -107,6 +110,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.userDetails = action.payload.user;
         state.accessToken = action.payload.accessToken;
+        state.isAuthenticated = true;
         localStorage.setItem('accessToken', action.payload.accessToken);
         state.error = null;
       })
@@ -117,6 +121,7 @@ const userSlice = createSlice({
       // Fetch User Details
       .addCase(fetchUserDetails.fulfilled, (state, action) => {
         state.userDetails = action.payload;
+        state.isAuthenticated = true;
         state.error = null;
       })
       .addCase(fetchUserDetails.rejected, (state, action) => {
@@ -126,6 +131,7 @@ const userSlice = createSlice({
       // Fetch Customer Details
       .addCase(fetchCustomerDetails.fulfilled, (state, action) => {
         state.customerDetails = action.payload;
+        state.isAuthenticated = true;
         state.error = null;
       })
       .addCase(fetchCustomerDetails.rejected, (state, action) => {
@@ -139,6 +145,7 @@ const userSlice = createSlice({
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.orders = action.payload; 
         state.status = 'succeeded';
+        state.isAuthenticated = true;
         state.error = null;
       })
       .addCase(fetchOrders.rejected, (state, action) => {

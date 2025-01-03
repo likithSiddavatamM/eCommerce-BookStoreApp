@@ -19,7 +19,7 @@ const Header = () => {
   let nav = useNavigate();
   let search;
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const userDetails = useSelector((state) => state.user.userDetails);
   const customerDetails = useSelector((state) => state.user.customerDetails);
 
