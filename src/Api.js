@@ -117,14 +117,18 @@ export const createCustomerApiCall = async (payload) => {
 
 export const addToCartApi = async (bookId) => {
     try {
-        const response = await axios.post(`${BASE_URL}cart`, { bookId }, {
-            headers: {
-                Authorization: getAuth()
+        const response = await axios.post(
+            `${BASE_URL}cart/${bookId}`, 
+            {}, 
+            {
+                headers: {
+                    Authorization: getAuth(), 
+                },
             }
-        });
+        );
         return response.data;
     } catch (error) {
-        console.error("Error adding to cart:", error);
+        console.error("Error adding to cart:", error?.response?.data || error.message);
         throw error;
     }
 
@@ -146,14 +150,18 @@ export const removeFromCartApi = async (bookId) => {
 
 export const updateCartQuantityApi = async (bookId, quantity) => {
     try {
-        const response = await axios.put(`${BASE_URL}cart`, { bookId, quantity }, {
-            headers: {
-                Authorization: getAuth()
+        const response = await axios.put(
+            `${BASE_URL}cart/${bookId}`, 
+            { quantity }, 
+            {
+                headers: {
+                    Authorization: getAuth(),
+                },
             }
-        });
+        );
         return response.data;
     } catch (error) {
-        console.error("Error updating cart quantity:", error);
+        console.error("Error updating cart quantity:", error?.response?.data || error.message);
         throw error;
     }
 };

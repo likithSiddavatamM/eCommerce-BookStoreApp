@@ -4,6 +4,7 @@
     margin: 0 auto;
     position: relative;
     top:3em;
+    min-height: 90vh;
   
     &__container {
       margin: 0em 10em;
@@ -198,6 +199,63 @@
       &:focus {
         outline: none;
         border-color: #4a90e2;
+      }
+    }
+
+    &__submit-button {
+      padding: 0.5rem 1rem;
+      background-color: #33a0cb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 6em;
+
+      &:hover {
+        background-color: rgb(28, 171, 206);
+      }
+    }
+
+    .book-details__reviews {
+      .book-details__review {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #ddd;
+
+        &-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+
+          .book-details__review-author {
+            font-weight: bold;
+            font-size: 1rem;
+          }
+
+          .book-details__review-stars {
+            display: flex;
+            gap: 0.2rem;
+
+            .book-details__star-filled {
+              font-size: 1rem;
+              color: #ffd700;
+            }
+
+            .book-details__star-empty {
+              font-size: 1rem;
+              color: #ccc;
+            }
+          }
+        }
+
+        .book-details__review-text {
+          font-size: 0.95rem;
+          color: #555;
+          line-height: 1.5;
+        }
       }
     }
   }
