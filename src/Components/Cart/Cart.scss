@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 20px;
   background-color: #fff;
+  padding-top: 1em;
+  min-height: 92vh;
 }
 
 .cart-header {
@@ -228,7 +230,8 @@
   background: #fff;
   margin: 20px auto;
   max-width: 800px;
-
+  padding-top: 1em;
+  min-height: 90vh;
   .cart-empty-icon {
     color: #666;
     margin-bottom: 20px;

@@ -65,7 +65,7 @@ const BookDetails = () => {
     setQuantity(1);
     setShowQuantitySelector(true);
   };
-
+  
   const handleQuantityChange = async (newQuantity) => {
     if (newQuantity === 0) {
       setShowQuantitySelector(false);
@@ -166,22 +166,56 @@ const BookDetails = () => {
 
           <div className="book-details__feedback">
             <h2 className="book-details__section-title">Customer Feedback</h2>
-            <div className="book-details__rating-input">
-              <p className="book-details__rating-label">Overall rating</p>
-              <div className="book-details__stars">
-                {[1, 2, 3, 4, 5].map((rating) => (
+              <div className="book-details__rating-input">
+                 <p className="book-details__rating-label">Overall rating</p>
+                  <div className="book-details__stars">
+                  {[1, 2, 3, 4, 5].map((rating) => (
                   <button key={rating} className="book-details__star-button">
                     <FaRegStar className="book-details__star-empty" />
                   </button>
-                ))}
-              </div>
-              <textarea
-                placeholder="Write your review"
-                className="book-details__review-input"
-                readOnly
-              />
-            </div>
+            ))}
           </div>
+      <textarea
+      placeholder="Write your review"
+      className="book-details__review-input"
+      readOnly
+      />
+    <button className="book-details__submit-button">Submit</button>
+    <br></br>
+  </div>
+  <div className="book-details__reviews">
+    <div className="book-details__review">
+      <div className="book-details__review-header">
+        <span className="book-details__review-author">Aniket Chile</span>
+        <div className="book-details__review-stars">
+          {[1, 2, 3].map((rating) => (
+            <FaRegStar key={rating} className="book-details__star-filled" />
+          ))}
+          {[1, 2].map((rating) => (
+            <FaRegStar key={rating} className="book-details__star-empty" />
+          ))}
+        </div>
+      </div>
+      <p className="book-details__review-text">
+        Good product. Even though the translation could have been better, Chanakya’s neeti are thought-provoking. Chanakya has written on many different topics and his writings are succinct.
+      </p>
+    </div>
+    <div className="book-details__review">
+      <div className="book-details__review-header">
+        <span className="book-details__review-author">Shweta Bodkar</span>
+        <div className="book-details__review-stars">
+          {[1, 2, 3, 4].map((rating) => (
+            <FaRegStar key={rating} className="book-details__star-filled" />
+          ))}
+          <FaRegStar className="book-details__star-empty" />
+        </div>
+      </div>
+      <p className="book-details__review-text">
+        Good product. Even though the translation could have been better, Chanakya’s neeti are thought-provoking. Chanakya has written on many different topics and his writings are succinct.
+      </p>
+     </div>
+     </div>
+      </div>
         </div>
       </div>
     </div>
