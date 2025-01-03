@@ -3,9 +3,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import logo from "../../Assets/2766594.png";
 import "./LoginSignup.scss";
-import { loginApiCall } from '../../Api';
-import { signupApiCall } from '../../Api';
-import { useDispatch } from "react-redux";
+import { loginUser, registerUser } from "../../App/UserSlice";
+import { useDispatch , useSelector} from "react-redux";
 import { login } from "../../App/AuthSlice";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,10 +29,11 @@ const LoginSignup = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const { error } = useSelector((state) => state.user);
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
@@ -41,7 +41,6 @@ const LoginSignup = ({ onClose }) => {
     setPassword("");
     setFirstName("");
     setLastName("");
-    setError("");
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -49,113 +48,56 @@ const LoginSignup = ({ onClose }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      toast.error("Please enter a valid email address.", { theme: "colored" });
       return;
     }
     if (password.trim() === "") {
-      setError("Password cannot be empty.");
+      toast.error("Password cannot be empty.", { theme: "colored" });
       return;
     }
 
-    loginApiCall({email,password})
-     
-    .then((result)=>{
-
-     const {data}=result
-     console.log(result);
-     localStorage.setItem('accessToken',data.data.accessToken)
-     dispatch(login())
-     console.log(data.data.accessToken);
-     toast.success("Login Successfully !!", {
-      position: "bottom-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
+    dispatch(loginUser({ email, password }))
+    .unwrap()
+    .then(() => {
+      dispatch(login())
+      toast.success("Login Successful!", { theme: "colored" });
+      onClose();
+    })
+    .catch((err) => {
+      toast.error(err || "Login failed.", { theme: "colored" });
     });
-    setTimeout(() => {
-      onClose()
-  }, 2000); 
-
-  console.log(data.message)
-  console.log(data.user)
-   
-    })
-    .catch((error)=>{
-        console.log(error)
-        toast.error(error.message, {
-          position: "bottom-center",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-        });
-    })
-    setError("");
-  };
+};
+ 
 
   const handleSignup = (e) => {
     e.preventDefault();
     if (firstName.trim() === "") {
-      setError("First Name cannot be empty.");
+      toast.error("Firstname fields cannot be empty.", { theme: "colored" });
       return;
     }
     if (lastName.trim() === "") {
-      setError("Last Name cannot be empty.");
+      toast.error("Lastname fields cannot be empty.", { theme: "colored" });
       return;
     }
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      toast.error("Please enter a valid email address.", { theme: "colored" });
       return;
     }
     if (password.trim() === "") {
-      setError("Password cannot be empty.");
+      toast.error("Password cannot be empty.", { theme: "colored" });
       return;
     }
     
-    signupApiCall({firstName,lastName,email,password})
-    .then((result)=>{ 
-    const {data}=result
-        if(data.message==="User registered successfully"){
-            toast.success("User Successfully Created!!", {
-                position: "bottom-center",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              });
-        }
+    dispatch(registerUser({ firstName, lastName, email, password }))
+    .unwrap()
+    .then(() => {
+      toast.success("User registered successfully!", { theme: "colored" });
+      handleToggle(); 
     })
-    .catch((error)=>{
-    console.log(error)
-    if(error.message==="Request failed with status code 400"){}
-    toast.error("User already existed", {
-        position: "bottom-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-    })
-
-    setError("");
-  };
+    .catch((err) => {
+      toast.error(err || "Signup failed.", { theme: "colored" });
+    });
+};
 
   return (
     <div>

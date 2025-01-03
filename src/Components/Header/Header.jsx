@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../App/AuthSlice";
-import { fetchUserDetails, fetchCustomerDetails } from "../../App/UserSlice";
+import { fetchUserDetails, fetchCustomerDetails,fetchOrders ,logout } from "../../App/UserSlice";
 import { ShoppingCart } from "lucide-react";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -28,6 +27,7 @@ const Header = () => {
     if (isAuthenticated) {
       dispatch(fetchUserDetails());
       dispatch(fetchCustomerDetails());
+      dispatch(fetchOrders());
     }
   }, [isAuthenticated, dispatch]);
   const cartItems = useSelector((state) => state.cart.items);
@@ -45,14 +45,20 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
     dispatch(logout());
+    handleMenuClose();
   };
 
 
   const handleUserProfile = async () => {
       navigate("/userprofile")
+      handleMenuClose();
   }
+
+  const handleMenuItemClick = (action) => {
+    action(); 
+    handleMenuClose(); 
+  };
 
   const handleCartClick = () => {
     navigate("/cart");
@@ -76,12 +82,12 @@ const Header = () => {
         <div className="icon">
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Avatar
-              alt={userDetails?.name || "User Profile"}
-              src={userDetails?.avatar || ""}
+              alt={userDetails?.firstName || "Profile"}
+              src={userDetails?.profilePicture || ""}
               sx={{ width: 30, height: 30, cursor: "pointer" }}
               onClick={handleMenuOpen}
             />
-            <span className="label">Profile</span>
+            <span className="label">{userDetails?.firstName || "Profile"}</span>
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -95,7 +101,7 @@ const Header = () => {
                     Profile
                   </MenuItem>
                   <MenuItem
-                    onClick={() => navigate("/orders")}
+                    onClick={() => handleMenuItemClick(() => navigate("/orders"))}
                     sx={{
                       display: "flex",
                       alignItems: "center",
@@ -107,7 +113,7 @@ const Header = () => {
                     My Orders
                   </MenuItem>
                   <MenuItem
-                    onClick={() => navigate("/wishlist")}
+                    onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
                     sx={{
                       display: "flex",
                       alignItems: "center",
@@ -144,8 +150,6 @@ const Header = () => {
                       >
                         Login/Signup
                       </button>
-                    
-
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -155,7 +159,7 @@ const Header = () => {
       )}
       </MenuItem>
                     <MenuItem
-                      onClick={() => navigate("/orders")}
+                       onClick={() => handleMenuItemClick(() => navigate("/orders"))}
                       sx={{
                         display: "flex",
                         alignItems: "center",
@@ -167,7 +171,7 @@ const Header = () => {
                       My Orders
                     </MenuItem>
                     <MenuItem
-                      onClick={() => navigate("/wishlist")}
+                       onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
                       sx={{
                         display: "flex",
                         alignItems: "center",
