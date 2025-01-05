@@ -4,7 +4,7 @@ import { updateQuantity, setQuantity } from '../../App/CartSlice';
 import { updateCartQuantityApi } from '../../Api';
 import './QuantitySelector.scss';
 
-const QuantitySelector = ({ small = false, id, handleQuantityChange }) => {
+const QuantitySelector = ({ small = false, id }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const totalBookQuantity = useSelector((state) => state.cart.totalBookQuantity);
@@ -20,9 +20,6 @@ const QuantitySelector = ({ small = false, id, handleQuantityChange }) => {
   const handleDecrease = () => {
     if (quantity > 1) {
       updateQuantityHandler(quantity - 1);
-    } else if (quantity === 1) {
-      // Optionally handle removal when quantity reaches 0
-      updateQuantityHandler(0);
     }
   };
 
@@ -42,24 +39,16 @@ const QuantitySelector = ({ small = false, id, handleQuantityChange }) => {
         await updateCartQuantityApi(id, quantityDifference); // Sync with server
       } catch (error) {
         console.error('Error updating cart quantity:', error);
-        // Optionally revert the quantity in case of error
-        dispatch(setQuantity({ bookId: id, quantity }));
-        dispatch(updateQuantity({ id, quantity }));
       }
-    }
-
-    // Notify parent component (BookDetails) about the change
-    if (handleQuantityChange) {
-      handleQuantityChange(id, newQuantity);
     }
   };
 
   return (
     <div className={`quantity-selector ${small ? 'small' : ''}`}>
       <button
-        className={`btn ${quantity <= 0 ? 'disabled' : ''}`}
+        className={`btn ${quantity === 1 ? 'disabled' : ''}`}
         onClick={handleDecrease}
-        disabled={quantity <= 0}
+        disabled={quantity === 1}
       >
         -
       </button>
@@ -69,7 +58,7 @@ const QuantitySelector = ({ small = false, id, handleQuantityChange }) => {
         value={quantity}
         readOnly
       />
-      <button
+      <button 
         className={`btn ${quantity >= totalBookQuantity[id] ? 'disabled' : ''}`}
         onClick={handleIncrease}
         disabled={quantity >= totalBookQuantity[id]}

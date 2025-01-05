@@ -32,33 +32,35 @@ export default function Cart() {
       if (isAuthenticated) {
         try {
           console.log("Syncing cart...");
-          
-          // Fetch backend cart
+  
+          // Fetch backend cart after login
           const backendCart = await getCartItemsApi();
           const backendItems = backendCart.data.books || [];
           console.log("Backend cart items:", backendItems);
   
-          // Get local cart
+          // Get the local cart (from localStorage)
           const localCart = JSON.parse(localStorage.getItem('cart')) || { items: [] };
           console.log("Local cart items:", localCart.items);
   
-          // Sync local cart to backend
+          // Sync the cart items from the frontend (local cart) to the backend
           for (const localItem of localCart.items) {
             const backendItem = backendItems.find(item => item._id === localItem._id);
   
             if (backendItem) {
-              const totalQuantity = localItem.quantity + backendItem.quantity;
-              await updateCartQuantityApi(localItem._id, totalQuantity);
+              // If the book is already in the backend and the frontend, do nothing and keep frontend quantity
+              console.log(`Keeping frontend quantity for ${localItem.bookName}`);
             } else {
+              // If the item is not in the backend, add it to the backend
+              console.log(`Adding ${localItem.bookName} to the backend`);
               await addToCartApi(localItem._id);
             }
           }
   
-          // Re-fetch the backend cart to ensure data consistency
+          // After syncing the local cart to the backend, fetch the updated backend cart
           const updatedBackendCart = await getCartItemsApi();
           console.log("Updated backend cart:", updatedBackendCart);
   
-          // Update Redux store with the latest backend data
+          // Update Redux store with the updated backend cart and keep the frontend quantity intact
           dispatch(
             setCartData({
               items: updatedBackendCart.data.books || [],
@@ -78,9 +80,17 @@ export default function Cart() {
   
 
   // Handle quantity change
-  const handleQuantityChange = (id, newQuantity) => {
+  const handleQuantityChange = async (id, newQuantity) => {
     if (newQuantity >= 1) {
+      // Update Redux state first
       dispatch(updateQuantity({ id, quantity: newQuantity }));
+
+      // Then update the quantity in the backend
+      try {
+        await updateCartQuantityApi(id, newQuantity);
+      } catch (error) {
+        console.error("Error updating cart quantity:", error);
+      }
     }
   };
 
