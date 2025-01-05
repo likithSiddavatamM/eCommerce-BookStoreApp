@@ -127,7 +127,7 @@ export const addToCartApi = async (bookId) => {
 
 export const removeFromCartApi = async (bookId) => {
     try {
-        const response = await axios.delete(`${BASE_URL}cart/remove/${bookId}`, {
+        const response = await axios.delete(`${BASE_URL}cart/${bookId}`, {
             headers: {
                 Authorization: getAuth()
             }
@@ -182,3 +182,10 @@ export const searchedBooks = async(page, text) => {
 
 }
 
+export const syncCartWithBackend = async (payload) => {
+  return await axios.post(`http://localhost:7000/api/v1/cart/sync`, payload, {
+    headers: {
+      Authorization: getAuth(), // Ensure getAuth() returns "Bearer <token>"
+    },
+  });
+};

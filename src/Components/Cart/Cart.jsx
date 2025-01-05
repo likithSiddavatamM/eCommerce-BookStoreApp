@@ -1,32 +1,102 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MapPin, ChevronDown, ShoppingBag } from 'lucide-react';
-import { removeFromCart, updateQuantity } from '../../App/CartSlice';
+import { removeFromCart, updateQuantity, setCartData } from '../../App/CartSlice';
 import { useNavigate } from 'react-router-dom';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
 import './Cart.scss';
 import LoginSignup from '../LoginSignup/LoginSignup';
+import {
+  getCartItemsApi,
+  addToCartApi,
+  removeFromCartApi,
+  updateCartQuantityApi
+} from '../../Api';
 
 export default function Cart() {
   const [showAddress, setShowAddress] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
-  const [showLoginSignup, setShowLoginSignup] = useState(false); 
+  const [showLoginSignup, setShowLoginSignup] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Redux state selectors
   const cartItems = useSelector((state) => state.cart.items);
   const totalBookQuantity = useSelector((state) => state.cart.totalBookQuantity);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // Handle quantity change in the cart
+  // Sync cart data with backend after login
+  useEffect(() => {
+    const syncCart = async () => {
+      if (isAuthenticated) {
+        try {
+          console.log("Syncing cart...");
+          
+          // Fetch backend cart
+          const backendCart = await getCartItemsApi();
+          const backendItems = backendCart.data.books || [];
+          console.log("Backend cart items:", backendItems);
+  
+          // Get local cart
+          const localCart = JSON.parse(localStorage.getItem('cart')) || { items: [] };
+          console.log("Local cart items:", localCart.items);
+  
+          // Sync local cart to backend
+          for (const localItem of localCart.items) {
+            const backendItem = backendItems.find(item => item._id === localItem._id);
+  
+            if (backendItem) {
+              const totalQuantity = localItem.quantity + backendItem.quantity;
+              await updateCartQuantityApi(localItem._id, totalQuantity);
+            } else {
+              await addToCartApi(localItem._id);
+            }
+          }
+  
+          // Re-fetch the backend cart to ensure data consistency
+          const updatedBackendCart = await getCartItemsApi();
+          console.log("Updated backend cart:", updatedBackendCart);
+  
+          // Update Redux store with the latest backend data
+          dispatch(
+            setCartData({
+              items: updatedBackendCart.data.books || [],
+              totalBookQuantity: updatedBackendCart.totalBookQuantity || 0,
+            })
+          );
+  
+          console.log("Cart sync complete.");
+        } catch (error) {
+          console.error("Error syncing cart:", error);
+        }
+      }
+    };
+  
+    syncCart();
+  }, [isAuthenticated, dispatch]);
+  
+
+  // Handle quantity change
   const handleQuantityChange = (id, newQuantity) => {
-    if (newQuantity >= 1 && newQuantity <= totalBookQuantity[id]) {
+    if (newQuantity >= 1) {
       dispatch(updateQuantity({ id, quantity: newQuantity }));
     }
   };
 
-  const handleRemoveItem = (id) => {
-    dispatch(removeFromCart(id));
+  // Handle item removal
+  const handleRemoveItem = async (id) => {
+    try {
+      if (isAuthenticated) {
+        await removeFromCartApi(id);
+      }
+      dispatch(removeFromCart(id));
+    } catch (error) {
+      console.error('Error removing item:', error);
+    }
   };
 
+  // Render empty cart message
   if (cartItems.length === 0) {
     return (
       <div className="cart-empty">
@@ -40,8 +110,10 @@ export default function Cart() {
     );
   }
 
+  // Main cart component
   return (
     <div className="cart-page">
+      {/* Header Section */}
       <div className="cart-header">
         <h1>My cart ({cartItems.length})</h1>
         <div className="location-selector">
@@ -54,6 +126,7 @@ export default function Cart() {
         </div>
       </div>
 
+      {/* Cart Items */}
       <div className="cart-content">
         {cartItems.map((item) => (
           <div key={item._id} className="cart-item">
@@ -83,14 +156,16 @@ export default function Cart() {
           </div>
         ))}
 
-        <button className="place-order-btn" onClick={() => setShowLoginSignup(true)}>
+        {/* Place Order Button */}
+        <button
+          className="place-order-btn"
+          onClick={() => setShowLoginSignup(true)}
+        >
           PLACE ORDER
         </button>
+        {showLoginSignup && <LoginSignup onClose={() => setShowLoginSignup(false)} />}
 
-        {showLoginSignup && (
-          <LoginSignup onClose={() => setShowLoginSignup(false)} />
-        )}
-
+        {/* Additional Sections: Address and Summary */}
         <div className="cart-sections">
           <div
             className={`section-header ${showAddress ? 'active' : ''}`}
@@ -99,11 +174,7 @@ export default function Cart() {
             <h2>Address Details</h2>
             <ChevronDown className="section-icon" size={16} />
           </div>
-          {showAddress && (
-            <div className="section-content">
-              {/* Address form will be added here */}
-            </div>
-          )}
+          {showAddress && <div className="section-content">{/* Address Form */}</div>}
 
           <div
             className={`section-header ${showSummary ? 'active' : ''}`}
@@ -112,11 +183,7 @@ export default function Cart() {
             <h2>Order summary</h2>
             <ChevronDown className="section-icon" size={16} />
           </div>
-          {showSummary && (
-            <div className="section-content">
-              {/* Order summary will be added here */}
-            </div>
-          )}
+          {showSummary && <div className="section-content">{/* Order Summary */}</div>}
         </div>
       </div>
     </div>
