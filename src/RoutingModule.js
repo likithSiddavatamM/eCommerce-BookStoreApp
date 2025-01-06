@@ -12,6 +12,8 @@ import Cart from "./Components/Cart/Cart";
 import Footer from "./Components/Footer/Footer";
 import Path_Sort from "./Components/Path_Sort/Path_Sort";
 import Wishlist from "./Components/Wishlist/Wishlist";
+import ResetPassword from "./Components/ResetPassword/ResetPassword";
+import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 
 
 function Routing(){
@@ -58,7 +60,15 @@ function Routing(){
                   {
                   path: '/wishlist',
                   element: <Wishlist/>  
-                }
+                },
+                {
+                    path: '/forgotpassword', 
+                    element: <ForgotPassword />,
+                  },
+                    {
+                    path: '/resetpassword',
+                    element: <ResetPassword />  
+                  }
 
             ]
         }

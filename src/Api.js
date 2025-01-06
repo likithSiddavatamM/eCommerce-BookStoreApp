@@ -2,7 +2,6 @@ import axios from "axios";
 
 const BASE_URL = `http://localhost:7000/api/v1/`;
 
-
 // Helper function to get the Authorization header
 const getAuth = () => {
   return `Bearer ${localStorage.getItem('accessToken')}`;
@@ -181,3 +180,72 @@ export const searchedBooks = async(page, text) => {
 
 }
 
+    // Add to wishlist API
+    export const addToWishlistApi = async (bookId) => {
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) throw new Error('Not authenticated');
+    
+      const response = await fetch(`http://localhost:7000/api/v1/wishlist/${bookId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    
+      if (!response.ok) {
+        throw new Error('Failed to add to wishlist');
+      }
+    
+      const data = await response.json();
+      return data;
+    };
+    
+
+    // Forgot Password API
+    export const forgotpassword = async (email) => {
+        try {
+      const response = await fetch(`${BASE_URL}users/forgotpassword`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Failed to Send Email");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    throw error;
+  }
+};
+
+    // Reset Password API
+  export const resetpassword = async (password, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}users/resetpassword`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ password }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Failed to Reset Password");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    throw error;
+  }
+};
