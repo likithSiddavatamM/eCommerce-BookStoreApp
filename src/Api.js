@@ -166,7 +166,7 @@ export const getCartItemsApi = async () => {
                 Authorization: getAuth()
             }
         });
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error fetching cart items:", error);
         throw error;

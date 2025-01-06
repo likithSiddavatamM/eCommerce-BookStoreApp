@@ -8,7 +8,7 @@ const QuantitySelector = ({ small = false, id }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const totalBookQuantity = useSelector((state) => state.cart.totalBookQuantity);
-  const quantity = useSelector((state) => state.cart.quantities[id] || 0);
+  const quantity = useSelector((state) => state.cart.quantities[id]);
 
   useEffect(() => {
     // Initialize quantity in Redux store if it doesn't exist
@@ -70,3 +70,4 @@ const QuantitySelector = ({ small = false, id }) => {
 };
 
 export default QuantitySelector;
+

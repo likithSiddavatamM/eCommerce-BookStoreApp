@@ -23,7 +23,6 @@ const Header = () => {
   const userDetails = useSelector((state) => state.user.userDetails);
   const customerDetails = useSelector((state) => state.user.customerDetails);
   const cartItems = useSelector((state) => state.cart.items  || []);
-  console.log("CartItem",cartItems); // Log the cart items to check their structure
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -191,7 +190,6 @@ const Header = () => {
           <div className="icon cart-icon" onClick={handleCartClick}>
             <div className="cart-icon-wrapper">
               <ShoppingCart className="shopping-cart-icon" />
-              {console.log(cartItems)}
               {Array.isArray(cartItems) && cartItems.length > 0 ? (
                 <span className="cart-badge">{cartItems.length}</span>
               ):null}

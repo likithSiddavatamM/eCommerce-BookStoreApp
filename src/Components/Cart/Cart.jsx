@@ -21,80 +21,64 @@ export default function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Redux state selectors
-  const cartItems = useSelector((state) => state.cart.items);
-  const totalBookQuantity = useSelector((state) => state.cart.totalBookQuantity);
+  const cartItems = useSelector((state) => state.cart);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // Sync cart data with backend after login
   useEffect(() => {
     const syncCart = async () => {
       if (isAuthenticated) {
         try {
-          console.log("Syncing cart...");
-  
-          // Fetch backend cart after login
           const backendCart = await getCartItemsApi();
-          const backendItems = backendCart.data.books || [];
-          console.log("Backend cart items:", backendItems);
-  
-          // Get the local cart (from localStorage)
-          const localCart = JSON.parse(localStorage.getItem('cart')) || { items: [] };
-          console.log("Local cart items:", localCart.items);
-  
-          // Sync the cart items from the frontend (local cart) to the backend
-          for (const localItem of localCart.items) {
-            const backendItem = backendItems.find(item => item._id === localItem._id);
-  
-            if (backendItem) {
-              // If the book is already in the backend and the frontend, do nothing and keep frontend quantity
-              console.log(`Keeping frontend quantity for ${localItem.bookName}`);
-            } else {
-              // If the item is not in the backend, add it to the backend
-              console.log(`Adding ${localItem.bookName} to the backend`);
-              await addToCartApi(localItem._id);
+          const backendItems = backendCart?.data?.data?.books || [];
+
+          const backendItemIds = backendItems.map((item) => item.bookId);
+          const itemsToAdd = cartItems.items.filter((item) => !backendItemIds.includes(item._id));
+
+          // Add items from local cart to backend if they don't exist
+          for (const item of itemsToAdd) {
+            await addToCartApi(item._id);
+            if (item.quantity > 1) {
+              await updateCartQuantityApi(item._id, item.quantity - 1);
             }
           }
-  
-          // After syncing the local cart to the backend, fetch the updated backend cart
+
+          // Now fetch updated cart items from backend
           const updatedBackendCart = await getCartItemsApi();
-          console.log("Updated backend cart:", updatedBackendCart);
-  
-          // Update Redux store with the updated backend cart and keep the frontend quantity intact
+          const updatedBooks = updatedBackendCart.data.data.books || [];
+          const quantities = updatedBooks.reduce((acc, book) => {
+            acc[book.bookId] = book.quantity;
+            return acc;
+          }, {});
+
+          // Update Redux store with backend cart data
           dispatch(
             setCartData({
-              items: updatedBackendCart.data.books || [],
-              totalBookQuantity: updatedBackendCart.totalBookQuantity || 0,
+              items: updatedBooks,
+              totalBookQuantity: updatedBackendCart.data.data.totalQuantity || 0,
+              quantities
             })
           );
-  
-          console.log("Cart sync complete.");
+
         } catch (error) {
-          console.error("Error syncing cart:", error);
+          console.error('Error syncing cart:', error);
         }
       }
     };
-  
-    syncCart();
-  }, [isAuthenticated, dispatch]);
-  
 
-  // Handle quantity change
+    syncCart();
+  }, [isAuthenticated, cartItems.items, dispatch]);
+
   const handleQuantityChange = async (id, newQuantity) => {
     if (newQuantity >= 1) {
-      // Update Redux state first
       dispatch(updateQuantity({ id, quantity: newQuantity }));
-
-      // Then update the quantity in the backend
       try {
         await updateCartQuantityApi(id, newQuantity);
       } catch (error) {
-        console.error("Error updating cart quantity:", error);
+        console.error('Error updating cart quantity:', error);
       }
     }
   };
 
-  // Handle item removal
   const handleRemoveItem = async (id) => {
     try {
       if (isAuthenticated) {
@@ -106,8 +90,15 @@ export default function Cart() {
     }
   };
 
-  // Render empty cart message
-  if (cartItems.length === 0) {
+  const handlePlaceOrder = () => {
+    if (!isAuthenticated) {
+      setShowLoginSignup(true);
+    } else {
+      // Handle place order for authenticated users
+    }
+  };
+
+  if (cartItems.items.length === 0) {
     return (
       <div className="cart-empty">
         <ShoppingBag size={64} className="cart-empty-icon" />
@@ -120,62 +111,62 @@ export default function Cart() {
     );
   }
 
-  // Main cart component
   return (
     <div className="cart-page">
-      {/* Header Section */}
-      <div className="cart-header">
-        <h1>My cart ({cartItems.length})</h1>
-        <div className="location-selector">
-          <MapPin className="location-icon" size={16} />
-          <select defaultValue="current">
-            <option value="current">Use current location</option>
-            <option value="other">Other Location</option>
-          </select>
-          <ChevronDown className="dropdown-icon" size={16} />
-        </div>
-      </div>
-
-      {/* Cart Items */}
-      <div className="cart-content">
-        {cartItems.map((item) => (
-          <div key={item._id} className="cart-item">
-            <div className="item-image">
-              <img src={item.bookImage} alt={item.bookName} />
-            </div>
-            <div className="item-details">
-              <h2>{item.bookName}</h2>
-              <p className="author">{item.author}</p>
-              <div className="price-section">
-                <span className="price">Rs. {item.discountPrice}</span>
-              </div>
-              <div className="item-actions">
-                <QuantitySelector
-                  id={item._id}
-                  small
-                  handleQuantityChange={handleQuantityChange}
-                />
-                <button
-                  className="remove-btn"
-                  onClick={() => handleRemoveItem(item._id)}
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
+      <div className="cart-container">
+        <div className="cart-header">
+          <h1>My cart ({cartItems.items?.length})</h1>
+          <div className="location-selector">
+            <MapPin className="location-icon" size={16} />
+            <select defaultValue="current">
+              <option value="current">Use current location</option>
+              <option value="other">Other Location</option>
+            </select>
+            <ChevronDown className="dropdown-icon" size={16} />
           </div>
-        ))}
+        </div>
 
-        {/* Place Order Button */}
-        <button
-          className="place-order-btn"
-          onClick={() => setShowLoginSignup(true)}
-        >
-          PLACE ORDER
-        </button>
-        {showLoginSignup && <LoginSignup onClose={() => setShowLoginSignup(false)} />}
+        <div className="cart-main">
+          <div className="cart-items-container">
+            {cartItems.items?.map((item) => (
+              <div key={item.bookId} className="cart-item">
+                <div className="item-image">
+                  <img src={item.bookImage} alt={item.bookName} />
+                </div>
+                <div className="item-details">
+                  <h2>{item.bookName}</h2>
+                  <p className="author">{item.author}</p>
+                  <div className="price-section">
+                    <span className="price">Rs. {item.discountPrice}</span>
+                    <span className="original-price">Rs. {item.price}</span>
+                  </div>
+                  <div className="item-actions">
+                    <QuantitySelector
+                      id={item.bookId}
+                      small
+                      handleQuantityChange={handleQuantityChange}
+                    />
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemoveItem(item.bookId)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="cart-actions">
+            <button
+              className="place-order-btn"
+              onClick={handlePlaceOrder}
+            >
+              PLACE ORDER
+            </button>
+          </div>
+        </div>
 
-        {/* Additional Sections: Address and Summary */}
         <div className="cart-sections">
           <div
             className={`section-header ${showAddress ? 'active' : ''}`}
@@ -196,6 +187,8 @@ export default function Cart() {
           {showSummary && <div className="section-content">{/* Order Summary */}</div>}
         </div>
       </div>
+
+      {showLoginSignup && <LoginSignup onClose={() => setShowLoginSignup(false)} />}
     </div>
   );
 }
