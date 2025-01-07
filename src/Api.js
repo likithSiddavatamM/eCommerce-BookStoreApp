@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = `http://localhost:7000/api/v1/`;
+const BASE_URL = `http://localhost:3001/api/v1/`;
 
 
 // Helper function to get the Authorization header
@@ -9,8 +9,8 @@ const getAuth = () => {
 };
 
 // Books API
-export const allBooks = async (page) => {
-  const books = await axios.get(`${BASE_URL}books/${page}`);
+export const allBooks = async (page, sort) => {
+  const books = await axios.get(`${BASE_URL}books/${page}`, {params: {sortQuery: sort}});
   return books?.data?.data;
 };
 
@@ -173,10 +173,9 @@ export const getCartItemsApi = async () => {
     }
 };
 
-export const searchedBooks = async(page, text) => {
+export const searchedBooks = async(page, text, sort) => {
 
-    const books = await axios.get(`${BASE_URL}/books/search/${page}`, {params: {searchQuery: text}})
-    console.log(books,"***")
+  const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
     return books?.data?.data;
 
 }
