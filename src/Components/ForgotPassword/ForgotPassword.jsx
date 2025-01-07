@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { forgotpassword } from '../../Api';
@@ -7,28 +8,27 @@ import './ForgotPassword.scss';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({ email: "" });
+  const [errors, setErrors] = useState({ email: '' });
   const navigate = useNavigate();
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    setErrors({ email: "" });
+    setErrors({ email: '' });
 
     if (!email.trim()) {
-      setErrors({ email: "Email is required." });
+      setErrors({ email: 'Email is required.' });
       return;
     }
 
     try {
-      await forgotpassword({ email });
+      await forgotpassword(email);
       alert(`Reset link sent to ${email}`);
       navigate('/');
     } catch (error) {
-      
       if (error.response && error.response.status === 400) {
-        setErrors({ email: "Invalid email address or user not found." });
+        setErrors({ email: 'Invalid email address or user not found.' });
       } else {
-        setErrors({ email: "Unable to process request. Please try again later." });
+        setErrors({ email: 'Unable to process request. Please try again later.' });
       }
     }
   };
@@ -46,7 +46,7 @@ export default function ForgotPassword() {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+              setErrors((prevErrors) => ({ ...prevErrors, email: '' }));
             }}
             error={!!errors.email}
             helperText={errors.email}

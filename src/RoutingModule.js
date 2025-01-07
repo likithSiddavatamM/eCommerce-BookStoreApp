@@ -61,17 +61,19 @@ function Routing(){
                   path: '/wishlist',
                   element: <Wishlist/>  
                 },
-                {
-                    path: '/forgotpassword', 
-                    element: <ForgotPassword />,
-                  },
-                    {
-                    path: '/resetpassword',
-                    element: <ResetPassword />  
-                  }
+                
 
             ]
+        },
+        {
+            path: '/forgotpassword', 
+            element: <ForgotPassword />,
+        },
+        {
+            path: '/resetpassword',
+            element: <ResetPassword />  
         }
+        
     ])
 
     return  <RouterProvider router={route}/>
