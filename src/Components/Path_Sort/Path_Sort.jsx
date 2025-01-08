@@ -30,6 +30,8 @@ export default () => {
           return " Profile";
         case "/orders":
           return " My Order";
+        case "/admin":
+          return " Admin";
         default:
           return "";
       }

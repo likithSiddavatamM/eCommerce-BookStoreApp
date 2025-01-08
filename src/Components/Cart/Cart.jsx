@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
 import './Cart.scss';
 import LoginSignup from '../LoginSignup/LoginSignup';
+import Address from '../Address/Address';
 import {
   getCartItemsApi,
   addToCartApi,
@@ -17,6 +18,9 @@ export default function Cart() {
   const [showAddress, setShowAddress] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [showLoginSignup, setShowLoginSignup] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
+  const handleQuantityChange = (id, newQuantity) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -172,7 +176,7 @@ export default function Cart() {
             className={`section-header ${showAddress ? 'active' : ''}`}
             onClick={() => setShowAddress(!showAddress)}
           >
-            <h2>Address Details</h2>
+            <h3>Address Details</h3>
             <ChevronDown className="section-icon" size={16} />
           </div>
           {showAddress && <div className="section-content">{/* Address Form */}</div>}
@@ -192,3 +196,4 @@ export default function Cart() {
     </div>
   );
 }
+
