@@ -72,7 +72,9 @@ export const removeFromCartApi = async (bookId) => {
 };
 
 export const updateCartQuantityApi = async (bookId, quantity) => {
-  const response = await axiosInstance.put(`cart`, { bookId, quantity });
+  const response = await axiosInstance.put(`cart/${bookId}`, {
+    quantityChange: quantity,
+  });
   return response.data;
 };
 
