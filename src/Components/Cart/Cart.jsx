@@ -20,7 +20,6 @@ export default function Cart() {
   const [showLoginSignup, setShowLoginSignup] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
 
-  // const handleQuantityChange = (id, newQuantity) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -103,6 +102,11 @@ export default function Cart() {
     }
   };
 
+  const handleAddressSelect = (address) => {
+    setSelectedAddress(address);
+    setShowAddress(false);
+  };
+
   if (cartItems.items.length === 0) {
     return (
       <div className="cart-empty">
@@ -121,14 +125,15 @@ export default function Cart() {
       <div className="cart-container">
         <div className="cart-header">
           <h1>My cart ({cartItems.items?.length})</h1>
-          <div className="location-selector">
-            <MapPin className="location-icon" size={16} />
-            <select defaultValue="current">
-              <option value="current">Use current location</option>
-              <option value="other">Other Location</option>
-            </select>
-            <ChevronDown className="dropdown-icon" size={16} />
-          </div>
+          <div className="location-selector" onClick={() => setShowAddress(!showAddress)}>
+          <MapPin className="location-icon" size={16} />
+          <span>
+            {selectedAddress
+              ? `${selectedAddress.address}, ${selectedAddress.city}, ${selectedAddress.state}`
+              : 'Select Address'}
+          </span>
+          <ChevronDown className="dropdown-icon" size={16} />
+        </div>
         </div>
 
         <div className="cart-main">
@@ -180,8 +185,39 @@ export default function Cart() {
             <h3>Address Details</h3>
             <ChevronDown className="section-icon" size={16} />
           </div>
-          {showAddress && <div className="section-content">{/* Address Form */}</div>}
-
+          {showAddress && (
+            <div className="section-content">
+              <Address onSelectAddress={handleAddressSelect} selectedAddress={selectedAddress} />
+            </div>
+          )}
+          <div className="section-content">
+              <h3>Selected Address</h3>
+              <div className='address-selected'>
+                <div className="address-item">
+                  {selectedAddress ? (
+                    <>
+                      <input
+                        type="radio"
+                        id={`selected-address-${selectedAddress.id}`}
+                        checked={true}
+                        onChange={() => {}}
+                      />
+                      <label htmlFor={`selected-address-${selectedAddress.id}`}>
+                        {`${selectedAddress.address}, ${selectedAddress.city}, ${selectedAddress.state}`}
+                      </label>
+                    </>
+                  ) : (
+                    <span>Select Address</span>
+                  )}
+                </div>
+                <div>
+                  <button className="place-order-btn-cnt">
+                    CONTINUE
+                  </button>
+                </div>
+              </div>
+              
+          </div>
           <div
             className={`section-header ${showSummary ? 'active' : ''}`}
             onClick={() => setShowSummary(!showSummary)}
@@ -189,7 +225,11 @@ export default function Cart() {
             <h2>Order summary</h2>
             <ChevronDown className="section-icon" size={16} />
           </div>
-          {showSummary && <div className="section-content">{/* Order Summary */}</div>}
+          {showSummary && (
+            <div className="section-content">
+              {/* Order summary will be added here */}
+            </div>
+          )}
         </div>
       </div>
 
