@@ -214,7 +214,9 @@
     .section-content {
       padding: 15px;
       border: 1px solid #E2E2E2;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
     }
   }
 }
@@ -285,3 +287,20 @@
   }
 }
 
+.place-order-btn-cnt{
+  width: 150px;
+    height: 35px;
+    background: #3371B5;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+    cursor: pointer;
+    float: right;
+
+
+    &:hover {
+      background: #285f9f;
+    }
+ 
+}
