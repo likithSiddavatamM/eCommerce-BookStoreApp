@@ -22,6 +22,8 @@ const Header = () => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userDetails = useSelector((state) => state.user.userDetails);
+  const customerDetails = useSelector((state) => state.user.customerDetails);
+  const cartItems = useSelector((state) => state.cart.items  || []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -30,7 +32,6 @@ const Header = () => {
       dispatch(fetchOrders());
     }
   }, [isAuthenticated, dispatch]);
-  const cartItems = useSelector((state) => state.cart.items);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -191,9 +192,9 @@ const Header = () => {
           <div className="icon cart-icon" onClick={handleCartClick}>
             <div className="cart-icon-wrapper">
               <ShoppingCart className="shopping-cart-icon" />
-              {cartItems.length > 0 && (
+              {Array.isArray(cartItems) && cartItems.length > 0 ? (
                 <span className="cart-badge">{cartItems.length}</span>
-              )}
+              ):null}
             </div>
             <span className="label">Cart</span>
           </div>
