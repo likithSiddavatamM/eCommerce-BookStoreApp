@@ -20,13 +20,14 @@ export default function Cart() {
   const [showLoginSignup, setShowLoginSignup] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
 
-  const handleQuantityChange = (id, newQuantity) => {
+  // const handleQuantityChange = (id, newQuantity) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  
 
   useEffect(() => {
     const syncCart = async () => {
@@ -195,5 +196,5 @@ export default function Cart() {
       {showLoginSignup && <LoginSignup onClose={() => setShowLoginSignup(false)} />}
     </div>
   );
-}
+  }
 
