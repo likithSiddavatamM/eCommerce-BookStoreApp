@@ -1,104 +1,42 @@
-// import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { updateQuantity } from '../../App/CartSlice';
-// import { updateCartQuantityApi } from '../../Api'; 
-// import './QuantitySelector.scss';
-
-// const QuantitySelector = ({ bookId, quantity, setQuantity, small = false }) => {
-//   const dispatch = useDispatch();
-//   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
-//   const handleDecrease = () => {
-//     if (quantity > 1) {
-//       const newQuantity = quantity - 1;
-//       setQuantity(newQuantity);
-//       dispatch(updateQuantity({ id: bookId, quantity: newQuantity })); 
-
-//       if (isAuthenticated) {
-//         updateCartQuantityApi(bookId, newQuantity); 
-//       }
-//     }
-//   };
-
-//   const handleIncrease = () => {
-//     const newQuantity = quantity + 1;
-//     setQuantity(newQuantity);
-//     dispatch(updateQuantity({ id: bookId, quantity: newQuantity })); 
-
-//     if (isAuthenticated) {
-//       updateCartQuantityApi(bookId, newQuantity); 
-//     }
-//   };
-
-//   return (
-//     <div className={`quantity-selector ${small ? 'small' : ''}`}>
-//       <button
-//         className={`btn ${quantity === 1 ? 'disabled' : ''}`}
-//         onClick={handleDecrease}
-//         disabled={quantity === 1}
-//       >
-//         -
-//       </button>
-//       <input
-//         type="text"
-//         className="quantity-input"
-//         value={quantity}
-//         readOnly
-//       />
-//       <button className="btn" onClick={handleIncrease}>
-//         +
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default QuantitySelector;
-
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateQuantity } from '../../App/CartSlice';
-import { updateCartQuantityApi, getBookById } from '../../Api'; 
+import { updateQuantity, setQuantity } from '../../App/CartSlice';
+import { updateCartQuantityApi } from '../../Api';
 import './QuantitySelector.scss';
 
-const QuantitySelector = ({ bookId, quantity, setQuantity, small = false }) => {
+const QuantitySelector = ({ small = false, id }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const [maxQuantity, setMaxQuantity] = useState(Infinity);
+  const totalBookQuantity = useSelector((state) => state.cart.totalBookQuantity);
+  const quantity = useSelector((state) => state.cart.quantities[id]);
 
   useEffect(() => {
-    const fetchBookDetails = async () => {
-      try {
-        const bookDetails = await getBookById(bookId);
-        setMaxQuantity(bookDetails.quantity);
-      } catch (error) {
-        console.error('Error fetching book details:', error);
-      }
-    };
-
-    fetchBookDetails();
-  }, [bookId]);
+    // Initialize quantity in Redux store if it doesn't exist
+    if (quantity === 0) {
+      dispatch(setQuantity({ bookId: id, quantity: 0 }));
+    }
+  }, [dispatch, id, quantity]);
 
   const handleDecrease = () => {
     if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      updateQuantityHandler(newQuantity);
+      updateQuantityHandler(quantity - 1);
     }
   };
 
   const handleIncrease = () => {
-    if (quantity < maxQuantity) {
-      const newQuantity = quantity + 1;
-      updateQuantityHandler(newQuantity);
+    if (quantity < totalBookQuantity[id]) {
+      updateQuantityHandler(quantity + 1);
     }
   };
 
   const updateQuantityHandler = async (newQuantity) => {
-    setQuantity(newQuantity);
-    dispatch(updateQuantity({ id: bookId, quantity: newQuantity }));
+    const quantityDifference = newQuantity - quantity; // Calculate the incremental change
+    dispatch(setQuantity({ bookId: id, quantity: newQuantity }));
+    dispatch(updateQuantity({ id, quantity: newQuantity }));
 
-    if (isAuthenticated) {
+    if (isAuthenticated && quantityDifference !== 0) {
       try {
-        await updateCartQuantityApi(bookId, newQuantity);
+        await updateCartQuantityApi(id, quantityDifference); // Sync with server
       } catch (error) {
         console.error('Error updating cart quantity:', error);
       }
@@ -121,9 +59,9 @@ const QuantitySelector = ({ bookId, quantity, setQuantity, small = false }) => {
         readOnly
       />
       <button 
-        className={`btn ${quantity >= maxQuantity ? 'disabled' : ''}`}
+        className={`btn ${quantity >= totalBookQuantity[id] ? 'disabled' : ''}`}
         onClick={handleIncrease}
-        disabled={quantity >= maxQuantity}
+        disabled={quantity >= totalBookQuantity[id]}
       >
         +
       </button>

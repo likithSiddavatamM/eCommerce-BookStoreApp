@@ -12,32 +12,35 @@ export default () => {
     const books = useSelector((state)=>state.bookContainer.books);
     const count = useSelector((state)=>state.bookContainer.count);
     const value = useSelector((state)=>state.bookContainer.value);
-
+    const sort = useSelector((state)=>state.bookContainer.sort);
+ 
     let prevPage = useRef(page);
     let prevValue = useRef(value);
-
+    let prevSort = useRef(sort);
     const dispatch = useDispatch();
 
     useEffect(()=>{
         if(value=='')
-            if(prevPage.current!=page || books.length==0 || prevValue.current!=value)
+            if(prevPage.current!=page || books.length==0 || prevValue.current!=value || prevSort.current!=sort)
                 (async()=>{
-                    const data = await allBooks(page);
+                    const data = await allBooks(page, sort);
                     dispatch(setBooks({data: data[0], count: Math.ceil(data[1] / 20)}))
                     prevPage.current=page;
+                    prevSort.current = sort;
                 })()
-    }, [page, value])
+    }, [page, value, sort])
 
     useEffect(()=>{
         if(value!='')
-            if(prevPage.current!=page || books.length==0 || prevValue.current!=value)
+            if(prevPage.current!=page || books.length==0 || prevValue.current!=value || prevSort.current!=sort)
                 (async()=>{
-                    const data = await searchedBooks(page, value);
+                    const data = await searchedBooks(page, value, sort);
                     dispatch(setBooks({data: data[0], count: Math.ceil(data[1] / 20)}))
                     prevPage.current=page;
                     prevValue.current = value;
+                    prevSort.current = sort;
                 })()
-    }, [page, value])
+    }, [page, value, sort])
 
     return(
         <>

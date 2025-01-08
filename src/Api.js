@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = `http://localhost:7000/api/v1/`;
+const BASE_URL = `http://localhost:3001/api/v1/`;
 
 
 // Helper function to get the Authorization header
@@ -9,8 +9,8 @@ const getAuth = () => {
 };
 
 // Books API
-export const allBooks = async (page) => {
-  const books = await axios.get(`${BASE_URL}books/${page}`);
+export const allBooks = async (page, sort) => {
+  const books = await axios.get(`${BASE_URL}books/${page}`, {params: {sortQuery: sort}});
   return books?.data?.data;
 };
 
@@ -128,24 +128,22 @@ export const createCustomerApiCall = async (payload) => {
   });
 };
 
-
 export const addToCartApi = async (bookId) => {
-    try {
-        const response = await axios.post(
-            `${BASE_URL}cart/${bookId}`, 
-            {}, 
-            {
-                headers: {
-                    Authorization: getAuth(), 
-                },
-            }
-        );
-        return response.data;
-    } catch (error) {
-        console.error("Error adding to cart:", error?.response?.data || error.message);
-        throw error;
-    }
-
+  try {
+    const response = await axios.post(
+      `${BASE_URL}cart/${bookId}`,
+      {},
+      {
+        headers: {
+          Authorization: getAuth(),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding to cart:", error?.response?.data || error.message);
+    throw error;
+  }
 };
 
 export const removeFromCartApi = async (bookId) => {
@@ -163,21 +161,23 @@ export const removeFromCartApi = async (bookId) => {
 };
 
 export const updateCartQuantityApi = async (bookId, quantity) => {
-    try {
-        const response = await axios.put(
-            `${BASE_URL}cart/${bookId}`, 
-            { quantity }, 
-            {
-                headers: {
-                    Authorization: getAuth(),
-                },
-            }
-        );
-        return response.data;
-    } catch (error) {
-        console.error("Error updating cart quantity:", error?.response?.data || error.message);
-        throw error;
-    }
+  try {
+    console.log(`Sending API request to update quantity for book ${bookId} to ${quantity}`);
+    const response = await axios.put(
+      `${BASE_URL}cart/${bookId}`,
+      {quantityChange: quantity },
+      {
+        headers: {
+          Authorization: getAuth(),
+        },
+      }
+    );
+    console.log('API response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating cart quantity:", error?.response?.data || error.message);
+    throw error;
+  }
 };
 
 export const getCartItemsApi = async () => {
@@ -187,17 +187,16 @@ export const getCartItemsApi = async () => {
                 Authorization: getAuth()
             }
         });
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error fetching cart items:", error);
         throw error;
     }
 };
 
-export const searchedBooks = async(page, text) => {
+export const searchedBooks = async(page, text, sort) => {
 
-    const books = await axios.get(`${BASE_URL}/books/search/${page}`, {params: {searchQuery: text}})
-    console.log(books,"***")
+  const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
     return books?.data?.data;
 
 }
@@ -209,3 +208,12 @@ export const createBookByAdminApiCall = async (payload) => {
       },
     });
   };
+
+export const syncCartWithBackend = async (payload) => {
+  return await axios.post(`http://localhost:7000/api/v1/cart/sync`, payload, {
+    headers: {
+      Authorization: getAuth(), // Ensure getAuth() returns "Bearer <token>"
+    },
+  });
+};
+
