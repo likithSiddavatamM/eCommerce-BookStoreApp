@@ -4,7 +4,8 @@ import {
   signupApiCall, 
   fetchUserDataApiCall, 
   fetchCustomerDetailsApiCall,
-  getOrderApiCall 
+  getOrderApiCall,
+  placeOrderApi 
 } from '../Api';
 
 // Thunks for API calls
@@ -68,9 +69,21 @@ export const fetchOrders = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getOrderApiCall('orders');
+      console.log('orders',response.data.data)
       return response.data.data; 
     } catch (error) {
       return rejectWithValue(error.response.data?.data || error.message);
+    }
+  }
+);
+export const placeOrder = createAsyncThunk(
+  'user/placeOrder',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await placeOrderApi();
+      return response; // Return the response data from the API
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -79,6 +92,7 @@ const userSlice = createSlice({
   initialState: {
     userDetails: null,
     accessToken: null,
+    refreshToken:null,
     customerDetails: [],
     orders: [],
     status: 'idle',
@@ -89,9 +103,14 @@ const userSlice = createSlice({
     logout: (state) => {
       state.userDetails = null;
       state.accessToken = null;
+      state.refreshToken = null;
+      state.userId = null;
       state.customerDetails = [];
+      state.orders = [];
       state.isAuthenticated = false; 
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('userId'); 
     },
   },
   extraReducers: (builder) => {
@@ -112,6 +131,8 @@ const userSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.isAuthenticated = true;
         localStorage.setItem('accessToken', action.payload.accessToken);
+        localStorage.setItem('refreshToken', action.payload.refreshToken); 
+        localStorage.setItem('userId', action.payload.userId); 
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -151,7 +172,20 @@ const userSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
-      });  
+      })
+        // Place Order
+        .addCase(placeOrder.pending, (state) => {
+          state.status = 'loading';
+        })
+        .addCase(placeOrder.fulfilled, (state, action) => {
+          state.orders.push(action.payload); // Add the new order to the list of orders
+          state.status = 'succeeded';
+          state.error = null;
+        })
+        .addCase(placeOrder.rejected, (state, action) => {
+          state.status = 'failed';
+          state.error = action.payload;
+        });
   },
 });
 

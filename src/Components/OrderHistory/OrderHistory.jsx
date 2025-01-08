@@ -52,7 +52,11 @@ const OrderHistory = () => {
   }
 
   if (loading) {
-    return <div className="order-history">Loading orders...</div>;
+    return <div className="order-empty">
+    <ShoppingBag size={64} className="order-empty-icon" />
+    <h2>Loading orders...</h2>
+    
+  </div>;
   }
 
   if (error) {
@@ -60,7 +64,11 @@ const OrderHistory = () => {
   }
 
   if (!orders || orders.length === 0) {
-    return <div className="order-history">No orders found.</div>;
+    return   <div className="order-empty">
+    <ShoppingBag size={64} className="order-empty-icon" />
+    <h2>No orders</h2>
+    <p>You haven't purchased anything. </p>
+  </div>
   }
 
   return (

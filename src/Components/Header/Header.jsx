@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserDetails, fetchCustomerDetails,fetchOrders ,logout } from "../../App/UserSlice";
+import { fetchUserDetails,fetchOrders ,logout } from "../../App/UserSlice";
 import { ShoppingCart } from "lucide-react";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -21,12 +21,10 @@ const Header = () => {
 
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const userDetails = useSelector((state) => state.user.userDetails);
-  const customerDetails = useSelector((state) => state.user.customerDetails);
 
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchUserDetails());
-      dispatch(fetchCustomerDetails());
       dispatch(fetchOrders());
     }
   }, [isAuthenticated, dispatch]);
@@ -63,9 +61,20 @@ const Header = () => {
   const handleCartClick = () => {
     navigate("/cart");
   };
+
+  const isAdmin = userDetails?.role === "admin";
   return (
     <>
       <header className="header">
+      {isAdmin ? (
+        <div className="admin-header">
+          <div className="logo" onClick={() => navigate("/")}>
+            <img src={a} alt="Logo" className="logo-image" />
+            <span className="logo-text">Bookstore</span>
+          </div>
+        </div>
+      ):( 
+      <div className="user-header">
         <div style={{ display: "flex", gap: "1em", width: "100%" }}>
           <div className="logo" onClick={() => navigate("/")}>
             <img src={a} alt="Logo" className="logo-image" />
@@ -80,11 +89,11 @@ const Header = () => {
         </div>
       <div className="user-actions">
         <div className="icon">
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ display: "flex", flexDirection:"column" ,alignItems: "center", gap: 1 }}>
             <Avatar
               alt={userDetails?.firstName || "Profile"}
               src={userDetails?.profilePicture || ""}
-              sx={{ width: 30, height: 30, cursor: "pointer" }}
+              sx={{ width: 27, height: 27, cursor: "pointer" }}
               onClick={handleMenuOpen}
             />
             <span className="label">{userDetails?.firstName || "Profile"}</span>
@@ -187,16 +196,19 @@ const Header = () => {
               </Menu>
             </Box>
           </div>
+
           <div className="icon cart-icon" onClick={handleCartClick}>
-            <div className="cart-icon-wrapper">
-              <ShoppingCart className="shopping-cart-icon" />
+          <Box sx={{ display: "flex", flexDirection:"column" ,alignItems: "center", gap: 1 }}>
+              <ShoppingCart className="shopping-cart-icon" sx={{ width: 30, height: 30, cursor: "pointer" }} />
               {cartItems.length > 0 && (
                 <span className="cart-badge">{cartItems.length}</span>
               )}
-            </div>
             <span className="label">Cart</span>
+            </Box>
           </div>
         </div>
+        </div>
+          )}
       </header>
     </>
    );
