@@ -221,8 +221,9 @@
       margin-bottom: 10px;
       display: flex;
       flex-direction: column;
-    &.active .section-icon {
-      transform: rotate(180deg);
+      &.active .section-icon {
+        transform: rotate(180deg);
+      }
     }
   }
 

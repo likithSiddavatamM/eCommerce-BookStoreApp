@@ -4,7 +4,7 @@ import { FaRegStar, FaRegHeart } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getBookById, addToCartApi } from '../../Api';
-import { addToCart, setQuantity, setTotalBookQuantity, updateQuantity } from '../../App/CartSlice';
+import {setQuantity, setTotalBookQuantity } from '../../App/CartSlice';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
 import { addToCart, updateQuantity } from '../../App/CartSlice';
 import { addWishlistItem } from '../../App/wishlistSlice';

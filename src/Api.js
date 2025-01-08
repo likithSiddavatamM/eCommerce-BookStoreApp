@@ -7,7 +7,8 @@ export const allBooks = async (page) => {
   return response.data.data;
 };
 const getAuth = () => {
-  return `Bearer ${localStorage.getItem("accessToken")}`;
+    return `Bearer ${localStorage.getItem("accessToken")}`;
+  };
 
 // AdminBooks API
 export const fetchAdminBooks = async () => {
@@ -120,7 +121,7 @@ export const removeFromCartApi = async (bookId) => {
 };
 
 export const updateCartQuantityApi = async (bookId, quantity) => {
-  const response = await axiosInstance.put(`cart/${ bookId}`,body:{quantityChange: quantity });
+  const response = await axiosInstance.put(`cart/${bookId}`, { body: { quantityChange: quantity } });
   return response.data;
 };
 
@@ -132,7 +133,8 @@ export const getCartItemsApi = async () => {
 export const searchedBooks = async(page, text, sort) => {
 
   const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
-    return books?.data?.data;
+        return books?.data?.data;
+    };
 
 
 // Forgot Password API
