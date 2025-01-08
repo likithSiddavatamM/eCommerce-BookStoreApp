@@ -1,162 +1,388 @@
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+//   .loginsignup-container {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     gap: 2em;
+//     padding: 5vh;
+//     flex-wrap: wrap;
+//     font-family: 'Roboto', Arial, sans-serif;
+//   }
+  
+//   .loginsignup-image-card {
+//     width: 29%;
+//     min-height: 25vh;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     text-align: center;
+//     background-color: rgb(250, 248, 248);
+//     border-radius: 0.5em;
+//     box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.1);
+//     padding: 2em;
+//     transition: transform 0.3s ease-in-out;
+//   }
+  
+//   .loginsignup-image {
+//     width: 15em;
+//     height: 15em;
+//     border-radius: 50%;
+//     margin-bottom: 1.5em;
+//   }
+  
+//   .loginsignup-caption {
+//     font-size: 1.2em;
+//     font-weight: bold;
+//     color: #333;
+//     font-family: 'Roboto', Arial, sans-serif;
+//   }
+  
+//   .loginsignup-form-card {
+//     width: 28%;
+//     background-color: white;
+//     border-radius: 0.5em;
+//     box-shadow: 0 0.4em 0.6em rgba(0, 0, 0, 0.1);
+//     padding: 4em;
+//     position: relative;
+//     transition: transform 0.3s ease-in-out;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+//     min-height: 40vh; 
+//     max-height: 60vh; 
+//     margin-left: -35px;
+//     font-family: 'Roboto', Arial, sans-serif;
+//   }
+  
+  
+//   .loginsignup-tabs {
+//     display: flex;
+//     justify-content: space-around;
+//     margin-bottom: 2em;
+//   }
+  
+//   .loginsignup-tab {
+//     padding: 0.5em 1em;
+//     cursor: pointer;
+//     font-weight: bold;
+//     color: #666;
+//     font-size: 1.6em;
+//     margin-top: -30px;
+//     font-family: 'Roboto', Arial, sans-serif;
+//   }
+  
+//   .loginsignup-tab.active {
+//     color: #000;
+//     border-bottom: 0.2em solid #b71c1c;
+//   }
+  
+//   .loginsignup-form {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+//     height: 100%;
+//     font-family: 'Roboto', Arial, sans-serif;
+//   }
+  
+//   .loginsignup-form input {
+//     width: 90%;
+//     height: 10%;
+//     padding: 0.8em;
+//     border: 0.1em solid #ccc;
+//     border-radius: 0.2em;
+    
+//   }
+  
+//   .loginsignup-form-button {
+//     width: 98%;
+//     padding: 1em;
+//     background-color: #b71c1c;
+//     color: white;
+//     border: none;
+//     border-radius: 0.2em;
+//     cursor: pointer;
+//     font-size: 0.8em;
+//     font-family: 'Roboto', Arial, sans-serif;
+//     font-weight: bold;
+//     transition: background-color 0.3s ease-in-out;
+//     margin-top: 10px;
+//     margin-bottom: 10px;
+//   }
+  
+//   .or-container {
+//     display: flex;
+//     align-items: center;
+//     margin-top: 2em;
+//     margin-bottom: 2em;
+//     text-align: center;
+//   }
+  
+//   .or-line {
+//     flex-grow: 1;
+//     height: 1px;
+//     background-color: #ccc;
+//   }
+  
+//   .or-text {
+//     margin: 0 1em;
+//     font-size: 1.2em;
+//     color: #333;
+//     font-family: 'Roboto', Arial, sans-serif;
+//   }
+  
+//   .social-buttons {
+//     display: flex;
+//     justify-content: space-around;
+//   }
+  
+//   .social-btn {
+//     padding: 0.8em 1.5em;
+//     border: none;
+//     border-radius: 0.2em;
+//     font-size: 1em;
+//     font-family: 'Roboto', Arial, sans-serif;
+//     font-weight: bold;
+//     cursor: pointer;
+//     transition: background-color 0.3s ease-in-out;
+//     width: 45%; 
+//   }
+  
+//   .facebook-btn {
+//     background-color: #3b5998;
+//     color: white;
+//   }
+  
+//   .google-btn {
+//     background-color: #a6a6a6;
+//     color: white;
+//   }
+//   .error-message {
+//       color: red;
+//       font-size: 0.8em;
+//       font-family: 'Roboto', Arial, sans-serif;
+//   }
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+.loginsignup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  padding: 5vh;
+  flex-wrap: nowrap; /* Prevents wrapping */
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+.loginsignup-image-card {
+  width: 29%;
+  min-height: 25vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgb(250, 248, 248);
+  border-radius: 0.5em;
+  box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.1);
+  padding: 2em;
+  transition: transform 0.3s ease-in-out;
+}
+
+.loginsignup-image {
+  width: 15em;
+  height: 15em;
+  border-radius: 50%;
+  margin-bottom: 1.5em;
+}
+
+.loginsignup-caption {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.loginsignup-form-card {
+  width: 28%;
+  background-color: white;
+  border-radius: 0.5em;
+  box-shadow: 0 0.4em 0.6em rgba(0, 0, 0, 0.1);
+  padding: 4em;
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 40vh;
+  max-height: 60vh;
+  margin-left: -35px;
+}
+
+.loginsignup-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2em;
+}
+
+.loginsignup-tab {
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-weight: bold;
+  color: #666;
+  font-size: 1.6em;
+  margin-top: -30px;
+}
+
+.loginsignup-tab.active {
+  color: #000;
+  border-bottom: 0.2em solid #b71c1c;
+}
+
+.loginsignup-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.loginsignup-form input {
+  width: 90%;
+  height: 10%;
+  padding: 0.8em;
+  border: 0.1em solid #ccc;
+  border-radius: 0.2em;
+}
+
+.loginsignup-form-button {
+  width: 98%;
+  padding: 1em;
+  background-color: #b71c1c;
+  color: white;
+  border: none;
+  border-radius: 0.2em;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.or-container {
+  display: flex;
+  align-items: center;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.or-line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.or-text {
+  margin: 0 1em;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.social-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.social-btn {
+  padding: 0.8em 1.5em;
+  border: none;
+  border-radius: 0.2em;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  width: 45%;
+}
+
+.facebook-btn {
+  background-color: #3b5998;
+  color: white;
+}
+
+.google-btn {
+  background-color: #a6a6a6;
+  color: white;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
   .loginsignup-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2em;
-    padding: 5vh;
-    flex-wrap: wrap;
-    font-family: 'Roboto', Arial, sans-serif;
+    gap: 1em;
+    padding: 4vh;
   }
-  
-  .loginsignup-image-card {
-    width: 29%;
-    min-height: 25vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: rgb(250, 248, 248);
-    border-radius: 0.5em;
-    box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.1);
-    padding: 2em;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .loginsignup-image {
-    width: 15em;
-    height: 15em;
-    border-radius: 50%;
-    margin-bottom: 1.5em;
-  }
-  
-  .loginsignup-caption {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-    font-family: 'Roboto', Arial, sans-serif;
-  }
-  
+  .loginsignup-image-card,
   .loginsignup-form-card {
-    width: 28%;
-    background-color: white;
-    border-radius: 0.5em;
-    box-shadow: 0 0.4em 0.6em rgba(0, 0, 0, 0.1);
-    padding: 4em;
-    position: relative;
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 40vh; 
-    max-height: 60vh; 
-    margin-left: -35px;
-    font-family: 'Roboto', Arial, sans-serif;
+    width: 40%; /* Reduce width proportionally */
+    min-height: 30vh;
   }
-  
-  
-  .loginsignup-tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 2em;
+  .loginsignup-image {
+    width: 12em;
+    height: 12em;
   }
-  
+}
+
+@media (max-width: 768px) {
+  .loginsignup-container {
+    gap: 1em;
+    padding: 3vh;
+  }
+  .loginsignup-image-card,
+  .loginsignup-form-card {
+    width: 45%; /* Further reduce width */
+    min-height: 25vh;
+  }
+  .loginsignup-image {
+    width: 10em;
+    height: 10em;
+  }
+}
+
+@media (max-width: 576px) {
+  .loginsignup-container {
+    gap: 0.5em;
+    padding: 2vh;
+  }
+  .loginsignup-image-card,
+  .loginsignup-form-card {
+    width: 48%; /* Slight adjustment for very small screens */
+    min-height: 20vh;
+  }
+  .loginsignup-image {
+    width: 8em;
+    height: 8em;
+  }
   .loginsignup-tab {
-    padding: 0.5em 1em;
-    cursor: pointer;
-    font-weight: bold;
-    color: #666;
-    font-size: 1.6em;
-    margin-top: -30px;
-    font-family: 'Roboto', Arial, sans-serif;
-  }
-  
-  .loginsignup-tab.active {
-    color: #000;
-    border-bottom: 0.2em solid #b71c1c;
-  }
-  
-  .loginsignup-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    font-family: 'Roboto', Arial, sans-serif;
-  }
-  
-  .loginsignup-form input {
-    width: 90%;
-    height: 10%;
-    padding: 0.8em;
-    border: 0.1em solid #ccc;
-    border-radius: 0.2em;
-    
-  }
-  
-  .loginsignup-form-button {
-    width: 98%;
-    padding: 1em;
-    background-color: #b71c1c;
-    color: white;
-    border: none;
-    border-radius: 0.2em;
-    cursor: pointer;
-    font-size: 0.8em;
-    font-family: 'Roboto', Arial, sans-serif;
-    font-weight: bold;
-    transition: background-color 0.3s ease-in-out;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .or-container {
-    display: flex;
-    align-items: center;
-    margin-top: 2em;
-    margin-bottom: 2em;
-    text-align: center;
-  }
-  
-  .or-line {
-    flex-grow: 1;
-    height: 1px;
-    background-color: #ccc;
-  }
-  
-  .or-text {
-    margin: 0 1em;
     font-size: 1.2em;
-    color: #333;
-    font-family: 'Roboto', Arial, sans-serif;
   }
-  
+  .loginsignup-form input {
+    width: 100%;
+  }
+  .loginsignup-form-button {
+    width: 100%;
+  }
   .social-buttons {
-    display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    gap: 1em;
   }
-  
   .social-btn {
-    padding: 0.8em 1.5em;
-    border: none;
-    border-radius: 0.2em;
-    font-size: 1em;
-    font-family: 'Roboto', Arial, sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-    width: 45%; 
-  }
-  
-  .facebook-btn {
-    background-color: #3b5998;
-    color: white;
-  }
-  
-  .google-btn {
-    background-color: #a6a6a6;
-    color: white;
+    width: 100%;
   }
   .error-message {
       color: red;
@@ -179,4 +405,6 @@
   .forgot-password-link:hover {
     text-decoration: underline;
   }
-  
+ 
+}
+

@@ -30,10 +30,11 @@ const LoginSignup = ({ onClose }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const { error } = useSelector((state) => state.user);
+  // const { error } = useSelector((state) => state.user);
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
@@ -48,23 +49,26 @@ const LoginSignup = ({ onClose }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address.", { theme: "colored" });
+      setError("Please enter a valid email address.");
       return;
     }
     if (password.trim() === "") {
-      toast.error("Password cannot be empty.", { theme: "colored" });
+      setError("Password cannot be empty.");
       return;
     }
 
     dispatch(loginUser({ email, password }))
     .unwrap()
     .then(() => {
-      dispatch(login())
+      
       toast.success("Login Successful!", { theme: "colored" });
+      dispatch(login())
       onClose();
     })
     .catch((err) => {
-      toast.error(err || "Login failed.", { theme: "colored" });
+      console.log(err)
+      if (err.message ==='Invalid email or password')
+        toast.error('Invalid email or password', { theme: "colored" });
     });
 };
  
@@ -72,19 +76,19 @@ const LoginSignup = ({ onClose }) => {
   const handleSignup = (e) => {
     e.preventDefault();
     if (firstName.trim() === "") {
-      toast.error("Firstname fields cannot be empty.", { theme: "colored" });
+      setError("Firstname fields cannot be empty.");
       return;
     }
     if (lastName.trim() === "") {
-      toast.error("Lastname fields cannot be empty.", { theme: "colored" });
+      setError("Lastname fields cannot be empty." );
       return;
     }
     if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address.", { theme: "colored" });
+      setError("Please enter a valid email address.");
       return;
     }
     if (password.trim() === "") {
-      toast.error("Password cannot be empty.", { theme: "colored" });
+      setError("Password cannot be empty.");
       return;
     }
     
@@ -95,7 +99,8 @@ const LoginSignup = ({ onClose }) => {
       handleToggle(); 
     })
     .catch((err) => {
-      toast.error(err || "Signup failed.", { theme: "colored" });
+      if(err.message === 'User already exists')
+       toast.error("User Already Existed", { theme: "colored" });
     });
 };
 
