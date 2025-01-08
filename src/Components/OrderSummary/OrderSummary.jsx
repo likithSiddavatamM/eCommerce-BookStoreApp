@@ -1,7 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { placeOrder } from "../store/userSlice"; 
 import "./OrderSummary.scss";
 
 const OrderSummary = ({ cartItems }) => {
+    const dispatch = useDispatch();
+    const [orderSuccess, setOrderSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleCheckout = async () => {
+        setLoading(true);
+        try {
+            await dispatch(placeOrder()).unwrap(); 
+            setOrderSuccess(true);
+        } catch (error) {
+            console.error("Error placing order:", error);
+            alert("Failed to place order. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (orderSuccess) {
+        return (
+            <div className="order-successful">
+                <h2>Order Successful!</h2>
+                <p>Thank you for your order. Your items will be delivered soon.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="order-summary-container">
             <h2>Order Summary</h2>
@@ -23,7 +51,13 @@ const OrderSummary = ({ cartItems }) => {
                 ))
             )}
             {cartItems.length > 0 && (
-                <button className="checkout-button">CHECKOUT</button>
+                <button
+                    className="checkout-button"
+                    onClick={handleCheckout}
+                    disabled={loading}
+                >
+                    {loading ? "Processing..." : "CHECKOUT"}
+                </button>
             )}
         </div>
     );
