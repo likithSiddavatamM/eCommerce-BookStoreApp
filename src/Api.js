@@ -6,6 +6,8 @@ export const allBooks = async (page) => {
   const response = await axiosInstance.get(`books/${page}`);
   return response.data.data;
 };
+const getAuth = () => {
+  return `Bearer ${localStorage.getItem("accessToken")}`;
 
 // AdminBooks API
 export const fetchAdminBooks = async () => {
@@ -17,6 +19,7 @@ export const fetchAdminBooks = async () => {
     }
   );
   return adminBooks?.data?.data;
+
 };
 
 //Delete book by admin
@@ -78,6 +81,29 @@ export const createUserAddressApiCall = async (payload) => {
   return await axiosInstance.post(`customer/`, payload);
 };
 
+
+// Add to Wishlist API
+export const addToWishlistApi = async (bookId) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("Not authenticated");
+
+    const response = await axios.post(
+      `${BASE_URL}wishlist/${bookId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Add to Wishlist Error:", error);
+    throw error.response?.data?.message || "Failed to add to wishlist";
+  }
+};
 export const updateUserAddressApiCall = async (payload) => {
   return await axiosInstance.put(`customer/67739748b3835b4838e375ef`, payload);
 };
@@ -108,7 +134,48 @@ export const searchedBooks = async(page, text, sort) => {
   const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
     return books?.data?.data;
 
-}
+
+// Forgot Password API
+export const forgotpassword = async (email) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}users/forgotpassword`,
+      { email },
+      // {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    throw error.response?.data?.message || "Failed to Send Email";
+  }
+};
+
+
+// Reset Password API
+export const resetpassword = async (password, token) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}users/resetpassword`,
+      { password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    throw error.response?.data?.message || "Failed to Reset Password";
+  }
+};
 
 export const createBookByAdminApiCall = async (payload) => {
     return await axios.post(`${BASE_URL}/books`, payload, {
@@ -117,4 +184,5 @@ export const createBookByAdminApiCall = async (payload) => {
       },
     });
   };
+
 

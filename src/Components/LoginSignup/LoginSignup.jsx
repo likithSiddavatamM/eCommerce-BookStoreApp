@@ -135,38 +135,47 @@ const LoginSignup = ({ onClose }) => {
                 </div>
                 <div className="loginsignup-form">
                     {isLogin ? (
-                        <form >
-                            <label>Email Id</label>
-                            <input 
-                                type="email" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
-                            />
-                            {error && !validateEmail(email) && (
-                                <span className="error-message">Please enter a valid email address.</span>
-                            )}<br/>
-                            <label>Password</label>
-                            <input 
-                                type="password" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
-                            />
-                            {error && password.trim() === "" && (
-                                <span className="error-message">Password cannot be empty.</span>
-                            )}<br/>
-                            <button type="submit" className="loginsignup-form-button" onClick={handleLogin}>Login</button>
-
-                            <div className="or-container">
-                                <span className="or-line"></span>
-                                <span className="or-text">OR</span>
-                                <span className="or-line"></span>
-                            </div>
-
-                            <div className="social-buttons">
-                                <button className="social-btn facebook-btn">Facebook</button>
-                                <button className="social-btn google-btn">Google</button>
-                            </div>
-                        </form>
+                        <form>
+                        <label>Email Id</label>
+                        <input 
+                            type="email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                        />
+                        {error && !validateEmail(email) && (
+                            <span className="error-message">Please enter a valid email address.</span>
+                        )}<br/>
+                        <label>Password</label>
+                        <input 
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                        />
+                        {error && password.trim() === "" && (
+                            <span className="error-message">Password cannot be empty.</span>
+                        )}<br/>
+                        <button type="submit" className="loginsignup-form-button" onClick={handleLogin}>Login</button>
+                        <div className="forgot-password-container">
+                            <a 
+                                href="http://localhost:3000/ForgotPassword" 
+                                className="forgot-password-link"
+                            >
+                                Forgot Password?
+                            </a>
+                        </div>
+                    
+                        <div className="or-container">
+                            <span className="or-line"></span>
+                            <span className="or-text">OR</span>
+                            <span className="or-line"></span>
+                        </div>
+                    
+                        <div className="social-buttons">
+                            <button className="social-btn facebook-btn">Facebook</button>
+                            <button className="social-btn google-btn">Google</button>
+                        </div>
+                    </form>
+                    
                     ) : (
                         <form >
                             <label>First Name</label>

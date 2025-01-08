@@ -11,6 +11,8 @@ import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import Cart from "./Components/Cart/Cart";
 
 import Wishlist from "./Components/Wishlist/Wishlist";
+import ResetPassword from "./Components/ResetPassword/ResetPassword";
+import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 
 
 function Routing(){
@@ -53,10 +55,20 @@ function Routing(){
                   {
                   path: '/wishlist',
                   element: <Wishlist/>  
-                }
+                },
+                
 
             ]
+        },
+        {
+            path: '/forgotpassword', 
+            element: <ForgotPassword />,
+        },
+        {
+            path: '/resetpassword',
+            element: <ResetPassword />  
         }
+        
     ])
 
     return  <RouterProvider router={route}/>

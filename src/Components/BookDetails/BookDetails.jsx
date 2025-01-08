@@ -6,6 +6,9 @@ import { useParams } from 'react-router-dom';
 import { getBookById, addToCartApi } from '../../Api';
 import { addToCart, setQuantity, setTotalBookQuantity, updateQuantity } from '../../App/CartSlice';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
+import { addToCart, updateQuantity } from '../../App/CartSlice';
+import { addWishlistItem } from '../../App/wishlistSlice';
+
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -59,6 +62,28 @@ const BookDetails = () => {
     }
   };
 
+  const handleWishlistToggle = async () => {
+    if (!isAuthenticated) {
+      console.error('User not authenticated');
+      return;
+    }
+  
+    try {
+      const response = await dispatch(addWishlistItem(currentBook._id));
+      setIsWishlist(true); // Optionally set it based on the response
+      console.log('Added to wishlist:', response.payload);
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+    }
+  };
+  
+
+
+
+  if (!currentBook) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="book-details">
       <div className="book-details__container">
@@ -86,10 +111,27 @@ const BookDetails = () => {
                 ADD TO BAG
               </button>
             )}
+
+<button
+  className="book-details__wishlist-button"
+  onClick={handleWishlistToggle}
+  disabled={isWishlist} // Disable button if already in wishlist
+>
+  {isWishlist ? (
+    <FaHeart className="wishlist-icon wishlist-icon--active" />
+  ) : (
+    <FaRegHeart className="wishlist-icon" />
+  )}
+  WISHLIST
+</button>
+
+
+
             <button className="book-details__wishlist-button">
               <FaRegHeart className="wishlist-icon" />
               WISHLIST
             </button>
+
           </div>
         </div>
 
