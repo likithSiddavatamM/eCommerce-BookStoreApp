@@ -1,9 +1,31 @@
 import axiosInstance from "./axiosInstance";
-
+import axios from "axios";
+const BASE_URL = "http://localhost:7000/api/v1";
 // Books API
 export const allBooks = async (page) => {
   const response = await axiosInstance.get(`books/${page}`);
   return response.data.data;
+};
+
+// AdminBooks API
+export const fetchAdminBooks = async () => {
+  const adminBooks = await axios.get(`${BASE_URL}books/adminbooks`,
+    {
+      headers: {
+        Authorization: getAuth(),
+      },
+    }
+  );
+  return adminBooks?.data?.data;
+};
+
+//Delete book by admin
+export const deleteAdminBooks = async (id) => {
+  return await axios.delete(`${BASE_URL}books/${id}`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
 };
 
 export const getBookById = async (id) => {
@@ -72,7 +94,7 @@ export const removeFromCartApi = async (bookId) => {
 };
 
 export const updateCartQuantityApi = async (bookId, quantity) => {
-  const response = await axiosInstance.put(`cart`, { bookId, quantity });
+  const response = await axiosInstance.put(`cart/${ bookId}`,body:{quantityChange: quantity });
   return response.data;
 };
 
@@ -81,10 +103,18 @@ export const getCartItemsApi = async () => {
   return response.data;
 };
 
-// Search API
-export const searchedBooks = async (page, text) => {
-  const response = await axiosInstance.get(`books/search/${page}`, {
-    params: { searchQuery: text },
-  });
-  return response.data.data;
-};
+export const searchedBooks = async(page, text, sort) => {
+
+  const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
+    return books?.data?.data;
+
+}
+
+export const createBookByAdminApiCall = async (payload) => {
+    return await axios.post(`${BASE_URL}/books`, payload, {
+      headers: {
+        Authorization: getAuth(),
+      },
+    });
+  };
+

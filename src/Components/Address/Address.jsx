@@ -2,22 +2,24 @@ import React, { useState, useEffect } from "react";
 import "./Address.scss";
 import { fetchUserAddressApiCall, updateUserAddressApiCall, createUserAddressApiCall } from "../../Api";
 
-const Address = () => {
+const Address = ({ onSelectAddress, selectedAddress }) => {
   const [addressData, setAddressData] = useState([]);
-  const [editableIndex, setEditableIndex] = useState(null); 
+  const [editableIndex, setEditableIndex] = useState(null);
   const [newAddress, setNewAddress] = useState({
     mobileNumber: "",
     address: "",
     city: "",
     state: "",
-  }); 
-  const [isAddingNewAddress, setIsAddingNewAddress] = useState(false); 
-
+  });
+  const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
+  const [customerDetailsId,setCustomerDetailsId] =useState("")
+ 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         console.log("Fetching user Address data...");
         const addressdata = await fetchUserAddressApiCall();
+        setCustomerDetailsId(addressdata.data.data)
         console.log("Fetched user Address data:", addressdata.data.data);
         if (addressdata.data.data.length > 0) {
           setAddressData(addressdata.data.data);
@@ -31,12 +33,12 @@ const Address = () => {
   }, []);
 
   const handleEditClick = (index) => {
-    setEditableIndex(index); 
+    setEditableIndex(index);
   };
 
   const handleInputChange = (index, field, value) => {
     const updatedAddressData = [...addressData];
-    updatedAddressData[index][field] = value; 
+    updatedAddressData[index][field] = value;
     setAddressData(updatedAddressData);
   };
 
@@ -44,7 +46,8 @@ const Address = () => {
     try {
       const updatedAddress = addressData[index];
       console.log("Saving updated address:", updatedAddress);
-      await updateUserAddressApiCall(updatedAddress); 
+      console.log(addressData[index]._id,"iiiiiiiiiiiiiiiiiiii")
+      await updateUserAddressApiCall(updatedAddress,addressData[index]._id);
       setEditableIndex(null);
     } catch (error) {
       console.error("Error saving updated address:", error);
@@ -60,20 +63,20 @@ const Address = () => {
   };
 
   const handleAddNewAddress = () => {
-    setIsAddingNewAddress(true); 
+    setIsAddingNewAddress(true);
   };
 
   const handleSaveNewAddress = async () => {
     try {
       console.log("Saving new address:", newAddress);
-      await createUserAddressApiCall(newAddress); 
-      setIsAddingNewAddress(false); 
+      const createAddress = await createUserAddressApiCall(newAddress);
+      setIsAddingNewAddress(false);
       setNewAddress({
         mobileNumber: "",
         address: "",
         city: "",
         state: "",
-      }); 
+      });
       const addressdata = await fetchUserAddressApiCall();
       setAddressData(addressdata.data.data);
     } catch (error) {
@@ -86,7 +89,10 @@ const Address = () => {
       <div className="profile-className-section">
         <div className="profile-className-header">
           <h2 className="profile-className-title">Address Details</h2>
-          <button className="profile-className-add-btn" onClick={handleAddNewAddress}>
+          <button
+            className="profile-className-add-btn"
+            onClick={handleAddNewAddress}
+          >
             Add New Address
           </button>
         </div>
@@ -96,7 +102,10 @@ const Address = () => {
         <div className="Address-className-section">
           <div className="Address-className-header">
             <h2 className="Address-className-title">Add New Address</h2>
-            <button className="Address-className-save-btn" onClick={handleSaveNewAddress}>
+            <button
+              className="Address-className-save-btn"
+              onClick={handleSaveNewAddress}
+            >
               Save
             </button>
           </div>
@@ -146,7 +155,18 @@ const Address = () => {
           addressData.map((address, index) => (
             <div className="Address-className-section" key={index}>
               <div className="Address-className-header">
-                <h2 className="Address-className-title">Work</h2>
+                <div className="address-item">
+                  <input
+                    type="radio"
+                    id={`address-${address._id}`}
+                    name="selected-address"
+                    checked={selectedAddress && selectedAddress.id === address._id}
+                    onChange={() => onSelectAddress(address)}
+                  />
+                  <label htmlFor={`address-${address.id}`} className="Address-className-title">
+                    {index + 1}. Address
+                  </label>
+                </div>
                 {editableIndex === index ? (
                   <button
                     className="Address-className-save-btn"
@@ -163,52 +183,56 @@ const Address = () => {
                   </button>
                 )}
               </div>
-              <div className="Address-className-field">
-                <label>Mobile Number</label>
-                <input
-                  type="tel"
-                  value={address.mobileNumber}
-                  readOnly={editableIndex !== index}
-                  onChange={(e) =>
-                    handleInputChange(index, "mobileNumber", e.target.value)
-                  }
-                />
+              <div className="address-details">
+                <span className="Address-className-compact">
+                  {address.mobileNumber}, {address.address}, {address.city}, {address.state}
+                </span>
               </div>
-              <div className="Address-className-field">
-                <label>Address</label>
-                <textarea
-                  type="text"
-                  value={address.address}
-                  readOnly={editableIndex !== index}
-                  onChange={(e) =>
-                    handleInputChange(index, "address", e.target.value)
-                  }
-                ></textarea>
-              </div>
-              <div className="Address-className-fields">
-                <div className="Address-className-field">
-                  <label>City/Town</label>
-                  <input
-                    type="text"
-                    value={address.city}
-                    readOnly={editableIndex !== index}
-                    onChange={(e) =>
-                      handleInputChange(index, "city", e.target.value)
-                    }
-                  />
-                </div>
-                <div className="Address-className-field">
-                  <label>State</label>
-                  <input
-                    type="text"
-                    value={address.state}
-                    readOnly={editableIndex !== index}
-                    onChange={(e) =>
-                      handleInputChange(index, "state", e.target.value)
-                    }
-                  />
-                </div>
-              </div>
+              {editableIndex === index && (
+                <>
+                  <div className="Address-className-field">
+                    <label>Mobile Number</label>
+                    <input
+                      type="tel"
+                      value={address.mobileNumber}
+                      onChange={(e) =>
+                        handleInputChange(index, "mobileNumber", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="Address-className-field">
+                    <label>Address</label>
+                    <textarea
+                      value={address.address}
+                      onChange={(e) =>
+                        handleInputChange(index, "address", e.target.value)
+                      }
+                    ></textarea>
+                  </div>
+                  <div className="Address-className-fields">
+                    <div className="Address-className-field">
+                      <label>City/Town</label>
+                      <input
+                        type="text"
+                        value={address.city}
+                        onChange={(e) =>
+                          handleInputChange(index, "city", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="Address-className-field">
+                      <label>State</label>
+                      <input
+                        type="text"
+                        value={address.state}
+                        onChange={(e) =>
+                          handleInputChange(index, "state", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))}
       </div>

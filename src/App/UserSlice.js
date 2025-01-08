@@ -6,6 +6,8 @@ import {
   fetchCustomerDetailsApiCall,
   getOrderApiCall,
   placeOrderApi 
+  createUserAddressApiCall, 
+  updateUserAddressApiCall
 } from '../Api';
 
 // Thunks for API calls
@@ -15,7 +17,7 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await signupApiCall(userData);
       return response.data; 
-    }  catch (error) {
+    } catch (error) {
       if (error.response?.status === 409) {
         return rejectWithValue("Email already exists. Please use a different email.");
       }
@@ -29,7 +31,6 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await loginApiCall(credentials);
-      console.log(response.data.data)
       return response.data.data; 
     } catch (error) {
       if (error.response?.status === 401) {
@@ -56,8 +57,32 @@ export const fetchCustomerDetails = createAsyncThunk(
   'user/fetchCustomerDetails',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchCustomerDetailsApiCall('customer');
+      const response = await fetchCustomerDetailsApiCall("customer");
       return response.data.data; 
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const createAddress = createAsyncThunk(
+  "user/createAddress",
+  async (addressData, { rejectWithValue }) => {
+    try {
+      const response = await createUserAddressApiCall(addressData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const updateAddress = createAsyncThunk(
+  "user/updateAddress",
+  async (addressData, { rejectWithValue }) => {
+    try {
+      const response = await updateUserAddressApiCall(addressData);
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -72,10 +97,11 @@ export const fetchOrders = createAsyncThunk(
       console.log('orders',response.data.data)
       return response.data.data; 
     } catch (error) {
-      return rejectWithValue(error.response.data?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
 export const placeOrder = createAsyncThunk(
   'user/placeOrder',
   async (_, { rejectWithValue }) => {
@@ -87,6 +113,7 @@ export const placeOrder = createAsyncThunk(
     }
   }
 );
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -95,6 +122,7 @@ const userSlice = createSlice({
     refreshToken:null,
     customerDetails: [],
     orders: [],
+    addresses: [],
     status: 'idle',
     isAuthenticated: false,
     error: null,
@@ -108,6 +136,7 @@ const userSlice = createSlice({
       state.customerDetails = [];
       state.orders = [];
       state.isAuthenticated = false; 
+      state.addresses = [];
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('userId'); 
@@ -159,12 +188,35 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
+      // Create Address
+      .addCase(createAddress.fulfilled, (state, action) => {
+        state.addresses.push(action.payload);
+        state.error = null;
+      })
+      .addCase(createAddress.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+
+      // Update Address
+      .addCase(updateAddress.fulfilled, (state, action) => {
+        const index = state.addresses.findIndex(
+          (addr) => addr._id === action.payload._id
+        );
+        if (index !== -1) {
+          state.addresses[index] = action.payload;
+        }
+        state.error = null;
+      })
+      .addCase(updateAddress.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+
       // Fetch Orders
       .addCase(fetchOrders.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
-        state.orders = action.payload; 
+        state.orders = action.payload;
         state.status = 'succeeded';
         state.isAuthenticated = true;
         state.error = null;

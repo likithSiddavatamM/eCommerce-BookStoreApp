@@ -3,11 +3,11 @@
   display: flex;
   flex-wrap: wrap;
   padding: 2%;
+  margin-left: 7%;
 }
 
 .admin-form-section {
   width: 30%;
-  padding: 2%;
   border-radius: 4px;
   margin-right: 2%;
 }
@@ -154,4 +154,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .admin-book-section {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 1.8em;
+    padding: 0 8%; 
+    margin-left: -10%;
+  }
+  .admin-history-section{
+    margin-left: -3%
   }
