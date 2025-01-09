@@ -145,7 +145,7 @@ const BookDetails = () => {
                     ))}
                   </div>
                 </div>
-                <p className="book-details__review-text">Good product...</p>
+                <p className="book-details__review-text">Good product. Even though the translation could have been better, Chanakya's neeti are thought provoking. Chanakya has written on many different topics and his writings are succinct.</p>
               </div>
               <div className="book-details__review">
                 <div className="book-details__review-header">
@@ -157,7 +157,7 @@ const BookDetails = () => {
                     <FaRegStar className="book-details__star-empty" />
                   </div>
                 </div>
-                <p className="book-details__review-text">Good product...</p>
+                <p className="book-details__review-text"> Good product. Even though the translation could have been better, Chanakya's neeti are thought provoking. Chanakya has written on many different topics and his writings are succinct.</p>
               </div>
             </div>
           </div>
