@@ -60,8 +60,9 @@ const LoginSignup = ({ onClose }) => {
     dispatch(loginUser({ email, password }))
     .unwrap()
     .then(() => {
-      dispatch(login())
+      
       toast.success("Login Successful!", { theme: "colored" });
+      dispatch(login())
       onClose();
     })
     .catch((err) => {
