@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./UserProfile.scss";
-import profilepic from '../../Assets/img1.png';
+import profilepic from '../../Assets/default.jpg';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { fetchUserDataApiCall, updateUserDataApiCall } from "../../Api";
 import Address from "../Address/Address";
+import { useDispatch, useSelector } from "react-redux";
 
 const UserProfile = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,6 +23,9 @@ const UserProfile = () => {
     profilePicture: "",
   });
 
+  const userDetails = useSelector((state) => state.user.userDetails);
+
+  
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -64,9 +68,9 @@ const UserProfile = () => {
       console.log("Saving updated user data...");
 
       const updateData = new FormData();
-      updateData.append("firstName", userData.firstName);
-      updateData.append("lastName", userData.lastName);
-      updateData.append("email", userData.email);
+      updateData.append("firstName", userDetails.firstName);
+      updateData.append("lastName", userDetails.lastName);
+      updateData.append("email", userDetails.email);
       
       if (selectedImage) {
         updateData.append("profilePicture", selectedImage); 
@@ -116,7 +120,7 @@ const UserProfile = () => {
         <div className="profile-className-profile-image-container">
           <div className="profile-className-profile-image">
             <img
-              src={selectedImage ? URL.createObjectURL(selectedImage) : userData.profilePicture || profilepic}
+              src={selectedImage ? URL.createObjectURL(selectedImage) : userDetails.profilePicture || profilepic}
               className="profile-className-profile-picture"
               onClick={handleModalOpen}
             />
@@ -128,7 +132,7 @@ const UserProfile = () => {
             <label>First Name</label>
             <input
               type="text"
-              value={userData.firstName}
+              value={userDetails.firstName}
               readOnly={!isEditing}
               onChange={(e) => setUserData((prev) => ({ ...prev, firstName: e.target.value }))}
             />
@@ -137,7 +141,7 @@ const UserProfile = () => {
             <label>Last Name</label>
             <input
               type="text"
-              value={userData.lastName}
+              value={userDetails.lastName}
               readOnly={!isEditing}
               onChange={(e) => setUserData((prev) => ({ ...prev, lastName: e.target.value }))}
             />
@@ -145,7 +149,7 @@ const UserProfile = () => {
         </div>
         <div className="profile-className-field">
           <label>Email ID</label>
-          <input type="email" value={userData.email} readOnly />
+          <input type="email" value={userDetails.email} readOnly />
         </div>
         <div className="profile-className-field">
           <label>Password</label>

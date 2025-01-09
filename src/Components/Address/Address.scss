@@ -9,8 +9,9 @@
   align-items: center;
 }
 .Address-className-title {
-  font-size: 1.5em;
+  font-size: 1em;
   color: #000000;
+ 
 }
 .Address-className-edit-btn,
 .Address-className-add-btn {
@@ -19,6 +20,7 @@
   color: #A03037;
   font-size: 1em;
   cursor: pointer;
+  margin-bottom: 3%;
 }
 .Address-className-add-btn {
   border: 0.1em solid #A03037;
@@ -60,4 +62,25 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.Address-className-compact {
+  display: block;
+  padding: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  word-wrap: break-word;
+  white-space: normal;
+}
+.Address-className-compact:hover {
+  background-color: #e0f7fa;
+}
+.address-item{
+  display: flex;
+  margin-bottom: 3%;
+  cursor: pointer;
 }

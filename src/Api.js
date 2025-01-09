@@ -9,9 +9,30 @@ const getAuth = () => {
 };
 
 // Books API
-export const allBooks = async (page) => {
-  const books = await axios.get(`${BASE_URL}books/${page}`);
+export const allBooks = async (page, sort) => {
+  const books = await axios.get(`${BASE_URL}books/${page}`, {params: {sortQuery: sort}});
   return books?.data?.data;
+};
+
+// AdminBooks API
+export const fetchAdminBooks = async () => {
+  const adminBooks = await axios.get(`${BASE_URL}books/adminbooks`,
+    {
+      headers: {
+        Authorization: getAuth(),
+      },
+    }
+  );
+  return adminBooks?.data?.data;
+};
+
+//Delete book by admin
+export const deleteAdminBooks = async (id) => {
+  return await axios.delete(`${BASE_URL}books/${id}`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
 };
 
 export const getBookById = async (id) => {
@@ -90,8 +111,8 @@ export const createUserAddressApiCall =  async(payload) => {
 //     })
 //   }
 
-export const updateUserAddressApiCall =  async(payload) => {
-    return await axios.put(`http://localhost:7000/api/v1/customer/67739748b3835b4838e375ef`,payload,{
+export const updateUserAddressApiCall =  async(payload,addressId) => {
+    return await axios.put(`http://localhost:7000/api/v1/customer/${addressId}`,payload,{
      headers:{
          Authorization:getAuth()
      }
@@ -173,14 +194,20 @@ export const getCartItemsApi = async () => {
     }
 };
 
+export const searchedBooks = async(page, text, sort) => {
 
-export const searchedBooks = async(page, text) => {
-
-    const books = await axios.get(`${BASE_URL}/books/search/${page}`, {params: {searchQuery: text}})
-    console.log(books,"***")
+  const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
     return books?.data?.data;
 
 }
+
+export const createBookByAdminApiCall = async (payload) => {
+    return await axios.post(`${BASE_URL}/books`, payload, {
+      headers: {
+        Authorization: getAuth(),
+      },
+    });
+  };
 
 export const syncCartWithBackend = async (payload) => {
   return await axios.post(`http://localhost:7000/api/v1/cart/sync`, payload, {
@@ -189,3 +216,4 @@ export const syncCartWithBackend = async (payload) => {
     },
   });
 };
+
