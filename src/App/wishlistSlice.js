@@ -55,7 +55,6 @@ export const addWishlistItem = createAsyncThunk('wishlist/addWishlistItem', asyn
   return data.data.book;
 });
 
-
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: {
@@ -78,9 +77,10 @@ const wishlistSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message || 'Something went wrong';
       })
-     
       .addCase(addWishlistItem.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        if (action.payload && !state.items.some((item) => item._id === action.payload._id)) {
+          state.items.push(action.payload);
+        }
       })
       .addCase(removeWishlistItem.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item._id !== action.payload);

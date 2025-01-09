@@ -4,7 +4,7 @@ import { fetchWishlist, removeWishlistItem } from '../../App/wishlistSlice';
 import WishlistItem from './WishlistItem';
 import NotLoggedInPrompt from './NotLoggedInPrompt';
 import './Wishlist.scss';
-import wishlist from '../../Assets/wishlist.png'; 
+import wishlist from '../../Assets/wishlist.svg'; 
 
 export default function Wishlist() {
   const dispatch = useDispatch();
@@ -17,15 +17,27 @@ export default function Wishlist() {
     }
   }, [isAuthenticated, status, dispatch]);
 
+  useEffect(() => {
+    if (status === 'succeeded') {
+      localStorage.setItem('wishlist', JSON.stringify(items)); // Save wishlist to localStorage
+    }
+  }, [items, status]);
+
+  useEffect(() => {
+    const savedWishlist = JSON.parse(localStorage.getItem('wishlist'));
+    if (savedWishlist) {
+      dispatch({ type: 'wishlist/fetchWishlist', payload: savedWishlist });
+    }
+  }, [dispatch]);
+
   const handleRemove = (bookId) => {
     dispatch(removeWishlistItem(bookId)).then(() => {
-      dispatch(fetchWishlist());
+      dispatch(fetchWishlist()); // Fetch wishlist after removal
     });
   };
 
   if (!isAuthenticated) {
-    return   <NotLoggedInPrompt message="Login to view your wishlist items."iconSize={64} />
-
+    return <NotLoggedInPrompt message="Login to view your wishlist items." iconSize={64} />;
   }
 
   if (status === 'loading') {
@@ -33,17 +45,14 @@ export default function Wishlist() {
   }
 
   if (status === 'failed') {
-    return <NotLoggedInPrompt message="Login to view your wishlist items."iconSize={64} />;
+    return <NotLoggedInPrompt message="Failed to load your wishlist." iconSize={64} />;
   }
 
   if (status === 'succeeded' && (!Array.isArray(items) || items.length === 0)) {
     return (
       <div style={{ textAlign: 'center' }}>
-        <br /> <br /> <br /> <br /> <br /> <br />
         <img src={wishlist} alt="Empty Wishlist" className="empty-wishlist" />
         <h3 className="empty-wishlist-text">Your wishlist is empty</h3>
-        <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-        <br /> <br /> 
       </div>
     );
   }

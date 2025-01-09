@@ -2,8 +2,8 @@ import axiosInstance from "./axiosInstance";
 import axios from "axios";
 const BASE_URL = "http://localhost:7000/api/v1";
 // Books API
-export const allBooks = async (page) => {
-  const response = await axiosInstance.get(`books/${page}`);
+export const allBooks = async (page,sort) => {
+  const response = await axiosInstance.get(`books/${page}`, {params: {sortQuery: sort}});
   return response.data.data;
 };
 const getAuth = () => {
@@ -132,7 +132,7 @@ export const getCartItemsApi = async () => {
 
 export const searchedBooks = async(page, text, sort) => {
 
-  const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
+  const books = await axios.get(`${BASE_URL}/books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
         return books?.data?.data;
     };
 
@@ -141,7 +141,7 @@ export const searchedBooks = async(page, text, sort) => {
 export const forgotpassword = async (email) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}users/forgotpassword`,
+      `${BASE_URL}/users/forgotpassword`,
       { email },
       // {
       //   headers: {
@@ -162,7 +162,7 @@ export const forgotpassword = async (email) => {
 export const resetpassword = async (password, token) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}users/resetpassword`,
+      `${BASE_URL}/users/resetpassword`,
       { password },
       {
         headers: {

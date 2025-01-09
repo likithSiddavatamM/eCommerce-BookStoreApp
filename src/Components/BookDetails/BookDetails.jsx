@@ -1,36 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import './BookDetails.scss';
-import { FaRegStar, FaRegHeart } from 'react-icons/fa';
+import { FaRegStar, FaRegHeart, FaHeart } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getBookById, addToCartApi } from '../../Api';
-import {setQuantity, setTotalBookQuantity } from '../../App/CartSlice';
+import { setQuantity, setTotalBookQuantity } from '../../App/CartSlice';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
 import { addToCart, updateQuantity } from '../../App/CartSlice';
 import { addWishlistItem } from '../../App/wishlistSlice';
-
+import { fetchWishlist } from '../../App/wishlistSlice'; // Import fetchWishlist action
+import LoginSignup from '../LoginSignup/LoginSignup'; // Import LoginSignup component
 
 const BookDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [currentBook, setCurrentBook] = useState({});
   const [showQuantitySelector, setShowQuantitySelector] = useState(false);
-  const [selectedThumbnail, setSelectedThumbnail] = useState(0);
-  
+  // const [selectedThumbnail, setSelectedThumbnail] = useState(0);
+  const [isWishlist, setIsWishlist] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false); // For modal visibility
   const books = useSelector((state) => state.bookContainer.books);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const quantity = useSelector((state) => state.cart.quantities[id] || 0);
-  
+
   useEffect(() => {
     const fetchBookDetails = async () => {
       const book = books.find((book) => book._id === id);
       if (book) {
         setCurrentBook(book);
         dispatch(setTotalBookQuantity({ bookId: id, quantity: book.quantity }));
+        setIsWishlist(book.isInWishlist || false); // Update wishlist status if available
       } else {
         const fetchedBook = await getBookById(id);
         setCurrentBook(fetchedBook);
         dispatch(setTotalBookQuantity({ bookId: id, quantity: fetchedBook.quantity }));
+        setIsWishlist(fetchedBook.isInWishlist || false); // Update wishlist status if available
       }
     };
     fetchBookDetails();
@@ -64,21 +68,22 @@ const BookDetails = () => {
 
   const handleWishlistToggle = async () => {
     if (!isAuthenticated) {
-      console.error('User not authenticated');
+      setShowLoginModal(true); // Show login modal if not authenticated
       return;
     }
-  
+
     try {
-      const response = await dispatch(addWishlistItem(currentBook._id));
-      setIsWishlist(true); // Optionally set it based on the response
-      console.log('Added to wishlist:', response.payload);
+      await dispatch(addWishlistItem(currentBook._id));
+      dispatch(fetchWishlist());
+      setIsWishlist(true);
     } catch (error) {
       console.error('Error adding to wishlist:', error);
     }
   };
-  
 
-
+  const closeModal = () => {
+    setShowLoginModal(false);
+  };
 
   if (!currentBook) {
     return <div>Loading...</div>;
@@ -112,26 +117,18 @@ const BookDetails = () => {
               </button>
             )}
 
-<button
-  className="book-details__wishlist-button"
-  onClick={handleWishlistToggle}
-  disabled={isWishlist} // Disable button if already in wishlist
->
-  {isWishlist ? (
-    <FaHeart className="wishlist-icon wishlist-icon--active" />
-  ) : (
-    <FaRegHeart className="wishlist-icon" />
-  )}
-  WISHLIST
-</button>
-
-
-
-            <button className="book-details__wishlist-button">
-              <FaRegHeart className="wishlist-icon" />
+            <button
+              className="book-details__wishlist-button"
+              onClick={handleWishlistToggle}
+              disabled={isWishlist}
+            >
+              {isWishlist ? (
+                <FaHeart className="wishlist-icon wishlist-icon--active" />
+              ) : (
+                <FaRegHeart className="wishlist-icon" />
+              )}
               WISHLIST
             </button>
-
           </div>
         </div>
 
@@ -147,8 +144,12 @@ const BookDetails = () => {
           </div>
 
           <div className="book-details__price">
-            <span className="book-details__current-price">Rs. {currentBook.discountPrice}</span>
-            <span className="book-details__original-price">Rs. {currentBook.price}</span>
+            <span className="book-details__current-price">
+              Rs. {currentBook.discountPrice}
+            </span>
+            <span className="book-details__original-price">
+              Rs. {currentBook.price}
+            </span>
           </div>
 
           <div className="book-details__description">
@@ -175,40 +176,21 @@ const BookDetails = () => {
               <button className="book-details__submit-button">Submit</button>
             </div>
             <div className="book-details__reviews">
-              <div className="book-details__review">
-                <div className="book-details__review-header">
-                  <span className="book-details__review-author">Aniket Chile</span>
-                  <div className="book-details__review-stars">
-                    {[1, 2, 3].map((rating) => (
-                      <FaRegStar key={rating} className="book-details__star-filled" />
-                    ))}
-                    {[1, 2].map((rating) => (
-                      <FaRegStar key={rating} className="book-details__star-empty" />
-                    ))}
-                  </div>
-                </div>
-                <p className="book-details__review-text">Good product...</p>
-              </div>
-              <div className="book-details__review">
-                <div className="book-details__review-header">
-                  <span className="book-details__review-author">Shweta Bodkar</span>
-                  <div className="book-details__review-stars">
-                    {[1, 2, 3, 4].map((rating) => (
-                      <FaRegStar key={rating} className="book-details__star-filled" />
-                    ))}
-                    <FaRegStar className="book-details__star-empty" />
-                  </div>
-                </div>
-                <p className="book-details__review-text">Good product...</p>
-              </div>
+              {/* Reviews */}
             </div>
           </div>
         </div>
       </div>
+
+      {showLoginModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <LoginSignup onClose={closeModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default BookDetails;
-
-
