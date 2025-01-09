@@ -251,6 +251,7 @@
     font-weight: bold;
     cursor: pointer;
     width: 6em;
+    margin: 9px 9px 9px 0px;
 
     &:hover {
       background-color: rgb(28, 171, 206);
@@ -291,9 +292,10 @@
       }
 
       .book-details__review-text {
-        font-size: 0.95rem;
+        font-size: 0.81rem;
         color: #555;
         line-height: 1.5;
+        text-align: justify;
       }
     }
   }

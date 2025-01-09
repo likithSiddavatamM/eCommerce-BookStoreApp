@@ -1,9 +1,14 @@
 import axiosInstance from "./axiosInstance";
 import axios from "axios";
 const BASE_URL = "http://localhost:7000/api/v1";
+// Helper function to get the Authorization header
+const getAuth = () => {
+  return `Bearer ${localStorage.getItem('accessToken')}`;
+};
+
 // Books API
-export const allBooks = async (page) => {
-  const response = await axiosInstance.get(`books/${page}`);
+export const allBooks = async (page, sort) => {
+  const response = await axiosInstance.get(`books/${page}`,{params:{sortQuery: sort}});
   return response.data.data;
 };
 

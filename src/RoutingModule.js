@@ -11,6 +11,9 @@ import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import Cart from "./Components/Cart/Cart";
 
 import Wishlist from "./Components/Wishlist/Wishlist";
+import { ProtectedRoute } from "./Routing/ProtectedRoute";
+import { AuthRoute } from "./Routing/AuthRoute";
+import PageNotFound from "./Components/PageNotFound/PageNotFound";
 
 
 function Routing(){
@@ -40,7 +43,11 @@ function Routing(){
                 },
                 { 
                     path:'/admin',
-                    element: <Admin/>
+                    element: <ProtectedRoute><Admin/></ProtectedRoute>
+                },
+                { 
+                    path:'/notfound',
+                    element: <AuthRoute><PageNotFound/></AuthRoute>
                 },
                 {
                     path:'/orders',
