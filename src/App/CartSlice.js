@@ -1,19 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const loadCartFromLocalStorage = () => {
-  const cartData = localStorage.getItem('cart');
-  return cartData
-    ? JSON.parse(cartData)
-    : { items: [], totalBookQuantity: {}, quantities: {} };
-};
-
-const saveCartToLocalStorage = (cart) => {
-  localStorage.setItem('cart', JSON.stringify(cart));
-};
-
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: loadCartFromLocalStorage(),
+  initialState: { items: [], totalBookQuantity: {}, quantities: {} },
   reducers: {
     addToCart: (state, action) => {
       const existingItem = state.items.find(
@@ -30,14 +19,14 @@ const cartSlice = createSlice({
       }
       state.quantities[action.payload._id] =
         (state.quantities[action.payload._id] || 0) + (action.payload.quantity || 1);
-      saveCartToLocalStorage(state);
+      //saveCartToLocalStorage(state);
     },
     removeFromCart: (state, action) => {
-      state.items = state.items.filter((item) => item._id !== action.payload);
+      state.items = state.items.filter((item) => item.bookId !== action.payload);
       if (state.quantities[action.payload]) {
         delete state.quantities[action.payload];
       }
-      saveCartToLocalStorage(state);
+      //saveCartToLocalStorage(state);
     },
     toggleCart: (state) => {
       state.isCartOpen = !state.isCartOpen;
@@ -49,7 +38,7 @@ const cartSlice = createSlice({
       if (item) {
         item.quantity = action.payload.quantity;
       }
-      saveCartToLocalStorage(state);
+     // saveCartToLocalStorage(state);
     },
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
@@ -63,33 +52,35 @@ const cartSlice = createSlice({
           delete state.quantities[id];
         }
       }
-      saveCartToLocalStorage(state);
+     // saveCartToLocalStorage(state);
     },
     setTotalBookQuantity: (state, action) => {
       if (typeof state.totalBookQuantity !== 'object') {
         state.totalBookQuantity = {};
       }
       state.totalBookQuantity[action.payload.bookId] = action.payload.quantity;
-      saveCartToLocalStorage(state);
+     // saveCartToLocalStorage(state);
     },
     setCartData: (state, action) => {
       // Ensure we're getting complete book objects with all necessary fields
-      state.items = (action.payload.data.books || []).map(book => ({
-        ...book,
-        quantity: action.payload.quantities?.[book._id] || book.quantity || 0
-      }));
+      console.log(action.payload.quantities,"action.payload.itemsaction.payload.itemsaction.payload.items")
+      state.items = action.payload.items;
+  
+      // state.quantity= action.payload.quantities?.[book._id] || book.quantity || 0
+     
       
       state.totalBookQuantity = action.payload.totalBookQuantity || {};
       state.quantities = action.payload.quantities || {};
+      console.log(state.items,"state.items")
+     // saveCartToLocalStorage(state);
       
       // Clean up any invalid data
-      state.items = state.items.filter(item => 
-        item._id && 
-        item.bookName && 
-        typeof item.quantity === 'number'
-      );
+      // state.items = state.items.filter(item => 
+      //   item._id && 
+      //   item.bookName && 
+      //   typeof item.quantity === 'number'
+      // );
       
-      saveCartToLocalStorage(state);
     },
   },
 });

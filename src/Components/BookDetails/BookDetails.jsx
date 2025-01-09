@@ -12,10 +12,11 @@ const BookDetails = () => {
   const dispatch = useDispatch();
   const [currentBook, setCurrentBook] = useState({});
   const [showQuantitySelector, setShowQuantitySelector] = useState(false);
+  const [selectedThumbnail, setSelectedThumbnail] = useState(0);
   
   const books = useSelector((state) => state.bookContainer.books);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const quantity = useSelector((state) => state.cart.quantities[id] || 0);  // Get quantity for the current book
+  const quantity = useSelector((state) => state.cart.quantities[id] || 0);
   
   useEffect(() => {
     const fetchBookDetails = async () => {
@@ -37,7 +38,7 @@ const BookDetails = () => {
   }, [quantity]);
 
   const handleAddToBag = async () => {
-    const bookToAdd = { ...currentBook, quantity: 1 };
+    const bookToAdd = { ...currentBook, bookId: id, quantity: 1 };
 
     if (isAuthenticated) {
       try {
@@ -47,14 +48,14 @@ const BookDetails = () => {
       }
     }
     dispatch(addToCart(bookToAdd));
-    dispatch(setQuantity({ bookId: id, quantity: 1 }));  // Update quantity for this book in the global state
+    dispatch(setQuantity({ bookId: id, quantity: 1 }));
   };
 
   const handleQuantityChange = (newQuantity) => {
     if (newQuantity === 0) {
       setShowQuantitySelector(false);
     } else {
-      dispatch(updateQuantity({ id: currentBook._id, quantity: newQuantity }));  // Update quantity in global state
+      dispatch(updateQuantity({ id: currentBook._id, quantity: newQuantity }));
     }
   };
 
@@ -62,11 +63,15 @@ const BookDetails = () => {
     <div className="book-details">
       <div className="book-details__container">
         <div className="book-details__image-section">
-          <img
-            src={currentBook.bookImage}
-            alt={currentBook.bookName}
-            className="book-details__image"
-          />
+          <div className="book-details__image-container">
+            <div className="book-details__main-image">
+              <img
+                src={currentBook.bookImage}
+                alt={currentBook.bookName}
+                className="book-details__image"
+              />
+            </div>
+          </div>
           <div className="book-details__buttons">
             {showQuantitySelector ? (
               <QuantitySelector
@@ -91,7 +96,7 @@ const BookDetails = () => {
         <div className="book-details__info-section">
           <div className="book-details__header">
             <h1 className="book-details__title">{currentBook.bookName}</h1>
-            <p className="book-details__author">{currentBook.author}</p>
+            <p className="book-details__author">by {currentBook.author}</p>
           </div>
 
           <div className="book-details__rating">
@@ -100,8 +105,8 @@ const BookDetails = () => {
           </div>
 
           <div className="book-details__price">
-            <span className="book-details__current-price">Rs.{currentBook.discountPrice}</span>
-            <span className="book-details__original-price">Rs.{currentBook.price}</span>
+            <span className="book-details__current-price">Rs. {currentBook.discountPrice}</span>
+            <span className="book-details__original-price">Rs. {currentBook.price}</span>
           </div>
 
           <div className="book-details__description">
@@ -140,7 +145,7 @@ const BookDetails = () => {
                     ))}
                   </div>
                 </div>
-                <p className="book-details__review-text">Good product...</p>
+                <p className="book-details__review-text">Good product. Even though the translation could have been better, Chanakya's neeti are thought provoking. Chanakya has written on many different topics and his writings are succinct.</p>
               </div>
               <div className="book-details__review">
                 <div className="book-details__review-header">
@@ -152,7 +157,7 @@ const BookDetails = () => {
                     <FaRegStar className="book-details__star-empty" />
                   </div>
                 </div>
-                <p className="book-details__review-text">Good product...</p>
+                <p className="book-details__review-text"> Good product. Even though the translation could have been better, Chanakya's neeti are thought provoking. Chanakya has written on many different topics and his writings are succinct.</p>
               </div>
             </div>
           </div>
@@ -163,3 +168,5 @@ const BookDetails = () => {
 };
 
 export default BookDetails;
+
+

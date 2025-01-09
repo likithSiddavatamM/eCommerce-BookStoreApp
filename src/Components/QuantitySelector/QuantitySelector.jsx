@@ -24,21 +24,25 @@ const QuantitySelector = ({ small = false, id }) => {
   };
 
   const handleIncrease = () => {
-    if (quantity < totalBookQuantity[id]) {
+    const maxQuantity = totalBookQuantity[id] || Infinity;
+    if (quantity < maxQuantity) {
       updateQuantityHandler(quantity + 1);
     }
   };
 
   const updateQuantityHandler = async (newQuantity) => {
-    const quantityDifference = newQuantity - quantity; // Calculate the incremental change
+    const quantityDifference = newQuantity - quantity;
     dispatch(setQuantity({ bookId: id, quantity: newQuantity }));
     dispatch(updateQuantity({ id, quantity: newQuantity }));
 
     if (isAuthenticated && quantityDifference !== 0) {
       try {
-        await updateCartQuantityApi(id, quantityDifference); // Sync with server
+        await updateCartQuantityApi(id, quantityDifference);
       } catch (error) {
         console.error('Error updating cart quantity:', error);
+        // Revert the local change if the API call fails
+        dispatch(setQuantity({ bookId: id, quantity }));
+        dispatch(updateQuantity({ id, quantity }));
       }
     }
   };
@@ -46,9 +50,9 @@ const QuantitySelector = ({ small = false, id }) => {
   return (
     <div className={`quantity-selector ${small ? 'small' : ''}`}>
       <button
-        className={`btn ${quantity === 1 ? 'disabled' : ''}`}
+        className={`btn ${quantity <= 1 ? 'disabled' : ''}`}
         onClick={handleDecrease}
-        disabled={quantity === 1}
+        disabled={quantity <= 1}
       >
         -
       </button>
@@ -59,9 +63,9 @@ const QuantitySelector = ({ small = false, id }) => {
         readOnly
       />
       <button 
-        className={`btn ${quantity >= totalBookQuantity[id] ? 'disabled' : ''}`}
+        className={`btn ${quantity >= (totalBookQuantity[id] || Infinity) ? 'disabled' : ''}`}
         onClick={handleIncrease}
-        disabled={quantity >= totalBookQuantity[id]}
+        disabled={quantity >= (totalBookQuantity[id] || Infinity)}
       >
         +
       </button>
@@ -70,3 +74,4 @@ const QuantitySelector = ({ small = false, id }) => {
 };
 
 export default QuantitySelector;
+
