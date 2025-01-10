@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: { items: [], totalBookQuantity: {}, quantities: {} },
+  initialState: { items: [], totalBookQuantity: {}, quantities: {}, orderSuccess: false },
+
   reducers: {
     addToCart: (state, action) => {
       const existingItem = state.items.find(
@@ -52,36 +53,29 @@ const cartSlice = createSlice({
           delete state.quantities[id];
         }
       }
-     // saveCartToLocalStorage(state);
     },
     setTotalBookQuantity: (state, action) => {
       if (typeof state.totalBookQuantity !== 'object') {
         state.totalBookQuantity = {};
       }
       state.totalBookQuantity[action.payload.bookId] = action.payload.quantity;
-     // saveCartToLocalStorage(state);
+    },
+    setCartEmpty:  (state, action) => {
+      state.items=action.payload;
     },
     setCartData: (state, action) => {
-      // Ensure we're getting complete book objects with all necessary fields
       console.log(action.payload.quantities,"action.payload.itemsaction.payload.itemsaction.payload.items")
       state.items = action.payload.items;
-  
-      // state.quantity= action.payload.quantities?.[book._id] || book.quantity || 0
-     
-      
       state.totalBookQuantity = action.payload.totalBookQuantity || {};
       state.quantities = action.payload.quantities || {};
-      console.log(state.items,"state.items")
-     // saveCartToLocalStorage(state);
-      
-      // Clean up any invalid data
-      // state.items = state.items.filter(item => 
-      //   item._id && 
-      //   item.bookName && 
-      //   typeof item.quantity === 'number'
-      // );
-      
+      console.log(state.items,"state.items")      
     },
+    setOrderSuccessTrue: (state, action) => {
+      state.orderSuccess = true
+    },
+    setOrderSuccessFalse: (state, action) => {
+      state.orderSuccess = false
+    }
   },
 });
 
@@ -93,6 +87,9 @@ export const {
   updateQuantity,
   setTotalBookQuantity,
   setCartData,
+  setCartEmpty,
+  setOrderSuccessTrue,
+  setOrderSuccessFalse
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

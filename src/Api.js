@@ -116,7 +116,7 @@ export const getOrderApiCall = async (END_POINT) => {
 }
 
 export const placeOrderApi = async (END_POINT) => {
-  const response = await axios.post(`${BASE_URL}orders`, {
+  const response = await axios.post(`${BASE_URL}orders`, {},{
     headers: {
       Authorization: getAuth(),
     },
@@ -191,7 +191,6 @@ export const getCartItemsApi = async () => {
 };
 // Search API
 export const searchedBooks = async(page, text, sort) => {
-
   const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
     return books?.data?.data;
 

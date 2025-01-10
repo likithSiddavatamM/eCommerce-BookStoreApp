@@ -1,13 +1,14 @@
 .container {
-  height: 3em;
-  position: relative;
-  top: 3em;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 64%;
-  z-index: 10;
+    height: 3em;
+    position: relative;
+    top: 3em;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 58%;
+    padding: 0.5% 0%;
+    padding-left: 6%;
 
 }
 

@@ -94,7 +94,6 @@ export const fetchOrders = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getOrderApiCall('orders');
-      console.log('orders',response.data.data)
       return response.data.data; 
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -104,10 +103,17 @@ export const fetchOrders = createAsyncThunk(
 
 export const placeOrder = createAsyncThunk(
   'user/placeOrder',
-  async (_, { rejectWithValue }) => {
+  async ({ cartItems, selectedAddress }, { rejectWithValue }) => {
     try {
-      const response = await placeOrderApi();
-      return response; // Return the response data from the API
+      const response = await placeOrderApi({
+        items: cartItems.map((item) => ({
+          bookId: item.bookId,
+          quantity: item.quantity,
+        })),
+        address: selectedAddress,
+      });
+      const response2 = await getOrderApiCall('orders');
+      return response2.data.data; 
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -118,28 +124,25 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     userDetails: null,
-    accessToken: null,
-    refreshToken:null,
+    accessToken: localStorage.getItem('accessToken'),
+    refreshToken: localStorage.getItem('refreshToken'),
     customerDetails: [],
     orders: [],
     addresses: [],
     status: 'idle',
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem('accessToken'),
     error: null,
   },
   reducers: {
     logout: (state) => {
       state.userDetails = null;
+      state.isAuthenticated = false;
       state.accessToken = null;
       state.refreshToken = null;
-      state.userId = null;
       state.customerDetails = [];
-      state.orders = [];
-      state.isAuthenticated = false; 
-      state.addresses = [];
+      state.orders = [];       
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      localStorage.removeItem('userId'); 
     },
   },
   extraReducers: (builder) => {
@@ -158,10 +161,10 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.userDetails = action.payload.user;
         state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
         state.isAuthenticated = true;
         localStorage.setItem('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken); 
-        localStorage.setItem('userId', action.payload.userId); 
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -225,19 +228,19 @@ const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload;
       })
-        // Place Order
-        .addCase(placeOrder.pending, (state) => {
-          state.status = 'loading';
-        })
-        .addCase(placeOrder.fulfilled, (state, action) => {
-          state.orders.push(action.payload); // Add the new order to the list of orders
-          state.status = 'succeeded';
-          state.error = null;
-        })
-        .addCase(placeOrder.rejected, (state, action) => {
-          state.status = 'failed';
-          state.error = action.payload;
-        });
+      // Place Order
+      .addCase(placeOrder.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(placeOrder.fulfilled, (state, action) => {
+        state.orders=action.payload;
+        state.status = 'succeeded';
+        state.error = null;
+      })
+      .addCase(placeOrder.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      });
   },
 });
 
