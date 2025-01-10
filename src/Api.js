@@ -1,13 +1,10 @@
 import axios from "axios";
 
-const BASE_URL = `http://localhost:3001/api/v1/`;
+const BASE_URL = `http://localhost:7000/api/v1/`;
 
-
-// Helper function to get the Authorization header
 const getAuth = () => {
   return `Bearer ${localStorage.getItem('accessToken')}`;
 };
-
 // Books API
 export const allBooks = async (page, sort) => {
   const books = await axios.get(`${BASE_URL}books/${page}`, {params: {sortQuery: sort}});
@@ -18,6 +15,28 @@ export const getBookById = async (id) => {
   const response = await axios.get(`${BASE_URL}books/book/${id}`);
   return response?.data?.data;
 };
+
+// AdminBooks API
+export const fetchAdminBooks = async () => {
+  const adminBooks = await axios.get(`${BASE_URL}books/adminbooks`,
+    {
+      headers: {
+        Authorization: getAuth(),
+      },
+    }
+  );
+  return adminBooks?.data?.data;
+};
+
+//Delete book by admin
+export const deleteAdminBooks = async (id) => {
+  return await axios.delete(`${BASE_URL}books/${id}`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
+};
+
 
 // User API
 export const loginApiCall = async (payload, END_POINT = "users/login") => {
@@ -53,24 +72,6 @@ export const fetchCustomerDetailsApiCall = async () => {
   });
 };
 
-// Orders API
-export const getOrdersApiCall = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}orders`, {
-      headers: {
-        Authorization: getAuth(),
-      },
-    });
-    console.log(`${BASE_URL}orders`)
-    console.log(response?.data?.data)
-    return response?.data?.data;
-  } catch (error) {
-    console.error("Error fetching orders:", error);
-    throw error; 
-  }
-};
-
-// Example: Create a new customer (optional if needed)
 export const createCustomerApiCall = async (payload) => {
   return await axios.post(`${BASE_URL}customers`, payload, {
     headers: {
@@ -79,19 +80,66 @@ export const createCustomerApiCall = async (payload) => {
   });
 };
 
+export const fetchUserAddressApiCall = async(END_POINT="/customer")=>{
+  return await axios.get(`${BASE_URL}${END_POINT}`,
+      { headers:{
+          Authorization:getAuth()
+       }
+       }
+  )
+}
+
+export const createUserAddressApiCall =  async(payload) => {
+  return await axios.post(`${BASE_URL}customer`,payload,{
+   headers:{
+       Authorization:getAuth()
+   }
+  })
+
+}
+
+export const updateUserAddressApiCall =  async(payload,addressId) => {
+  return await axios.put(`${BASE_URL}customer/${addressId}`,payload,{
+   headers:{
+       Authorization:getAuth()
+   }
+  })
+}
+
+// Orders API
+export const getOrderApiCall = async (END_POINT) => {
+  return await axios.get(`${BASE_URL}orders`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
+}
+
+export const placeOrderApi = async (END_POINT) => {
+  const response = await axios.post(`${BASE_URL}orders`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
+  return response.data;
+};
 
 export const addToCartApi = async (bookId) => {
-    try {
-        const response = await axios.post(`${BASE_URL}cart`, { bookId }, {
-            headers: {
-                Authorization: getAuth()
-            }
-        });
-        return response.data;
-    } catch (error) {
-        console.error("Error adding to cart:", error);
-        throw error;
-    }
+  try {
+    const response = await axios.post(
+      `${BASE_URL}cart/${bookId}`,
+      {},
+      {
+        headers: {
+          Authorization: getAuth(),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding to cart:", error?.response?.data || error.message);
+    throw error;
+  }
 };
 
 export const removeFromCartApi = async (bookId) => {
@@ -109,17 +157,23 @@ export const removeFromCartApi = async (bookId) => {
 };
 
 export const updateCartQuantityApi = async (bookId, quantity) => {
-    try {
-        const response = await axios.put(`${BASE_URL}cart`, { bookId, quantity }, {
-            headers: {
-                Authorization: getAuth()
-            }
-        });
-        return response.data;
-    } catch (error) {
-        console.error("Error updating cart quantity:", error);
-        throw error;
-    }
+  try {
+    console.log(`Sending API request to update quantity for book ${bookId} to ${quantity}`);
+    const response = await axios.put(
+      `${BASE_URL}cart/${bookId}`,
+      {quantityChange: quantity },
+      {
+        headers: {
+          Authorization: getAuth(),
+        },
+      }
+    );
+    console.log('API response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating cart quantity:", error?.response?.data || error.message);
+    throw error;
+  }
 };
 
 export const getCartItemsApi = async () => {
@@ -129,13 +183,13 @@ export const getCartItemsApi = async () => {
                 Authorization: getAuth()
             }
         });
-        return response.data;
+        return response;
     } catch (error) {
         console.error("Error fetching cart items:", error);
         throw error;
     }
 };
-
+// Search API
 export const searchedBooks = async(page, text, sort) => {
 
   const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
