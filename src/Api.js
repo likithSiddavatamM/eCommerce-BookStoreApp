@@ -1,92 +1,198 @@
-import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
+const BASE_URL = `http://localhost:7000/api/v1/`;
+
+const getAuth = () => {
+  return `Bearer ${localStorage.getItem('accessToken')}`;
+};
 // Books API
-export const allBooks = async (page) => {
-  const response = await axiosInstance.get(`books/${page}`);
-  return response.data.data;
+export const allBooks = async (page, sort) => {
+  const books = await axios.get(`${BASE_URL}books/${page}`, {params: {sortQuery: sort}});
+  return books?.data?.data;
 };
 
 export const getBookById = async (id) => {
-  const response = await axiosInstance.get(`books/book/${id}`);
-  return response.data.data;
+  const response = await axios.get(`${BASE_URL}books/book/${id}`);
+  return response?.data?.data;
 };
+
+// AdminBooks API
+export const fetchAdminBooks = async () => {
+  const adminBooks = await axios.get(`${BASE_URL}books/adminbooks`,
+    {
+      headers: {
+        Authorization: getAuth(),
+      },
+    }
+  );
+  return adminBooks?.data?.data;
+};
+
+//Delete book by admin
+export const deleteAdminBooks = async (id) => {
+  return await axios.delete(`${BASE_URL}books/${id}`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
+};
+
 
 // User API
 export const loginApiCall = async (payload, END_POINT = "users/login") => {
-  return await axiosInstance.post(END_POINT, payload);
+  return await axios.post(`${BASE_URL}${END_POINT}`, payload);
 };
 
 export const signupApiCall = async (payload, END_POINT = "users") => {
-  return await axiosInstance.post(END_POINT, payload);
+  return await axios.post(`${BASE_URL}${END_POINT}`, payload);
 };
 
-export const fetchUserDataApiCall = async (END_POINT) => {
-  return await axiosInstance.get(END_POINT);
+export const fetchUserDataApiCall = async (END_POINT = "users") => {
+  return await axios.get(`${BASE_URL}${END_POINT}`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
 };
 
-export const updateUserDataApiCall = async (payload) => {
-  return await axiosInstance.put(`users`, payload);
+export const updateUserDataApiCall = async (END_POINT = "users", payload) => {
+  return await axios.put(`${BASE_URL}${END_POINT}`, payload, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
 };
 
 // Customer Details API
-export const fetchCustomerDetailsApiCall = async (END_POINT) => {
-  return await axiosInstance.get(END_POINT);
+export const fetchCustomerDetailsApiCall = async () => {
+  return await axios.get(`${BASE_URL}customers`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
 };
 
 export const createCustomerApiCall = async (payload) => {
-  return await axiosInstance.post(`customers`, payload);
+  return await axios.post(`${BASE_URL}customers`, payload, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
 };
+
+export const fetchUserAddressApiCall = async(END_POINT="/customer")=>{
+  return await axios.get(`${BASE_URL}${END_POINT}`,
+      { headers:{
+          Authorization:getAuth()
+       }
+       }
+  )
+}
+
+export const createUserAddressApiCall =  async(payload) => {
+  return await axios.post(`${BASE_URL}customer`,payload,{
+   headers:{
+       Authorization:getAuth()
+   }
+  })
+
+}
+
+export const updateUserAddressApiCall =  async(payload,addressId) => {
+  return await axios.put(`${BASE_URL}customer/${addressId}`,payload,{
+   headers:{
+       Authorization:getAuth()
+   }
+  })
+}
 
 // Orders API
 export const getOrderApiCall = async (END_POINT) => {
-  return await axiosInstance.get(END_POINT);
+  return await axios.get(`${BASE_URL}orders`, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
 }
 
 export const placeOrderApi = async (END_POINT) => {
-  const response = await axiosInstance.post(END_POINT);
+  const response = await axios.post(`${BASE_URL}orders`, {},{
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
   return response.data;
 };
 
-// Address API
-export const fetchUserAddressApiCall = async (END_POINT = "customer") => {
-  return await axiosInstance.get(END_POINT);
-};
-
-export const createUserAddressApiCall = async (payload) => {
-  return await axiosInstance.post(`customer/`, payload);
-};
-
-export const updateUserAddressApiCall = async (payload) => {
-  return await axiosInstance.put(`customer/67739748b3835b4838e375ef`, payload);
-};
-
-// Cart API
 export const addToCartApi = async (bookId) => {
-  const response = await axiosInstance.post(`cart`, { bookId });
-  return response.data;
+  try {
+    const response = await axios.post(
+      `${BASE_URL}cart/${bookId}`,
+      {},
+      {
+        headers: {
+          Authorization: getAuth(),
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding to cart:", error?.response?.data || error.message);
+    throw error;
+  }
 };
 
 export const removeFromCartApi = async (bookId) => {
-  const response = await axiosInstance.delete(`cart/${bookId}`);
-  return response.data;
+    try {
+        const response = await axios.delete(`${BASE_URL}cart/${bookId}`, {
+            headers: {
+                Authorization: getAuth()
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error removing from cart:", error);
+        throw error;
+    }
 };
 
 export const updateCartQuantityApi = async (bookId, quantity) => {
-  const response = await axiosInstance.put(`cart/${bookId}`, {
-    quantityChange: quantity,
-  });
-  return response.data;
+  try {
+    console.log(`Sending API request to update quantity for book ${bookId} to ${quantity}`);
+    const response = await axios.put(
+      `${BASE_URL}cart/${bookId}`,
+      {quantityChange: quantity },
+      {
+        headers: {
+          Authorization: getAuth(),
+        },
+      }
+    );
+    console.log('API response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating cart quantity:", error?.response?.data || error.message);
+    throw error;
+  }
 };
 
 export const getCartItemsApi = async () => {
-  const response = await axiosInstance.get(`cart`);
-  return response.data;
+    try {
+        const response = await axios.get(`${BASE_URL}cart`, {
+            headers: {
+                Authorization: getAuth()
+            }
+        });
+        return response;
+    } catch (error) {
+        console.error("Error fetching cart items:", error);
+        throw error;
+    }
 };
-
 // Search API
-export const searchedBooks = async (page, text) => {
-  const response = await axiosInstance.get(`books/search/${page}`, {
-    params: { searchQuery: text },
-  });
-  return response.data.data;
-};
+export const searchedBooks = async(page, text, sort) => {
+
+  const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
+    return books?.data?.data;
+
+}

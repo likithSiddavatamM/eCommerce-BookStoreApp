@@ -6,7 +6,6 @@
   padding: 0.7% 5%; 
   color: white;
   gap: 2rem; 
-  min-width: 603px;
   position: fixed;
   width: 90%; 
   height: 6%;
@@ -18,10 +17,14 @@
     display: flex;
     align-items: center;
     gap: 1em;
+    padding-left: 9em;
 
     .logo-image {
       width: 2.5em;
       height: auto;
+    }
+    .logo-text{
+      font-family: normal Roboto;
     }
   }
   .search-bar {
@@ -35,6 +38,9 @@
   .user-actions {
     display: flex;
     gap: 1.5em;
+    padding-right: 9em;
+    align-items: center; 
+  justify-content: flex-end;
     .icon {
       display: flex;
       align-items: center;
@@ -135,55 +141,141 @@
   min-height: unset; 
   box-sizing: border-box;
 }
-@media screen and (max-width: 768px) {
-  .header {
-    padding: 0.625em 4%;
-    gap: 8%;
-    width: 100%;
+
+@media screen and (max-width: 1024px) {
+  .user-header, .admin-header {
+    justify-content: space-between; 
+    padding: 0.5em 2%;
+    width: 96%;
   }
 
-  .search-bar {
-    max-width: 30%;
+  .header .logo {
+    padding-left: 0;
   }
 
-  .user-actions {
-    gap: 0.75em;
-  }
-
-  .logo .logo-image {
-    width: 2em;
+  .header .user-actions {
+    padding-right: 0;
   }
 }
 
-@media screen and (max-width: 480px) {
-  .header {
-    flex-direction: column;
-    padding: 0.625em 4%;
-    gap: 2em;
-    width: 100%;
-    align-items: flex-start;
+@media screen and (max-width: 768px) {
+  .header .logo .logo-image {
+    width: 2em;
   }
 
-  .logo {
-    margin-bottom: 1em;
-  }
-
-  .search-bar {
-    width: 70%;
-    max-width: unset;
-    margin-bottom: 1em;
-  }
-
-  .user-actions {
-    flex-direction: column;
-    gap: 1em;
-  }
-
-  .icon .label {
+  .header .logo .logo-text {
     display: none;
   }
 
-  .logo .logo-image {
-    width: 2em;
+  .header .search-bar {
+    max-width: 40%;
+  }
+
+  .header .user-actions .icon,
+  .header .user-actions .cart-icon {
+    max-width: 1.5em;
+    max-height: 1.5em;
+  }
+
+  .header .user-actions .icon .label {
+    display: none;
+  }
+
+  .header .user-actions .cart-icon .shopping-cart-icon {
+    width: 1.5em;
+    height: 1.5em;
   }
 }
+@media screen and (max-width: 550px) {
+  .user-header, .admin-header {
+    
+    padding: 0.5em;
+  }
+
+  .header .logo {
+    padding-left: 0;
+  }
+
+  .header .search-bar {
+    max-width: 60%;
+  }
+
+  .header .user-actions {
+    gap: 0.2em; 
+    align-items: center;
+  }
+  .header .user-actions .icon,
+  .header .user-actions .cart-icon {
+    max-width: 1.5em;
+    max-height: 1.5em;
+  }
+}
+
+
+@media screen and (max-width: 480px) {
+  .user-header, .admin-header {
+    padding: 0.3em 1%;
+  }
+
+  .header .logo .logo-image {
+    width: 1.5em;
+  }
+
+  .header .search-bar {
+    max-width: 30%;
+    font-size: 0.9em;
+    padding: 0.3em;
+  }
+
+  .header .user-actions {
+    gap: 0.2em;
+  }
+
+  .header .user-actions .icon,
+  .header .user-actions .cart-icon {
+    max-width: 1.3em;
+    max-height: 1.3em;
+  }
+
+  .header .user-actions .cart-icon .shopping-cart-icon {
+    width: 1.3em;
+    height: 1.3em;
+  }
+}
+
+
+@media screen and (max-width: 360px) {
+  .header .search-bar {
+    max-width: 50%;
+    font-size: 0.8em;
+  }
+
+  .header .user-actions {
+    gap: 0.2em;
+  }
+
+  .header .user-actions .icon,
+  .header .user-actions .cart-icon {
+    max-width: 1.3em;
+    max-height: 1.3em;
+  }
+}
+
+
+@media screen and (max-width: 290px) {
+  .header .search-bar {
+    max-width: 40%;
+    font-size: 0.7em;
+  }
+
+  .header .user-actions {
+    gap: 0.1.9em;
+  }
+
+  .header .user-actions .icon,
+  .header .user-actions .cart-icon {
+    max-width: 1.2em;
+    max-height: 1.2em;
+  }
+}
+

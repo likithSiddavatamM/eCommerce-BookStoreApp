@@ -12,7 +12,7 @@ import Cart from "./Components/Cart/Cart";
 import Footer from "./Components/Footer/Footer";
 import Path_Sort from "./Components/Path_Sort/Path_Sort";
 import Wishlist from "./Components/Wishlist/Wishlist";
-
+import OrderSuccess from "./Components/OrderSuccess/OrderSuccess";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -58,6 +58,10 @@ function Routing(){
                   {
                   path: '/wishlist',
                   element: <Wishlist/>  
+                },
+                {
+                    path: '/ordersuccess',
+                    element: <OrderSuccess/>
                 }
 
             ]
