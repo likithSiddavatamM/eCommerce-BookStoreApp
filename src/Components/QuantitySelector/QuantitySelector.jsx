@@ -74,3 +74,4 @@ const QuantitySelector = ({ small = false, id }) => {
 };
 
 export default QuantitySelector;
+

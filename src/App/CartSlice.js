@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const cartSlice = createSlice({
   name: 'cart',
   initialState: { items: [], totalBookQuantity: {}, quantities: {}, orderSuccess: false },
+
   reducers: {
     addToCart: (state, action) => {
       const existingItem = state.items.find(
@@ -52,7 +53,6 @@ const cartSlice = createSlice({
           delete state.quantities[id];
         }
       }
-
     },
     setTotalBookQuantity: (state, action) => {
       if (typeof state.totalBookQuantity !== 'object') {
@@ -93,3 +93,4 @@ export const {
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
+

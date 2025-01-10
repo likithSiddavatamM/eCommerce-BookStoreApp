@@ -8,13 +8,13 @@ import './Cart.scss';
 import LoginSignup from '../LoginSignup/LoginSignup';
 import Address from '../Address/Address';
 import OrderSummary from '../OrderSummary/OrderSummary';
+
 import {
   getCartItemsApi,
   addToCartApi,
   removeFromCartApi,
   updateCartQuantityApi
 } from '../../Api';
-
 
 export default function Cart() {
   const [showAddress, setShowAddress] = useState(false);
@@ -68,7 +68,7 @@ export default function Cart() {
         }
       }
     };
-  
+    
     syncCart();
   }, [isAuthenticated, cartItems.items, dispatch]);
 
@@ -97,10 +97,7 @@ export default function Cart() {
   const handlePlaceOrder = () => {
     if (!isAuthenticated) {
       setShowLoginSignup(true);
-      
-    } 
-    // else {
-    //   setShowLoginSignup(true);    }
+    }
   };
 
   const handleAddressSelect = (address) => {
@@ -116,7 +113,7 @@ export default function Cart() {
         setShowAddress(false); 
     }
 };
-
+  
   if (cartItems.items.length === 0) {
     return (
       <div className="cart-empty">
@@ -135,7 +132,7 @@ export default function Cart() {
       <div className="cart-container">
         <div className="cart-header">
           <h1>My cart ({cartItems.items?.length})</h1>
-          <div className="location-selector"onClick={() => setShowAddress(!showAddress)}>
+          <div className="location-selector" onClick={() => setShowAddress(!showAddress)}>
             <MapPin className="location-icon" size={16} />
             <span>
               {selectedAddress
@@ -192,10 +189,11 @@ export default function Cart() {
             className={`section-header ${showAddress ? 'active' : ''}`}
             onClick={() => setShowAddress(!showAddress)}
           >
-            <h2>Address Details</h2>
+            <h3>Address Details</h3>
             <ChevronDown className="section-icon" size={16} />
           </div>
-          {showAddress && <div className="section-content">
+
+{showAddress && <div className="section-content">
           <Address onSelectAddress={handleAddressSelect} selectedAddress={selectedAddress} />
           </div>}
 
@@ -247,3 +245,5 @@ export default function Cart() {
     </div>
   );
 }
+
+

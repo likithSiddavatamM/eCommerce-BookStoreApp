@@ -191,7 +191,6 @@ export const getCartItemsApi = async () => {
 };
 // Search API
 export const searchedBooks = async(page, text, sort) => {
-
   const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})
     return books?.data?.data;
 
