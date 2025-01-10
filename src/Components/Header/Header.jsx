@@ -71,8 +71,7 @@ const Header = () => {
           <input type="text" placeholder="Search" className="search-bar" onChange={(e) => {
             const value = e.currentTarget.value
             clearTimeout(search);
-            search = setTimeout(() => {dispatch(setValue(/^[a-zA-Z0-9]+$/.test(value) ? value : "")); dispatch(setPage(1))}, 750);
-            nav("/");
+            search = setTimeout(() => {dispatch(setValue(/^[a-zA-Z0-9]+$/.test(value) ? value : "")); dispatch(setPage(1)); nav("/");}, 750);
             }}/>
         </div>
       <div className="user-actions">

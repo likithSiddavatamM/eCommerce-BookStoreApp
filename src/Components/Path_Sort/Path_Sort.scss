@@ -1,29 +1,43 @@
 .container {
-    height: 3em;
-    position: relative;
-    top: 3em;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 58%;
-    padding: 0.5% 0%;
+  height: 3em;
+  position: relative;
+  top: 3em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 64%;
+  z-index: 10;
+
+}
+
+.text {
+  cursor: pointer;
+  color: #9d9d9d;
+  font-size: 1rem;
+
+  &.large {
+    font-size: large;
   }
-  
-  .text {
-    cursor: pointer;
-    color: #9d9d9d;
-    font-size: 1rem;
-  
-    &.large {
-      font-size: large;
-    }
-  
-    &.small {
-      font-size: small;
-    }
-  
-    span {
-      color: black;
-    }
+
+  &.small {
+    font-size: small;
   }
+
+  span {
+    color: black;
+  }
+}
+
+.sort{
+  width: 13%;
+}
+
+.css-sc8y68-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root{
+  height: 4vh;
+  width: 100%;
+}
+
+.Select{
+font-size: x-small !important;
+}  
