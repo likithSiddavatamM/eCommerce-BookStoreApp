@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Suspense, lazy } from "react";
 import DashBoard from "./Components/DashBoard/DashBoard";
 import BookContainer from "./Components/BookContainer/BookContainer";
 
@@ -7,6 +6,7 @@ import UserProfile from "./Components/UserProfile/UserProfile";
 import BookDetails from "./Components/BookDetails/BookDetails";
 
 import Address from "./Components/Address/Address";
+import Admin from "./Components/Admin/Admin";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import Cart from "./Components/Cart/Cart";
 
@@ -40,6 +40,10 @@ function Routing(){
                 { 
                     path:'/address',
                     element: <Address/>
+                },
+                { 
+                    path:'/admin',
+                    element: <ProtectedRoute><Admin/></ProtectedRoute>
                 },
                 { 
                     path:'/notfound',

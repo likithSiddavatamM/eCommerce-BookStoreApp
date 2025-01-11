@@ -26,7 +26,7 @@ export default function Cart() {
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   
 
   useEffect(() => {
