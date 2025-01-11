@@ -11,10 +11,10 @@ import OrderHistory from "./Components/OrderHistory/OrderHistory";
 import Cart from "./Components/Cart/Cart";
 
 import Wishlist from "./Components/Wishlist/Wishlist";
+import OrderSuccess from "./Components/OrderSuccess/OrderSuccess";
+import { ProtectedRoute } from "./Routing/ProtectedRoute";
 import { AuthRoute } from "./Routing/AuthRoute";
 import PageNotFound from "./Components/PageNotFound/PageNotFound";
-
-
 
 function Routing(){
     const route = createBrowserRouter([
@@ -56,6 +56,10 @@ function Routing(){
                   {
                   path: '/wishlist',
                   element: <Wishlist/>  
+                },
+                {
+                    path: '/ordersuccess',
+                    element: <OrderSuccess/>
                 }
 
             ]

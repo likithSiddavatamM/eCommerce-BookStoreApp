@@ -1,64 +1,152 @@
-.order-summary-container {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    width: 400px;
-    margin: auto;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
+.order-summary {
+    
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  
     h2 {
-        font-size: 1.5rem;
-        margin-bottom: 16px;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
-
-    .cart-item {
+  
+    .empty-cart {
+      text-align: center;
+      font-size: 18px;
+      color: #666;
+    }
+  
+    .order-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+  
+      .order-item {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        margin-bottom: 16px;
-
-        .book-image {
-            width: 50px;
-            height: 70px;
-            margin-right: 16px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+  
+        &:last-child {
+          border-bottom: none;
         }
-
-        .book-details {
-            flex: 1;
-
-            h3 {
-                font-size: 1.2rem;
-                margin: 0;
-            }
-
-            p {
-                margin: 4px 0;
-
-                &.price {
-                    font-weight: bold;
-                    color: #333;
-
-                    .original-price {
-                        text-decoration: line-through;
-                        color: #999;
-                        font-size: 0.9em;
-                        margin-left: 8px;
-                    }
-                }
-            }
+  
+        .order-item-left {
+          display: flex;
+          gap: 15px;
+          align-items: center;
         }
+  
+        .order-image {
+          width: 80px;
+          height: auto;
+          object-fit: cover;
+          border-radius: 4px;
+        }
+  
+        .order-details {
+          h3 {
+            margin: 0;
+            font-size: 16px;
+          }
+  
+          p {
+            margin: 5px 0;
+            font-size: 14px;
+  
+            &.price {
+              font-weight: bold;
+              color: #a03037;
+  
+              .original-price {
+                text-decoration: line-through;
+                color: #888;
+                font-size: 12px;
+                margin-left: 5px;
+              }
+            }
+          }
+        }
+  
+        .order-item-right {
+          font-size: 14px;
+          color: #4caf50;
+        }
+  
+        .order-status-icon {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+  
+          .icon-placed::before {
+            content: "\2022";
+            font-size: 16px;
+            color: #4caf50;
+          }
+        }
+      }
     }
-
     .checkout-button {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 20px;
+        width: 150px;
+        height: 35px;
+        background: #3371B5;
+        color: white;
         border: none;
-        border-radius: 4px;
+        border-radius: 2px;
+        font-size: 14px;
+        font-weight: 500;
         cursor: pointer;
-        font-size: 1rem;
-
+        transition: background-color 0.2s;
+    
         &:hover {
-            background-color: #0056b3;
+          background: #285f9f;
         }
+      }
     }
-}
+
+
+  
+  .order-successful {
+    text-align: center;
+    padding: 40px;
+    background: #f0f0f0;
+    border-radius: 8px;
+  
+    h2 {
+      color: #4caf50;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+  
+    p {
+      font-size: 16px;
+      color: #333;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .order-summary {
+      padding: 10px;
+  
+      .order-card {
+        .order-item {
+          flex-direction: column;
+          align-items: flex-start;
+  
+          .order-item-left {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+  
+          .order-item-right {
+            align-self: flex-end;
+          }
+        }
+      }
+    }
+  }
+  
+  

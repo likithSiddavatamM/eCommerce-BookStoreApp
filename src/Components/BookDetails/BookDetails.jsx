@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import './BookDetails.scss';
-import { FaRegStar, FaRegHeart } from 'react-icons/fa';
+import { FaRegStar, FaRegHeart,FaHeart } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getBookById, addToCartApi } from '../../Api';
 import { addToCart, setQuantity, setTotalBookQuantity, updateQuantity } from '../../App/CartSlice';
 import QuantitySelector from '../QuantitySelector/QuantitySelector';
+import { addWishlistItem,fetchWishlist } from '../../App/wishlistSlice';
+import LoginSignup from '../LoginSignup/LoginSignup'; 
 
 const BookDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [currentBook, setCurrentBook] = useState({});
-  const [showQuantitySelector, setShowQuantitySelector] = useState(false);
-  const [selectedThumbnail, setSelectedThumbnail] = useState(0);
-  
+  const [showQuantitySelector, setShowQuantitySelector] = useState(false);  
+  const [isWishlist, setIsWishlist] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false); 
   const books = useSelector((state) => state.bookContainer.books);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const quantity = useSelector((state) => state.cart.quantities[id] || 0);
@@ -59,6 +61,29 @@ const BookDetails = () => {
     }
   };
 
+  const handleWishlistToggle = async () => {
+    if (!isAuthenticated) {
+      setShowLoginModal(true); 
+      return;
+    }
+
+    try {
+      await dispatch(addWishlistItem(currentBook._id));
+      dispatch(fetchWishlist());
+      setIsWishlist(true);
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+    }
+  };
+
+  const closeModal = () => {
+    setShowLoginModal(false);
+  };
+
+  if (!currentBook) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="book-details">
       <div className="book-details__container">
@@ -86,8 +111,16 @@ const BookDetails = () => {
                 ADD TO BAG
               </button>
             )}
-            <button className="book-details__wishlist-button">
-              <FaRegHeart className="wishlist-icon" />
+            <button
+              className="book-details__wishlist-button"
+              onClick={handleWishlistToggle}
+              disabled={isWishlist}
+            >
+              {isWishlist ? (
+                <FaHeart className="wishlist-icon wishlist-icon--active" />
+              ) : (
+                <FaRegHeart className="wishlist-icon" />
+              )}
               WISHLIST
             </button>
           </div>
@@ -145,7 +178,7 @@ const BookDetails = () => {
                     ))}
                   </div>
                 </div>
-                <p className="book-details__review-text">Good product...</p>
+                <p className="book-details__review-text">Good product. Even though the translation could have been better, Chanakya's neeti are thought provoking. Chanakya has written on many different topics and his writings are succinct.</p>
               </div>
               <div className="book-details__review">
                 <div className="book-details__review-header">
@@ -157,16 +190,21 @@ const BookDetails = () => {
                     <FaRegStar className="book-details__star-empty" />
                   </div>
                 </div>
-                <p className="book-details__review-text">Good product...</p>
+                <p className="book-details__review-text"> Good product. Even though the translation could have been better, Chanakya's neeti are thought provoking. Chanakya has written on many different topics and his writings are succinct.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {showLoginModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <LoginSignup onClose={closeModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default BookDetails;
-
-

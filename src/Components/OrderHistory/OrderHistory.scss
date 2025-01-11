@@ -27,7 +27,7 @@
   }
 
   .login-books-btn {
-    background: #3371B5;
+    background: #a03037;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -37,7 +37,7 @@
     transition: background-color 0.2s;
 
     &:hover {
-      background: #285f9f;
+      background: #cc2a35;
     }
   }
 }
@@ -56,6 +56,8 @@
       flex-direction: column;
       gap: 1em;
       padding: 0.75em;
+      margin-left: 8em;
+      margin-right: 8em;
       border: 0.0625em solid #ddd;
       border-radius: 0.5em;
       margin-bottom: 1.5em; 

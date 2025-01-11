@@ -47,7 +47,7 @@ export default () => {
           <span>{onChangePath()}</span>
         </span>
         <span className="sort">
-          <Select
+        {path=="/"&&(<Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={selectedValue}
@@ -58,7 +58,7 @@ export default () => {
             <MenuItem className="Select" value={-1} onClick={()=>dispatch(setSort(-1))}>Price : High to Low</MenuItem>
             <MenuItem className="Select" value={0} onClick={()=>dispatch(setSort(0))}>Sort by Revelence</MenuItem> 
             
-          </Select>
+            </Select>)}
         </span>
       </div>
     );
