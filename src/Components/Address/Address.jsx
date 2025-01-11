@@ -5,6 +5,7 @@ import { fetchUserAddressApiCall, updateUserAddressApiCall, createUserAddressApi
 const Address = ({ onSelectAddress, selectedAddress }) => {
   const [addressData, setAddressData] = useState([]);
   const [editableIndex, setEditableIndex] = useState(null);
+  const [selectedType, setSelectedType] = useState("");
   const [newAddress, setNewAddress] = useState({
     mobileNumber: "",
     address: "",
@@ -12,15 +13,13 @@ const Address = ({ onSelectAddress, selectedAddress }) => {
     state: "",
   });
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
-  const [customerDetailsId, setCustomerDetailsId] = useState("");
+  
  
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         console.log("Fetching user Address data...");
         const addressdata = await fetchUserAddressApiCall();
-        setCustomerDetailsId(addressdata.data.data);
-        console.log("Fetched user Address data:", addressdata.data.data);
         if (addressdata.data.data.length > 0) {
           setAddressData(addressdata.data.data);
         }
@@ -36,6 +35,9 @@ const Address = ({ onSelectAddress, selectedAddress }) => {
     setEditableIndex(index);
   };
 
+  const handleTypeChange = (e) => {
+    setSelectedType(e.target.value);
+  };
   const handleInputChange = (index, field, value) => {
     const updatedAddressData = [...addressData];
     updatedAddressData[index][field] = value;
@@ -46,7 +48,6 @@ const Address = ({ onSelectAddress, selectedAddress }) => {
     try {
       const updatedAddress = addressData[index];
       console.log("Saving updated address:", updatedAddress);
-      console.log(addressData[index]._id, "iiiiiiiiiiiiiiiiiiii");
       await updateUserAddressApiCall(updatedAddress, addressData[index]._id);
       setEditableIndex(null);
     } catch (error) {
@@ -154,6 +155,41 @@ const Address = ({ onSelectAddress, selectedAddress }) => {
               />
             </div>
           </div>
+          <div className="profile-className-section">
+        <h5 className="Address-className-title">Types</h5>
+        <div className="profile-className-radio-buttons">
+          <label className={`profile-className-radio-button ${selectedType === "home" ? "selected" : ""}`}>
+            <input
+              type="radio"
+              name="type"
+              value="home"
+              checked={selectedType === "home"}
+              onChange={handleTypeChange}
+            />
+            Home
+          </label>
+          <label className={`profile-className-radio-button ${selectedType === "work" ? "selected" : ""}`}>
+            <input
+              type="radio"
+              name="type"
+              value="work"
+              checked={selectedType === "work"}
+              onChange={handleTypeChange}
+            />
+            Work
+          </label>
+          <label className={`profile-className-radio-button ${selectedType === "other" ? "selected" : ""}`}>
+            <input
+              type="radio"
+              name="type"
+              value="other"
+              checked={selectedType === "other"}
+              onChange={handleTypeChange}
+            />
+            Other
+          </label>
+        </div>
+      </div>
         </div>
       )}
 

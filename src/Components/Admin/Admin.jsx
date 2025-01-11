@@ -110,7 +110,6 @@ const Admin = () => {{
       price: "",
       discountPrice: "",
     });
-    const [isAddingNewBook, setIsAddingBook] = useState(false);
     const [AdminId,setAdminId]=useState("")
     const [history, setHistory] = useState([]);
   
@@ -155,13 +154,6 @@ const Admin = () => {{
       const { name, value } = e.target;
       setBookForm({ ...bookForm, [name]: value });
     };
-  
-    const handleAddNewBookOpen = () => {
-      setIsAddingBook(true);
-    };
-    const handleAddNewBookClose =() =>{
-      setIsAddingBook(false);
-    }
     
     const handleImageUpload = (e) => {
       const file = e.target.files[0];
@@ -198,7 +190,6 @@ const Admin = () => {{
           price: "",
           discountPrice: "",
         });
-        setIsAddingBook(false);
       } catch (error) {
         console.error("Error creating book:", error);
         toast.error("Book Not Created !", { theme: "colored" });
@@ -273,23 +264,8 @@ const Admin = () => {{
       <div className="admin-form-section">
           <div className="admin-title">
             <h2 className="admin-form-title">Add Books</h2>
-            {isAddingNewBook  ? (
-                  <button
-                    className="admin-className-add-btn"
-                    onClick={() => handleAddNewBookClose()}
-                  >
-                   Close
-                  </button>
-                ) : (
-                  <button
-                    className="admin-className-add-btn"
-                    onClick={() => handleAddNewBookOpen()}
-                  >
-                   + Add New Book
-                  </button>
-                )}
           </div>
-          {isAddingNewBook && (
+         
             <form onSubmit={handleSubmit} encType="multipart/form-data">
               <input
                 type="text"
@@ -354,7 +330,7 @@ const Admin = () => {{
               />
               <button type="submit" className="admin-submit-btn">Add Book</button>
             </form>
-          )}
+        
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>

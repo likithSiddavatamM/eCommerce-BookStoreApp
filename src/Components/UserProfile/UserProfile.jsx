@@ -47,9 +47,6 @@ const UserProfile = () => {
   const handleModalOpen = () => setShowModal(true);
   const handleModalClose = () => setShowModal(false);
 
-  const handleTypeChange = (e) => {
-    setSelectedType(e.target.value);
-  };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -158,42 +155,6 @@ const UserProfile = () => {
       </div>
 
       <Address />
-
-      <div className="profile-className-section">
-        <h2 className="profile-className-title">Types</h2>
-        <div className="profile-className-radio-buttons">
-          <label className={`profile-className-radio-button ${selectedType === "home" ? "selected" : ""}`}>
-            <input
-              type="radio"
-              name="type"
-              value="home"
-              checked={selectedType === "home"}
-              onChange={handleTypeChange}
-            />
-            Home
-          </label>
-          <label className={`profile-className-radio-button ${selectedType === "work" ? "selected" : ""}`}>
-            <input
-              type="radio"
-              name="type"
-              value="work"
-              checked={selectedType === "work"}
-              onChange={handleTypeChange}
-            />
-            Work
-          </label>
-          <label className={`profile-className-radio-button ${selectedType === "other" ? "selected" : ""}`}>
-            <input
-              type="radio"
-              name="type"
-              value="other"
-              checked={selectedType === "other"}
-              onChange={handleTypeChange}
-            />
-            Other
-          </label>
-        </div>
-      </div>
 
       {showModal && (
         <Modal open={showModal} onClose={handleModalClose}>

@@ -26,7 +26,8 @@ export default function Cart() {
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  
 
   useEffect(() => {
     const syncCart = async () => {
@@ -130,6 +131,8 @@ export default function Cart() {
   return (
     <div className="cart-page">
       <div className="cart-container">
+      {!isAuthenticated ?(
+        <>
         <div className="cart-header">
           <h1>My cart ({cartItems.items?.length})</h1>
           <div className="location-selector" onClick={() => setShowAddress(!showAddress)}>
@@ -183,7 +186,63 @@ export default function Cart() {
             </button>
           </div>
         </div>
+        </>
+      ):(
 
+        <>
+        <div className="cart-header">
+          <h1>My cart ({cartItems.items?.length})</h1>
+          <div className="location-selector" onClick={() => setShowAddress(!showAddress)}>
+            <MapPin className="location-icon" size={16} />
+            <span>
+              {selectedAddress
+                ? `${selectedAddress.address}, ${selectedAddress.city}, ${selectedAddress.state}`
+                : 'Select Address'}
+            </span>
+            <ChevronDown className="dropdown-icon" size={16} />
+          </div>
+        </div>
+
+        <div className="cart-main">
+          <div className="cart-items-container">
+            {cartItems.items?.map((item) => (
+              <div key={item.bookId} className="cart-item">
+                <div className="item-image">
+                  <img src={item.bookImage} alt={item.bookName} />
+                </div>
+                <div className="item-details">
+                  <h2>{item.bookName}</h2>
+                  <p className="author">{item.author}</p>
+                  <div className="price-section">
+                    <span className="price">Rs. {item.discountPrice}</span>
+                    <span className="original-price">Rs. {item.price}</span>
+                  </div>
+                  <div className="item-actions">
+                    <QuantitySelector
+                      id={item.bookId}
+                      small
+                      handleQuantityChange={handleQuantityChange}
+                    />
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemoveItem(item.bookId)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="cart-actions">
+            <button
+              className="place-order-btn"
+              onClick={handlePlaceOrder}
+            >
+              PLACE ORDER
+            </button>
+          </div>
+        </div>
         <div className="cart-sections">
           <div
             className={`section-header ${showAddress ? 'active' : ''}`}
@@ -239,6 +298,13 @@ export default function Cart() {
             />
           )}
         </div>
+        </>
+
+      )}
+        
+
+     
+        
       </div>
 
       {showLoginSignup && <LoginSignup onClose={() => setShowLoginSignup(false)} />}
