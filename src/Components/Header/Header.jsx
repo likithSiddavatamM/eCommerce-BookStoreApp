@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ShoppingCart } from 'lucide-react';
-import { fetchUserDetails,fetchOrders ,logout } from "../../App/UserSlice";
+// import { fetchUserDetails,fetchOrders ,logout } from "../../App/UserSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchUserDetails, fetchCustomerDetails,fetchOrders ,logout } from "../../App/UserSlice";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
@@ -34,7 +34,7 @@ const Header = () => {
     }
   }, [isAuthenticated, userDetails, dispatch]);
 
-  const cartItems = useSelector((state) => state.cart.items);
+  // const cartItems = useSelector((state) => state.cart.items);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -75,7 +75,7 @@ const Header = () => {
         {isAdmin ? (
           <div className="admin-header">
             <div className="logo" onClick={() => navigate("/")}>
-              <img src={a} alt="Logo" className="logo-image" />
+              <img src={bookStore} alt="Logo" className="logo-image" />
               <span className="logo-text">Bookstore</span>
             </div>
           </div>

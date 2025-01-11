@@ -28,6 +28,14 @@ export const fetchAdminBooks = async () => {
   return adminBooks?.data?.data;
 };
 
+export const createBookByAdminApiCall = async (payload) => {
+  return await axios.post(`${BASE_URL}/books`, payload, {
+    headers: {
+      Authorization: getAuth(),
+    },
+  });
+};
+
 //Delete book by admin
 export const deleteAdminBooks = async (id) => {
   return await axios.delete(`${BASE_URL}books/${id}`, {

@@ -5,9 +5,7 @@ import {
   fetchUserDataApiCall, 
   fetchCustomerDetailsApiCall,
   getOrderApiCall,
-  placeOrderApi 
-  createUserAddressApiCall, 
-  updateUserAddressApiCall
+  placeOrderApi, 
 } from '../Api';
 
 // Thunks for API calls
@@ -17,7 +15,7 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await signupApiCall(userData);
       return response.data; 
-    } catch (error) {
+    }  catch (error) {
       if (error.response?.status === 409) {
         return rejectWithValue("Email already exists. Please use a different email.");
       }
@@ -57,32 +55,8 @@ export const fetchCustomerDetails = createAsyncThunk(
   'user/fetchCustomerDetails',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchCustomerDetailsApiCall("customer");
+      const response = await fetchCustomerDetailsApiCall('customer');
       return response.data.data; 
-    } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
-
-export const createAddress = createAsyncThunk(
-  "user/createAddress",
-  async (addressData, { rejectWithValue }) => {
-    try {
-      const response = await createUserAddressApiCall(addressData);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
-
-export const updateAddress = createAsyncThunk(
-  "user/updateAddress",
-  async (addressData, { rejectWithValue }) => {
-    try {
-      const response = await updateUserAddressApiCall(addressData);
-      return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -96,7 +70,7 @@ export const fetchOrders = createAsyncThunk(
       const response = await getOrderApiCall('orders');
       return response.data.data; 
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(error.response.data?.data || error.message);
     }
   }
 );
@@ -128,7 +102,6 @@ const userSlice = createSlice({
     refreshToken: localStorage.getItem('refreshToken'),
     customerDetails: [],
     orders: [],
-    addresses: [],
     status: 'idle',
     isAuthenticated: !!localStorage.getItem('accessToken'),
     error: null,
@@ -191,35 +164,12 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Create Address
-      .addCase(createAddress.fulfilled, (state, action) => {
-        state.addresses.push(action.payload);
-        state.error = null;
-      })
-      .addCase(createAddress.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-
-      // Update Address
-      .addCase(updateAddress.fulfilled, (state, action) => {
-        const index = state.addresses.findIndex(
-          (addr) => addr._id === action.payload._id
-        );
-        if (index !== -1) {
-          state.addresses[index] = action.payload;
-        }
-        state.error = null;
-      })
-      .addCase(updateAddress.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-
       // Fetch Orders
       .addCase(fetchOrders.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
-        state.orders = action.payload;
+        state.orders = action.payload; 
         state.status = 'succeeded';
         state.isAuthenticated = true;
         state.error = null;
