@@ -17,7 +17,7 @@ const BookDetails = () => {
   const [isWishlist, setIsWishlist] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false); 
   const books = useSelector((state) => state.bookContainer.books);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const quantity = useSelector((state) => state.cart.quantities[id] || 0);
   
   useEffect(() => {

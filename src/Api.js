@@ -227,3 +227,45 @@ export const searchedBooks = async(page, text, sort) => {
     return books?.data?.data;
 
 }
+
+// Forgot Password API
+export const forgotpassword = async (email) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/users/forgotpassword`,
+      { email },
+      // {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    throw error.response?.data?.message || "Failed to Send Email";
+  }
+};
+
+
+// Reset Password API
+export const resetpassword = async (password, token) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/users/resetpassword`,
+      { password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    throw error.response?.data?.message || "Failed to Reset Password";
+  }
+};

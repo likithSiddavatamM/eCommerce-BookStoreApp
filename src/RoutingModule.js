@@ -15,6 +15,8 @@ import OrderSuccess from "./Components/OrderSuccess/OrderSuccess";
 import { ProtectedRoute } from "./Routing/ProtectedRoute";
 import { AuthRoute } from "./Routing/AuthRoute";
 import PageNotFound from "./Components/PageNotFound/PageNotFound";
+import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
+import ResetPassword from "./Components/ResetPassword/ResetPassword";
 
 function Routing(){
     const route = createBrowserRouter([
@@ -64,10 +66,19 @@ function Routing(){
                 {
                     path: '/ordersuccess',
                     element: <OrderSuccess/>
-                }
+                },
+                      
 
             ]
-        }
+        },
+        {
+            path: '/forgotpassword', 
+            element: <ForgotPassword />,
+        },
+        {
+            path: '/resetpassword',
+            element: <ResetPassword />  
+        } 
     ])
 
     return  <RouterProvider router={route}/>
