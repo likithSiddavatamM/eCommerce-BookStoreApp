@@ -60,8 +60,10 @@ const cartSlice = createSlice({
       }
       state.totalBookQuantity[action.payload.bookId] = action.payload.quantity;
     },
-    setCartEmpty:  (state, action) => {
-      state.items=action.payload;
+    setCartEmpty:  (state) => {
+      state.items = [];
+      state.totalBookQuantity = {};
+      state.quantities = {};
     },
     setCartData: (state, action) => {
       console.log(action.payload.quantities,"action.payload.itemsaction.payload.itemsaction.payload.items")

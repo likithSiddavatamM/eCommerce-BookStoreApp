@@ -217,12 +217,12 @@ export default function Cart() {
                   <span>Select Address</span>
                 )}
               </div>
-              <div>
+              {!showSummary && (<div >
                 <button className="place-order-btn-cnt" 
                 onClick={handleContinue}>
                   CONTINUE
                 </button>
-              </div>
+              </div>)}
             </div>
           </div>
           <div
