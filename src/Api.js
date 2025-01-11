@@ -197,6 +197,30 @@ export const getCartItemsApi = async () => {
         throw error;
     }
 };
+
+
+// Add to Wishlist API
+export const addToWishlistApi = async (bookId) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("Not authenticated");
+
+    const response = await axios.post(
+      `${BASE_URL}wishlist/${bookId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Add to Wishlist Error:", error);
+    throw error.response?.data?.message || "Failed to add to wishlist";
+  }
+};
 // Search API
 export const searchedBooks = async(page, text, sort) => {
   const books = await axios.get(`${BASE_URL}books/search/${page}`, {params: {searchQuery: text, sortQuery: sort}})

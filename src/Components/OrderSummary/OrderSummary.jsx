@@ -14,21 +14,19 @@ const OrderSummary = ({ cartItems ,selectedAddress}) => {
     const navigate = useNavigate()
 
     const handleCheckout = async () => {
-        if (!selectedAddress) {
-            // alert("Please select an address before placing the order.");
-            return;
-          }
+        // if (!selectedAddress) {
+        //     // alert("Please select an address before placing the order.");
+        //     return;
+        //   }
         setLoading(true);
         try {
             await dispatch(placeOrder({ cartItems, selectedAddress })).unwrap();
             setOrderSuccess(true);
-            console.log("comming")
             navigate('/ordersuccess')
-            dispatch(setCartEmpty([]))
+            dispatch(setCartEmpty())
 
         } catch (error) {
             console.error("Error placing order:", error);
-            alert("Failed to place order. Please try again.");
         } finally {
             setLoading(false);
         }

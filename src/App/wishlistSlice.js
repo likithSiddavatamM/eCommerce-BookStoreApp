@@ -4,7 +4,7 @@ export const fetchWishlist = createAsyncThunk('wishlist/fetchWishlist', async (_
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) throw new Error('Not authenticated');
 
-  const response = await fetch('http://localhost:3000/api/v1/wishlist', {
+  const response = await fetch('http://localhost:7000/api/v1/wishlist', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -22,7 +22,7 @@ export const removeWishlistItem = createAsyncThunk('wishlist/removeWishlistItem'
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) throw new Error('Not authenticated');
 
-  const response = await fetch(`http://localhost:3000/api/v1/wishlist/${BookId}`, {
+  const response = await fetch(`http://localhost:7000/api/v1/wishlist/${BookId}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -34,6 +34,25 @@ export const removeWishlistItem = createAsyncThunk('wishlist/removeWishlistItem'
   }
 
   return BookId;
+});
+
+export const addWishlistItem = createAsyncThunk('wishlist/addWishlistItem', async (bookId, { getState }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) throw new Error('Not authenticated');
+
+  const response = await fetch(`http://localhost:7000/api/v1/wishlist/${bookId}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to add item');
+  }
+
+  const data = await response.json();
+  return data.data.book;
 });
 
 const wishlistSlice = createSlice({
@@ -57,6 +76,11 @@ const wishlistSlice = createSlice({
       .addCase(fetchWishlist.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Something went wrong';
+      })
+      .addCase(addWishlistItem.fulfilled, (state, action) => {
+        if (action.payload && !state.items.some((item) => item._id === action.payload._id)) {
+          state.items.push(action.payload);
+        }
       })
       .addCase(removeWishlistItem.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item._id !== action.payload);
