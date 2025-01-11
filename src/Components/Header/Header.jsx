@@ -24,6 +24,7 @@ const Header = () => {
   const userDetails = useSelector((state) => state.user.userDetails);
   const customerDetails = useSelector((state) => state.user.customerDetails);
   const cartItems = useSelector((state) => state.cart.items  || []);
+  const isAdmin=userDetails?.role == "admin";
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -67,6 +68,80 @@ const Header = () => {
   return (
     <>
       <header className="header">
+      {isAdmin ? 
+        <>
+          <div style={{ display: "flex", gap: "1em", width: "100%" }}>
+            <div className="logo" onClick={() => navigate("/")}>
+              <img src={bookStore} alt="Logo" className="logo-image" />
+              Bookstore
+            </div>
+          </div>
+          <div className="user-actions">
+          <div className="icon">
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Avatar
+                alt={userDetails?.firstName || "Profile"}
+                src={userDetails?.profilePicture || ""}
+                sx={{ width: 30, height: 30, cursor: "pointer" }}
+                onClick={handleMenuOpen}
+              />
+              <span className="label">{userDetails?.firstName || "Profile"}</span>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                {isAuthenticated ? (
+                  <>
+                    <MenuItem onClick={handleUserProfile}>
+                      Profile
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </>
+                ) : (
+                    <>
+                      <MenuItem
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: "8px 12px",
+                          margin: 0,
+                          gap: "4px",
+                          minHeight: "unset",
+                        }}
+                      >
+                        <p className="header-msg-wlc">Welcome!</p>
+                        <span className="header-msg">
+                          To access account and manage orders
+                        </span>
+                        <button
+                          className="header-login-btn"
+                          onClick={toggleModal}
+                        >
+                          Login/Signup
+                        </button>
+                        {showModal && (
+                        <div className="modal-overlay">
+                          <div className="modal-content">
+                            <LoginSignup onClose={toggleModal} />
+                          </div>
+                        </div>
+                        )}
+                      </MenuItem>
+                                  
+                  </>
+                )}
+                </Menu>
+              </Box>
+            </div>
+          </div> 
+        </>       
+      :
+      <>
         <div style={{ display: "flex", gap: "1em", width: "100%" }}>
           <div className="logo" onClick={() => navigate("/")}>
             <img src={bookStore} alt="Logo" className="logo-image" />
@@ -80,88 +155,31 @@ const Header = () => {
             location.pathname!="/"&&nav("/");
             }}/>
         </div>
-      <div className="user-actions">
-        <div className="icon">
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Avatar
-              alt={userDetails?.firstName || "Profile"}
-              src={userDetails?.profilePicture || ""}
-              sx={{ width: 30, height: 30, cursor: "pointer" }}
-              onClick={handleMenuOpen}
-            />
-            <span className="label">{userDetails?.firstName || "Profile"}</span>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
-            >
-              {isAuthenticated ? (
-                <>
-                  <MenuItem onClick={handleUserProfile}>
-                    Profile
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleMenuItemClick(() => navigate("/orders"))}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      fontFamily: "Roboto",
-                    }}
-                  >
-                    <ListAltOutlinedIcon />
-                    My Orders
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      fontFamily: "Roboto",
-                    }}
-                  >
-                    <FavoriteBorderOutlinedIcon />
-                    My Wishlist
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </>
-              ) : (
+
+          <div className="user-actions">
+          <div className="icon">
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Avatar
+                alt={userDetails?.firstName || "Profile"}
+                src={userDetails?.profilePicture || ""}
+                sx={{ width: 30, height: 30, cursor: "pointer" }}
+                onClick={handleMenuOpen}
+              />
+              <span className="label">{userDetails?.firstName || "Profile"}</span>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                {isAuthenticated ? (
                   <>
+                    <MenuItem onClick={handleUserProfile}>
+                      Profile
+                    </MenuItem>
                     <MenuItem
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "8px 12px",
-                        margin: 0,
-                        gap: "4px",
-                        minHeight: "unset",
-                      }}
-                    >
-                      <p className="header-msg-wlc">Welcome!</p>
-                      <span className="header-msg">
-                        To access account and manage orders
-                      </span>
-                      <button
-                        className="header-login-btn"
-                        onClick={toggleModal}
-                      >
-                        Login/Signup
-                      </button>
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <LoginSignup onClose={toggleModal} />
-          </div>
-        </div>
-      )}
-      </MenuItem>
-                    <MenuItem
-                       onClick={() => handleMenuItemClick(() => navigate("/orders"))}
+                      onClick={() => handleMenuItemClick(() => navigate("/orders"))}
                       sx={{
                         display: "flex",
                         alignItems: "center",
@@ -173,7 +191,7 @@ const Header = () => {
                       My Orders
                     </MenuItem>
                     <MenuItem
-                       onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
+                      onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
                       sx={{
                         display: "flex",
                         alignItems: "center",
@@ -184,21 +202,81 @@ const Header = () => {
                       <FavoriteBorderOutlinedIcon />
                       My Wishlist
                     </MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </>
-                )}
-              </Menu>
-            </Box>
-          </div>
-          <div className="icon cart-icon" onClick={handleCartClick}>
-            <div className="cart-icon-wrapper">
-              <ShoppingCart className="shopping-cart-icon" />
-              {Array.isArray(cartItems) && cartItems.length > 0 ? (
-                <span className="cart-badge">{cartItems.length}</span>
-              ):null}
+                ) : (
+                    <>
+                      <MenuItem
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: "8px 12px",
+                          margin: 0,
+                          gap: "4px",
+                          minHeight: "unset",
+                        }}
+                      >
+                        <p className="header-msg-wlc">Welcome!</p>
+                        <span className="header-msg">
+                          To access account and manage orders
+                        </span>
+                        <button
+                          className="header-login-btn"
+                          onClick={toggleModal}
+                        >
+                          Login/Signup
+                        </button>
+        {showModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <LoginSignup onClose={toggleModal} />
             </div>
-            <span className="label">Cart</span>
           </div>
-        </div>
+        )}
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => handleMenuItemClick(() => navigate("/orders"))}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          fontFamily: "Roboto",
+                        }}
+                      >
+                        <ListAltOutlinedIcon />
+                        My Orders
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => handleMenuItemClick(() => navigate("/wishlist"))}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          fontFamily: "Roboto",
+                        }}
+                      >
+                        <FavoriteBorderOutlinedIcon />
+                        My Wishlist
+                      </MenuItem>
+                    </>
+                  )}
+                </Menu>
+              </Box>
+            </div>
+            <div className="icon cart-icon" onClick={handleCartClick}>
+              <div className="cart-icon-wrapper">
+                <ShoppingCart className="shopping-cart-icon" />
+                {Array.isArray(cartItems) && cartItems.length > 0 ? (
+                  <span className="cart-badge">{cartItems.length}</span>
+                ):null}
+              </div>
+              <span className="label">Cart</span>
+            </div>
+          </div> 
+          </>
+        }
       </header>
     </>
    );
