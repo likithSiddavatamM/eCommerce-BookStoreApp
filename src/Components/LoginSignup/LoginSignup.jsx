@@ -8,6 +8,7 @@ import { useDispatch , useSelector} from "react-redux";
 import { login } from "../../App/AuthSlice";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 const modalStyle = {
   position: "absolute",
@@ -33,7 +34,7 @@ const LoginSignup = ({ onClose }) => {
   const [error, setError] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const navigate = useNavigate();
   // const { error } = useSelector((state) => state.user);
 
   const handleToggle = () => {
@@ -155,7 +156,17 @@ const LoginSignup = ({ onClose }) => {
                                 <span className="error-message">Password cannot be empty.</span>
                             )}<br/>
                             <button type="submit" className="loginsignup-form-button" onClick={handleLogin}>Login</button>
-
+                            <div className="forgot-password-container">
+                            {/* <a 
+                                href="http://localhost:3000/ForgotPassword" 
+                                className="forgot-password-link"
+                            >
+                                Forgot Password?
+                            </a> */}
+                            <span  className="forgot-password-link" onClick={() => navigate('/forgotpassword')}>
+                                Forgot Password?
+                            </span>
+                           </div>
                             <div className="or-container">
                                 <span className="or-line"></span>
                                 <span className="or-text">OR</span>

@@ -384,4 +384,29 @@
   .social-btn {
     width: 100%;
   }
+  
 }
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+
+.forgot-password-container {
+text-align: right;
+margin-top: 5px;
+}
+
+.forgot-password-link {
+color: #007bff; /* Customize color */
+text-decoration: none;
+font-size: 0.9rem;
+cursor: pointer;
+}
+
+// .forgot-password-link:hover {
+// text-decoration: underline;
+
+// }
