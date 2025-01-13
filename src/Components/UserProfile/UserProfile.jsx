@@ -75,10 +75,11 @@ const UserProfile = () => {
 
       await updateUserDataApiCall(updateData); 
       console.log("User data updated successfully");
-
-      setIsEditing(false);
     } catch (error) {
       console.error("Error updating user data:", error);
+    }
+    finally{
+      setIsEditing(false);
     }
   };
 
@@ -117,7 +118,7 @@ const UserProfile = () => {
         <div className="profile-className-profile-image-container">
           <div className="profile-className-profile-image">
             <img
-              src={selectedImage ? URL.createObjectURL(selectedImage) : userDetails.profilePicture || profilepic}
+              src={selectedImage ? URL.createObjectURL(selectedImage) : userDetails?.profilePicture || profilepic}
               className="profile-className-profile-picture"
               onClick={handleModalOpen}
             />
@@ -129,7 +130,7 @@ const UserProfile = () => {
             <label>First Name</label>
             <input
               type="text"
-              value={userDetails.firstName}
+              value={userDetails?.firstName}
               readOnly={!isEditing}
               onChange={(e) => setUserData((prev) => ({ ...prev, firstName: e.target.value }))}
             />
@@ -138,7 +139,7 @@ const UserProfile = () => {
             <label>Last Name</label>
             <input
               type="text"
-              value={userDetails.lastName}
+              value={userDetails?.lastName}
               readOnly={!isEditing}
               onChange={(e) => setUserData((prev) => ({ ...prev, lastName: e.target.value }))}
             />
@@ -146,7 +147,7 @@ const UserProfile = () => {
         </div>
         <div className="profile-className-field">
           <label>Email ID</label>
-          <input type="email" value={userDetails.email} readOnly />
+          <input type="email" value={userDetails?.email} readOnly />
         </div>
         <div className="profile-className-field">
           <label>Password</label>
