@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import logo from "../../Assets/2766594.png";
 import "./LoginSignup.scss";
 import { loginUser, registerUser } from "../../App/UserSlice";
-import { useDispatch , useSelector} from "react-redux";
-import { login } from "../../App/AuthSlice";
+import { useDispatch } from "react-redux";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
@@ -36,6 +36,7 @@ const LoginSignup = ({ onClose }) => {
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
   // const { error } = useSelector((state) => state.user);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
@@ -60,10 +61,8 @@ const LoginSignup = ({ onClose }) => {
 
     dispatch(loginUser({ email, password }))
     .unwrap()
-    .then(() => {
-      
+    .then(() => { 
       toast.success("Login Successful!", { theme: "colored" });
-      dispatch(login())
       onClose();
     })
     .catch((err) => {
@@ -72,6 +71,12 @@ const LoginSignup = ({ onClose }) => {
         toast.error('Invalid email or password', { theme: "colored" });
     });
 };
+useEffect(() => {
+  if (isAuthenticated) {
+    onClose();
+  }
+}, [isAuthenticated, onClose]);
+
  
 
   const handleSignup = (e) => {

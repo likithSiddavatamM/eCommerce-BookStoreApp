@@ -6,7 +6,7 @@ import './QuantitySelector.scss';
 
 const QuantitySelector = ({ small = false, id }) => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const totalBookQuantity = useSelector((state) => state.cart.totalBookQuantity);
   const quantity = useSelector((state) => state.cart.quantities[id] || 0);
 

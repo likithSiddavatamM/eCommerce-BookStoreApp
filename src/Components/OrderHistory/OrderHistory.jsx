@@ -9,7 +9,7 @@ const OrderHistory = () => {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
   
   const { orders, status, error } = useSelector((state) => state.user);

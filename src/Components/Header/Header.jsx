@@ -4,7 +4,9 @@ import { ShoppingCart } from 'lucide-react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchUserDetails, fetchOrders ,logout } from "../../App/UserSlice";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Box, Avatar, Menu, MenuItem } from "@mui/material";
 import "./Header.scss";
 import bookStore from "../../Assets/education.svg";
@@ -30,7 +32,7 @@ const Header = () => {
       dispatch(fetchUserDetails());
       dispatch(fetchOrders());
     }
-  }, [isAuthenticated, userDetails, dispatch]);
+  }, [isAuthenticated, userDetails]);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -172,7 +174,16 @@ const Header = () => {
                     
                       {isAuthenticated ? (
                         <>
-                          <MenuItem onClick={handleUserProfile}>Profile</MenuItem>
+                          <MenuItem onClick={handleUserProfile}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            fontFamily: "Roboto",
+                          }}>
+                          <PersonOutlinedIcon/>
+                          Profile
+                          </MenuItem>
                           <MenuItem
                             onClick={() => handleMenuItemClick(() => navigate("/orders"))}
                             sx={{
@@ -197,7 +208,15 @@ const Header = () => {
                             <FavoriteBorderOutlinedIcon />
                             My Wishlist
                           </MenuItem>
-                          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                          <MenuItem onClick={handleLogout}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            fontFamily: "Roboto",
+                          }}>
+                          <LogoutOutlinedIcon/>
+                          Logout</MenuItem>
                         </>
                       ) : (
                         <>

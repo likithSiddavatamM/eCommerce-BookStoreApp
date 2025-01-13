@@ -103,7 +103,7 @@ const userSlice = createSlice({
     customerDetails: [],
     orders: [],
     status: 'idle',
-    isAuthenticated: !!localStorage.getItem('accessToken'),
+    isAuthenticated: false,
     error: null,
   },
   reducers: {
@@ -123,7 +123,7 @@ const userSlice = createSlice({
       // Register User
       .addCase(registerUser.fulfilled, (state, action) => {
         state.userDetails = action.payload.user;
-        state.isAuthenticated = true; 
+        state.isAuthenticated = false; 
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
